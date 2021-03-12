@@ -10,7 +10,6 @@ socket = SocketIO(app, cors_allowed_origins="*")
 app.host = 'localhost'
 app.debug = True
 
-usernames = []
 active_users = {}
 
 #---public page---
@@ -21,22 +20,21 @@ def public():
 @app.route('/login', methods=['POST'])
 def login():
 	username = request.form['username']
-	if username in usernames:
+	if username in active_users:
 		return render_template('login.html', err='Username already exists!')
 	else:
+		active_users[username] = ""
 		print("-----pretend to give a page of active users-----")
 	return render_template('index.html', username=username)
 
-@socket.on('logout_req')
-def logout_req():
-	#active_users.pop(username)
-	emit('logout_res', {}, callback=disconnect())
+@app.route('/logout', methods=['GET'])
+def logout():
+	return redirect(url_for('public'))
+
 
 @socket.on('connect')
 def on_connect():
-	#active_users[request.sid] = username
 	print("Hi", request.sid)
-	send(request.sid + " joined", broadcast=True)
 
 @socket.on('message')
 def handleMessage(msg):
@@ -46,16 +44,25 @@ def handleMessage(msg):
 @socket.on('disconnect')
 def on_disconnect():
 	print("Bye", request.sid)
-	send(request.sid + " left", broadcast=True)
-
-@socket.on('client_connect')
-def on_disconnect(msg):
-	print("Hi", msg['username'])
-
-@socket.on('client_disconnect')
-def on_disconnect(msg):
-	print("Bye", msg['username'])
 	return redirect(url_for('public'))
+
+@socket.on('join_room')
+def on_disconnect(msg):
+	user = msg['username']
+	print("Hi", user)
+	active_users[user] = request.sid
+	send(user + " joined", broadcast=True)
+
+@socket.on('leave_room')
+def on_disconnect(msg):
+	user = msg['username']
+	print("Bye", user)
+	active_users.pop(user)
+	send(user + " left", broadcast=True)
+
+@socket.on('disconnect')
+def on_disconnect():
+	print("Bye", request.sid)
 
 # if __name__ == '__main__':
 #     socket.run(app, host="127.0.0.1", port=5000)

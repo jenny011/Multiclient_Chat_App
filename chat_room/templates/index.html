@@ -13,7 +13,7 @@
 	  <!-- Navbar content -->
 	  <span class="navbar-brand mb-0 h1" style="color:white;">Multiclient Chat System</span>
 	  <div id="user-link-wrapper">
-		  <a id="logout" class="navbar-link navbar-right" style="color:white;">logout</a>
+		  <a href="/logout" id="logout" class="navbar-link navbar-right" style="color:white;">logout</a>
 	  </div>
 	</nav>
 
@@ -26,7 +26,9 @@
 	<ul id="messages"></ul>
 	<input type="text" id="myMsg">
 	<button id="sendBtn">Send</button>
-
+	<script type="text/javascript">
+		var username = '{{ username }}';
+	</script>
 	<script type="text/javascript" src="/static/client.js"></script>
 </body>
 </html>
