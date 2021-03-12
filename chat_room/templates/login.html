@@ -9,42 +9,25 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
-	<script type="text/javascript">
-	$(document).ready(function() {
-		var socket = io.connect("http://127.0.0.1:5000");
-
-		socket.on('connect', function(){
-			socket.send('User connected');
-		});
-
-		socket.on('message', function(msg){
-			$("#messages").append('<li>' + msg + '</li>');
-		});
-
-		$("#sendBtn").on("click", function(){
-			socket.send($('#myMsg').val());
-			$('#myMsg').val('');
-		})
-	});
-	</script>
-
-
 	<nav class="navbar navbar-light" style="background-color: #2D79D6;">
 	  <!-- Navbar content -->
-	  <span class="navbar-brand mb-0 h1" style="color:white;">Welcome</span>
-	  <div id="user-link-wrapper">
-		  <a href="/login" class="navbar-link navbar-right" style="color:white;">Login</a>
-	  </div>
+	  <span class="navbar-brand mb-0 h1" style="color:white;">Multiclient Chat System</span>
 	</nav>
 
 	<div id="content-container">
 		<div id="background-container">
-			<div id="welcome-container">Welcome to Multiclient Chat System!</div>
+			<div id="welcome-container">Please login to Multiclient Chat System!</div>
 		</div>
   </div>
 
-	<ul id="messages"></ul>
-	<input type="text" id="myMsg">
-	<button id="sendBtn">Send</button>
+	<form action="/login" method="POST">
+		<label for="username">Enter a unique user name:</label>
+		<input types="text" id="username" name="username">
+		<button type="submit">Go</button>
+	</form>
+	{% if err %}
+	<p>{{err}}</p>
+	{% endif%}
+
 </body>
 </html>
