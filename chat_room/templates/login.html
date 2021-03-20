@@ -12,6 +12,7 @@
 	<nav class="navbar navbar-light" style="background-color: #2D79D6;">
 	  <!-- Navbar content -->
 	  <span class="navbar-brand mb-0 h1" style="color:white;">Multiclient Chat System</span>
+		<a href="/goToRegister" id="register" class="navbar-link navbar-right" style="color:white;">register</a>
 	</nav>
 
 	<div id="welcome-container">
@@ -20,11 +21,17 @@
 
 	<div id="content-container">
 		<div id="background-container"></div>
-		
+
 		<form action="/login" method="POST">
-			<label for="username">Enter a unique user name:</label>
-			<input types="text" id="username" name="username">
-			<button type="submit">Go</button>
+			<div>
+				<label for="username">username:</label>
+				<input types="text" id="username" name="username">
+			</div>
+			<div>
+				<label for="password">password:</label>
+				<input types="text" id="password" name="password">
+			</div>
+			<input type="submit" value="Login">
 		</form>
 		{% if err %}
 		<p>{{err}}</p>

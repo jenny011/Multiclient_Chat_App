@@ -17,13 +17,17 @@ app.debug = True
 ###---------------------data store---------------------###
 ###---------------------data store---------------------###
 ###---------------------data store---------------------###
-registered_users = {}
+all_users = {}
 active_users = {}
 active_rooms = {}
 
 
-from chat_room.models import model
-from chat_room.routes import route
+from chat_room.model.models import *
+from chat_room.route import routes, utils
+
+for i in range(10):
+	id = str(i)
+	all_users[id] = User(id, id)
 
 
 # if __name__ == '__main__':
