@@ -13,19 +13,21 @@
 	  <!-- Navbar content -->
 	  <span class="navbar-brand mb-0 h1" style="color:white;">Multiclient Chat System</span>
 	  <div id="user-link-wrapper">
-		  <a href="/logout" id="logout" class="navbar-link navbar-right" style="color:white;">logout</a>
+		  <div><a href="/logout" id="logout" class="navbar-link navbar-right" style="color:white;">logout</a></div>
+			<div><a href="/leave_chat" id="leave_chat" class="navbar-link navbar-right" style="color:white;">leave</a></div>
 	  </div>
 	</nav>
 
+	<div id="welcome-container">
+		<h1>Start chatting, {{username}}!</h1>
+	</div>
+
 	<div id="content-container">
-		<div id="background-container">
-			<div id="welcome-container">Start chatting, {{username}}!</div>
-		</div>
+		<ul id="messages"></ul>
+		<input type="text" id="myMsg">
+		<button id="sendBtn">Send</button>
   </div>
 
-	<ul id="messages"></ul>
-	<input type="text" id="myMsg">
-	<button id="sendBtn">Send</button>
 	<script type="text/javascript">
 		var username = '{{ username }}';
 	</script>

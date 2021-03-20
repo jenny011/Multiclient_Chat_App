@@ -18,8 +18,12 @@ $(document).ready(function() {
   });
 
   $("#sendBtn").on("click", function(){
-    socket.send($('#myMsg').val());
+    socket.send(username + ": " + $('#myMsg').val());
     $('#myMsg').val('');
+  });
+
+  $("#leave_chat").on("click", function(){
+    socket.emit("leave_room", {'username': username });
   });
 
   $("#logout").on("click", function(){
