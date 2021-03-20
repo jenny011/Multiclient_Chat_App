@@ -23,7 +23,7 @@ active_rooms = {}
 
 
 from chat_room.model.models import *
-from chat_room.route import routes, utils
+from chat_room.route import http_reqs, tcp_events
 
 for i in range(10):
 	id = str(i)
