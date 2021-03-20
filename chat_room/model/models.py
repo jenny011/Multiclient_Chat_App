@@ -7,9 +7,10 @@ def load_user(username):
     return all_users[username]
 
 class User(UserMixin):
-    def __init__(self, username, password):
+    def __init__(self, username, password, rooms=[]):
         self.id = username
         self.password = self.set_password(password)
+        self.rooms = rooms
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
     def check_password(self, password):

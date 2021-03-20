@@ -17,8 +17,11 @@ app.debug = True
 ###---------------------data store---------------------###
 ###---------------------data store---------------------###
 ###---------------------data store---------------------###
+# username -> User object
 all_users = {}
+# online users => [usernames]
 active_users = {}
+# roomid -> room object
 active_rooms = {}
 
 
