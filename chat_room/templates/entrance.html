@@ -26,7 +26,7 @@
 			<ul id="rooms">
 				{% for room in rooms %}
 				<li>
-					<form action="/chat_room" method='POST'>
+					<form action="/join_chat_room" method='POST'>
 						<input class="btn btn-primary" type="submit" name="target" value="{{room}}">
 					</form>
 				</li>
@@ -38,7 +38,7 @@
 			<ul id="users">
 				{% for user in users %}
 				<li>
-					<form action="/chat_user" method='POST'>
+					<form action="/start_chat_user" method='POST'>
 						<input class="btn btn-outline-primary" type="submit" name="target" value="{{user}}">
 					</form>
 				</li>

@@ -21,10 +21,13 @@ socket = SocketIO(app, cors_allowed_origins="*")
 ###---------------------data store---------------------###
 # username -> User object
 all_users = {}
-# roomid -> room object
-count = 0
+# next available room ID
+next_room_id = 0
+# a queue of available room IDs (str) released by closed rooms
+available_room_ids = []
+# roomID -> room object
 all_rooms = {}
-# [online usernames]
+# username -> ?
 active_users = {}
 
 
