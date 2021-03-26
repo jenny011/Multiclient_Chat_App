@@ -5,28 +5,32 @@ from flask_login import LoginManager, login_user, logout_user, current_user, log
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '65rdxchu87'
+app.host = 'localhost'
+app.debug = True
 CORS(app, supports_credentials=True)
+
 login = LoginManager(app)
 login.login_view = 'login' # force user to login
 login.login_message = "Please login first"
 
 socket = SocketIO(app, cors_allowed_origins="*")
-app.host = 'localhost'
-app.debug = True
+
 
 ###---------------------data store---------------------###
 ###---------------------data store---------------------###
 ###---------------------data store---------------------###
 # username -> User object
 all_users = {}
-# online users => [usernames]
-active_users = {}
 # roomid -> room object
-active_rooms = {}
+count = 0
+all_rooms = {}
+# [online usernames]
+active_users = {}
 
 
-from chat_room.model.models import *
-from chat_room.route import http_reqs, tcp_events
+from chat_room.model.user import *
+from chat_room.model.room import *
+from chat_room.route import http_reqs, tcp_events, utils
 
 for i in range(10):
 	id = str(i)

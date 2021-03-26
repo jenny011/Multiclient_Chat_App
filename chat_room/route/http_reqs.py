@@ -1,11 +1,11 @@
 from flask import Flask, send_from_directory, render_template, redirect, url_for, request, json, jsonify, session, flash, make_response
 from flask_cors import CORS
-# from flask_login import LoginManager, login_user, logout_user, current_user, login_required
-from chat_room import app, login, all_users, active_users, active_rooms
+from flask_login import LoginManager, login_user, logout_user, current_user, login_required
+from chat_room import app, login, all_users, active_users, all_rooms
 from chat_room.route.utils import *
-from chat_room.model.models import *
-# from flask_login import UserMixin
-from werkzeug.security import check_password_hash, generate_password_hash
+from chat_room.model.user import *
+from chat_room.model.room import *
+from flask_login import UserMixin
 
 
 ###---------------------HTTP routes---------------------###
@@ -39,62 +39,62 @@ def register():
 #---go to entrance page---
 @app.route('/login', methods=['POST'])
 def login():
-    #try:
-    username = request.form['username']
-    password = request.form['password']
-    user = all_users[username]
-    if not user:
-        return render_template('register.html', err='Please register!')
-    if not user.check_password(password):
-        return render_template('login.html', err="Username and password don't match!")
-    session["username"] = username
-    active_users[username] = []
-    rooms = get_active_rooms()
-    users = get_active_users(username)
-    return render_template('entrance.html', username=username, rooms=rooms, users=users)
-    # except:
-    #     return render_template('login.html', err="Unkown error")
+	username = request.form['username']
+	password = request.form['password']
+	user = all_users[username]
+	if not user:
+		return render_template('register.html', err='Please register!')
+	if not user.check_password(password):
+		return render_template('login.html', err="Username and password don't match!")
+	login_user(user)
+	active_users[username] = True
+	rooms = get_all_rooms()
+	users = get_active_users(username)
+	return render_template('entrance.html', username=username, rooms=rooms, users=users)
+
+@app.route('/updateLists', methods=['GET'])
+@login_required
+def update_lists():
+	username = current_user.id
+	rooms = get_all_rooms()
+	users = get_active_users(username)
+	return make_response(jsonify({"rooms": rooms, "users": users}))
 
 #---go to chat page---
 @app.route('/chat_room', methods=['POST'])
+@login_required
 def chat_room():
-    target_room = request.form['target']
-    # try:
-    username = session["username"]
-    print("----Emit socket event: join a room----")
-    return render_template('chat.html', username=username)
-	# except:
-	# 	return redirect(url_for("login"))
+	target_room = request.form['target']
+	username = current_user.id
+	print(username, current_user.rooms)
+	print("----Emit socket event: join a room----")
+	return render_template('chat.html', username=username, target_room=target_room, target_user="")
+
 
 @app.route('/chat_user', methods=['POST'])
+@login_required
 def chat_user():
     target_user = request.form['target']
-    # try:
-    username = session["username"]
+    username = current_user.id
     #TODO
     print("----Emit socket event: create a room----")
-    return render_template('chat.html', username=username)
-	# except:
-	# 	return redirect(url_for("login"))
+    return render_template('chat.html', username=username, target_user=target_user, target_room="")
 
 #---leave_chat---
 @app.route('/leave_chat', methods=['GET'])
+@login_required
 def leave_chat():
-	try:
-		username = session["username"]
-		rooms = [room for room in active_rooms.keys()]
-		users = []
-		for user in active_users.keys():
-			if user != username:
-				users.append(user)
-		return render_template('entrance.html', username=username, rooms=rooms, users=users)
-	except:
-		return redirect(url_for('login'))
+	username = current_user.id
+	rooms = get_all_rooms()
+	users = get_active_users(username)
+	return render_template('entrance.html', username=username, rooms=rooms, users=users)
+
 
 #---log out---
 @app.route('/logout', methods=['GET'])
+@login_required
 def logout():
-    username = session["username"]
-    active_users.pop(username)
-    session.pop("username")
-    return redirect(url_for('public'))
+	username = current_user.id
+	active_users.pop(username)
+	logout_user()
+	return redirect(url_for('public'))
