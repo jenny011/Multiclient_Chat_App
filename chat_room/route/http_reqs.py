@@ -78,7 +78,7 @@ def chat_room():
 	target_room_id = request.form['target']
 	username = current_user.id
 	print(username, current_user.rooms)
-	return render_template('chat.html', username=username, target_room=target_room_id, target_user="")
+	return render_template('interface.html', username=username, target_room=target_room_id, target_user="")
 
 
 @app.route('/start_chat_user', methods=['POST'])
@@ -87,7 +87,7 @@ def chat_user():
 	target_user_id = request.form['target']
 	username = current_user.id
 	print(username, current_user.rooms)
-	return render_template('chat.html', username=username, target_user=target_user_id, target_room="")
+	return render_template('interface.html', username=username, target_user=target_user_id, target_room="")
 
 
 #---leave_room---

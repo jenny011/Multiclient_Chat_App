@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Chat System</title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="/static/interface.css">
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.2/socket.io.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+	<div class="container-split" id="left-container">
+		<div class="container-title" id="user-container">
+			<div class="float-left"><h1>{{username}}</h1></div>
+			<div class="float-right" id="user-action" style="padding:5pt;">
+			  <a href="/logout" id="logout" class="btn btn-sm btn-light">logout</a>
+		  </div>
+		</div>
+		<div class="container-content" id="chats-container" style="overflow-x: hidden; overflow-y: auto;">
+			<ul id="chats"></ul>
+		</div>
+	</div>
+
+
+	<div class="container-split" id="right-container">
+		<div class="container-title" id="current-chat-container">
+			<div class="float-left"><h1>Placeholder</h1></div>
+			<div class="float-right" id="chat-action" style="padding:5pt;">
+			  <a href="/leave_room" id="leave_room" class="btn btn-sm btn-light">leave</a>
+		  </div>
+	  </div>
+
+		<div class="container-content" id="msg-container" style="overflow-x: hidden; overflow-y: auto;">
+			<ul id="messages"></ul>
+	  </div>
+
+		<div class="container-send" id="send-container">
+			<form class="form-group">
+				<textarea class="form-control" id="myMsg" rows="4"></textarea>
+				<button class="btn btn-sm btn-primary" id="sendBtn">Send</button>
+			</form>
+	  </div>
+	</div>
+
+	<script type="text/javascript">
+		var username = '{{ username }}';
+		var target_room = '{{ target_room }}';
+		var target_user = '{{ target_user }}';
+	</script>
+	<script type="text/javascript" src="/static/client.js"></script>
+	<script type="text/javascript" src="/static/utils.js"></script>
+</body>
+</html>

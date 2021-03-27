@@ -1,5 +1,5 @@
 $(document).ready(function() {
-  setInterval(sendRequest, 10000, "updateLists", "GET", null, updateLists);
+  setInterval(sendRequest, 1000, "updateLists", "GET", null, updateLists);
   // $(".userBtn").on("click", function(e){
   //   value = $(this).text();
   //   data = {'action': 'user', 'target': value};

@@ -17,19 +17,23 @@ $(document).ready(function() {
   });
 
   socket.on('client_joined', function(msg){
-    $("#messages").append('<li><i>' + msg.msg + '</i></li>');
+    let displayMsg = replaceSymbols(msg.msg);
+    $("#messages").append('<li><i>' + displayMsg + '</i></li>');
   });
 
   socket.on('client_left', function(msg){
-    $("#messages").append('<li><i>' + msg + '</i></li>');
+    let displayMsg = replaceSymbols(msg);
+    $("#messages").append('<li><i>' + displayMsg + '</i></li>');
   });
 
   socket.on('message', function(msg){
-    $("#messages").append('<li>' + msg + '</li>');
+    let displayMsg = replaceSymbols(msg);
+    $("#messages").append('<li>' + displayMsg + '</li>');
   });
 
-  $("#sendBtn").on("click", function(){
-    let msg = {"username": username, "msg": $('#myMsg').val()};
+  $("#sendBtn").on("click", function(event){
+    event.preventDefault();
+    let msg = {"username": username, "msg": $('#myMsg').val()}
     socket.send(JSON.stringify(msg));
     // socket.emit("send_msg", {'msg': msg, 'room': target_room});
     $('#myMsg').val('');

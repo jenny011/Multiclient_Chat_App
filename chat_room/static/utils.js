@@ -23,3 +23,9 @@ function sendRequest(route, type, data, successHandler){
     }
   });
 }
+
+function replaceSymbols(msg) {
+  let ret = msg.replaceAll("<", "&lt;");
+  ret = ret.replaceAll(">", "&gt;");
+  return ret;
+}

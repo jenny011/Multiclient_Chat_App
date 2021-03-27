@@ -58,8 +58,6 @@ def on_join_room(msg):
 
 @socket.on('leave_room')
 def on_leave_room(username):
-	#room_id = msg['room']
-	#username = msg['username']
 	user = all_users[username]
 	room_id = user.current_room_id
 	print(f'{username} leaving {room_id}')

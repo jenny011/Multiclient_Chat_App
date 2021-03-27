@@ -1,0 +1,65 @@
+body {
+  overflow: hidden;
+}
+
+.container-split {
+  float: left;
+  height: 100vh;
+}
+
+#left-container {
+  max-width: 30%;
+  width: 30%;
+  border-right-style: solid;
+  border-right-color: black;
+}
+
+#right-container {
+  max-width: 70%;
+  width: 70%;
+}
+
+.container-title {
+  background-color: gray;
+  max-height: 10%;
+  height: 10%;
+}
+
+
+#msg-container {
+  max-height: 70%;
+  height: 70%;
+  /* border-style: solid;
+  border-color: red; */
+}
+
+#chats-container {
+  max-height: 90%;
+  height: 90%;
+  /* border-style: solid;
+  border-color: green; */
+  background-color: lightgreen;
+}
+
+#send-container {
+  /* border-style: solid;
+  border-color: blue; */
+  position: absolute;
+  bottom: 0%;
+  max-height: 20%;
+  height: 20%;
+  max-width: 70%;
+  width: 70%;
+  background-color: lightblue;
+}
+
+#myMsg, #sendBtn {
+  position: absolute;
+  bottom: 0%;
+  right: 0%;
+}
+
+#myMsg {
+  height: auto;
+  resize: none;
+}
