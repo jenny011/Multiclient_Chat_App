@@ -35,7 +35,7 @@ $(document).ready(function() {
     $('#myMsg').val('');
   });
 
-  $("#leave_chat").on("click", function(){
+  $("#leave_room").on("click", function(){
     //socket.emit("leave_room", {'username': username, 'room': target_room});
     console.log(username);
     socket.emit("leave_room", username);

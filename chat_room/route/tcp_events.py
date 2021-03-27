@@ -40,7 +40,8 @@ def on_create_room(msg):
 			if user_id in all_rooms[room_id].members:
 				handle_join_room(username, room_id)
 		print(f'{username} Create room with target user {user_id}')
-		new_room = create_room(user_id, [username, user_id])
+		#JENNY: add vs join
+		new_room = create_room(f'{username}, {user_id}', [username, user_id])
 		handle_join_room(username, new_room.id)
 
 @socket.on('join_room')

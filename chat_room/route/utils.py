@@ -10,7 +10,10 @@ from flask_login import UserMixin
 from werkzeug.security import check_password_hash, generate_password_hash
 
 def get_all_rooms():
-    return [room for room in all_rooms.keys()]
+    rooms = []
+    for room_id, room in all_rooms.items():
+        rooms.append({"id": room_id, "name": room.name})
+    return rooms
 
 def get_active_users(username):
     users = []

@@ -22,35 +22,45 @@
 
 	<div id="content-container">
 		<div id="room_container">
-			<h4>Please select a room or ...</h4>
-			<ul id="rooms">
-				{% for room in rooms %}
-				<li>
-					<form action="/join_chat_room" method='POST'>
-						<input class="btn btn-primary" type="submit" name="target" value="{{room}}">
-					</form>
-				</li>
-				{% endfor %}
-			</ul>
+			<div class="card">
+				<div class="card-header">
+			    <h4>Please select a room or ...</h4>
+			  </div>
+				<ul class="list-group list-group-flush" id="rooms">
+					{% for room in rooms %}
+					<li class="list-group-item">
+						<form action="/join_chat_room" method='POST'>
+							<input class="d-none form-control-plaintext" type="text" name="target" value="{{room['id']}}" readonly>
+							<span>{{room['name']}}</span>
+							<input class="btn btn-sm btn-primary float-right" type="submit" value="Join">
+						</form>
+					</li>
+					{% endfor %}
+				</ul>
+			</div>
 		</div>
 		<div id="user_container">
-			<h4>select a user to start chatting!</h4>
-			<ul id="users">
-				{% for user in users %}
-				<li>
-					<form action="/start_chat_user" method='POST'>
-						<input class="btn btn-outline-primary" type="submit" name="target" value="{{user}}">
-					</form>
-				</li>
-				{% endfor %}
-			</ul>
+			<div class="card">
+				<div class="card-header">
+			    <h4>Select a user to start chatting!</h4>
+			  </div>
+				<ul class="list-group list-group-flush" id="users">
+					{% for user in users %}
+					<li class="list-group-item">
+						<form action="/start_chat_user" method='POST'>
+							<input class="btn btn-sm btn-outline-primary" type="submit" name="target" value="{{user}}">
+						</form>
+					</li>
+					{% endfor %}
+				</ul>
+			</div>
 		</div>
 	</div>
 
 	<script type="text/javascript">
 		var username = '{{ username }}';
 	</script>
-	<!-- <script type="text/javascript" src="/static/list_rooms.js"></script>
-	<script type="text/javascript" src="/static/utils.js"></script> -->
+	<script type="text/javascript" src="/static/entrance.js"></script>
+	<script type="text/javascript" src="/static/utils.js"></script>
 </body>
 </html>

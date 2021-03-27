@@ -21,6 +21,7 @@ class User(UserMixin):
 
     # open a chat interface (get all the buffered msgs)
     def join_room(self, room_id):
+        print("join", room_id, self.current_room_id, self.rooms)
         if room_id not in self.rooms:
             self.rooms[room_id] = []
         self.current_room_id = room_id
@@ -28,7 +29,9 @@ class User(UserMixin):
     # leave the current chat interface, don't remove myself from the chat room
     def leave_room(self, room_id):
         if self.current_room_id == room_id:
+            print("join", room_id, self.current_room_id, self.rooms)
             self.current_room_id = None
+            self.rooms.pop(room_id)
 
     # buffer a msg if room_id != current_room_id
     def enqueue_msg(room_id, msg):

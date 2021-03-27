@@ -7,13 +7,15 @@ function goToPageNewTab(route, delay) {
 }
 
 function sendRequest(route, type, data, successHandler){
+  console.log("update room and user lists");
   $.ajax({
     url: "http://localhost:5000/" + route,
     type: type,
     data: data,
     success: (res) => {
-      if (successHandler)
+      if (successHandler){
         successHandler(res);
+      };
     },
     error: (err) => {
       alert("request error");

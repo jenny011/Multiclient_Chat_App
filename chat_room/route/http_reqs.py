@@ -51,8 +51,11 @@ def login():
 		login_user(user)
 		active_users[username] = True
 		return redirect(url_for("entrance"))
+	elif current_user.is_authenticated:
+		return redirect(url_for("entrance"))
 	else:
-		return render_template('login.html', err="Already logged in")
+		active_users.pop(username)
+		return render_template('login.html', err="Unknown error")
 
 @app.route('/entrance', methods=['GET'])
 @login_required
@@ -68,7 +71,7 @@ def update_lists():
 	username = current_user.id
 	room_ids = get_all_rooms()
 	user_ids = get_active_users(username)
-	return make_response(jsonify({"rooms": room_ids, "users": user_ids}))
+	return make_response(jsonify({"rooms": room_ids, "users": user_ids}), 200)
 
 #---go to chat page---
 @app.route('/join_chat_room', methods=['POST'])
@@ -90,10 +93,10 @@ def chat_user():
 	return render_template('chat.html', username=username, target_user=target_user_id, target_room="")
 
 
-#---leave_chat---
-@app.route('/leave_chat', methods=['GET'])
+#---leave_room---
+@app.route('/leave_room', methods=['GET'])
 @login_required
-def leave_chat():
+def leave_room():
 	return redirect(url_for("entrance"))
 
 
