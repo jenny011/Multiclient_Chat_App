@@ -1,4 +1,4 @@
-from flask import Flask, send_from_directory, render_template, redirect, url_for, request, json, jsonify, session, flash, make_response
+from flask import Flask, send_from_directory, render_template, redirect, url_for, json, jsonify, make_response
 from flask_socketio import SocketIO, send, emit, join_room, disconnect
 from flask_cors import CORS
 from flask_login import LoginManager, login_user, logout_user, current_user, login_required
@@ -31,13 +31,13 @@ all_rooms = {}
 active_users = {}
 
 
-from chat_room.model.user import *
-from chat_room.model.room import *
-from chat_room.route import http_reqs, tcp_events, utils
+from .model import user, room
+from .route import http_reqs, tcp_events, utils
+
 
 for i in range(10):
-	id = str(i)
-	all_users[id] = User(id, id)
+	username = str(i)
+	all_users[username] = user.User(username, username)
 
 
 # if __name__ == '__main__':

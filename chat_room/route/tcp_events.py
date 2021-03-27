@@ -2,12 +2,10 @@ import json
 from flask import Flask, request, jsonify, session, flash
 from flask_socketio import SocketIO, send, emit, disconnect, join_room, leave_room
 from flask_cors import CORS
-# from chat_room import socket, login, all_users, active_users, all_rooms
 import chat_room
-#from chat_room import app, socket, login, all_users, active_users, all_rooms
-from chat_room.route.utils import *
-from chat_room.model.user import *
-from chat_room.model.room import *
+from .utils import *
+from ..model.user import *
+from ..model.room import *
 
 
 ###---------------------TCP events---------------------###
@@ -37,8 +35,10 @@ def on_create_room(msg):
 		handle_join_room(username, new_room.id)
 	else:
 		for room_id in all_users[username].rooms.keys():
+			print("===", username, room_id, all_rooms[room_id].members)
 			if user_id in all_rooms[room_id].members:
 				handle_join_room(username, room_id)
+				return
 		print(f'{username} Create room with target user {user_id}')
 		#JENNY: add vs join
 		new_room = create_room(f'{username}, {user_id}', [username, user_id])

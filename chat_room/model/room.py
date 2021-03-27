@@ -1,12 +1,8 @@
-from flask import Flask, send_from_directory, render_template, redirect, url_for, request, json, jsonify, session, flash, make_response
+from flask import Flask, send_from_directory, render_template, redirect, url_for, json, jsonify, make_response
 from flask_socketio import SocketIO, send, emit, disconnect, join_room, leave_room
 from flask_cors import CORS
-from flask_login import LoginManager, login_user, logout_user, current_user, login_required
 import chat_room
-#from chat_room import app, socket, login, all_users, active_users, all_rooms
-from chat_room.model.user import *
-from flask_login import UserMixin
-from werkzeug.security import check_password_hash, generate_password_hash
+from .user import *
 
 class Room:
     def __init__(self,name,id,users):
@@ -44,7 +40,7 @@ class Room:
         if self.status == False:
             return False, "Room already closed"
         self.status = False
-        all_rooms.pop(self.id)
+        chat_room.all_rooms.pop(self.id)
         chat_room.available_room_ids.append(self.id)
         return True, "Room closed successfully"
 

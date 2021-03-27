@@ -1,13 +1,16 @@
-from flask import Flask, send_from_directory, render_template, redirect, url_for, request, json, jsonify, session, flash, make_response
+from flask import Flask, send_from_directory, render_template, redirect, url_for, json, jsonify, make_response
 from flask_socketio import SocketIO, send, emit, disconnect, join_room, leave_room
 from flask_cors import CORS
 from flask_login import LoginManager, login_user, logout_user, current_user, login_required
-import chat_room
-#from chat_room import app, socket, login, all_users, active_users, all_rooms
-from chat_room.model.user import *
-from chat_room.model.room import *
-from flask_login import UserMixin
 from werkzeug.security import check_password_hash, generate_password_hash
+import chat_room
+from ..model.user import *
+from ..model.room import *
+
+
+@login.user_loader
+def load_user(username):
+    return all_users[username]
 
 def get_all_rooms():
     rooms = []
