@@ -1,4 +1,5 @@
 $(document).ready(function() {
+
   var socket = io.connect("http://127.0.0.1:5000");
 
   socket.on('connect', function(){
@@ -18,25 +19,33 @@ $(document).ready(function() {
 
   socket.on('client_joined', function(msg){
     let displayMsg = replaceSymbols(msg.msg);
-    $("#messages").append('<li><i>' + displayMsg + '</i></li>');
+    $("#messages").append('<div class="system-msg"><i>' + displayMsg + '</i></div>');
   });
 
   socket.on('client_left', function(msg){
     let displayMsg = replaceSymbols(msg);
-    $("#messages").append('<li><i>' + displayMsg + '</i></li>');
+    $("#messages").append('<div class="system-msg"><i>' + displayMsg + '</i></div>');
   });
 
   socket.on('message', function(msg){
-    let displayMsg = replaceSymbols(msg);
-    $("#messages").append('<li>' + displayMsg + '</li>');
+    let myMsg = JSON.parse(replaceSymbols(msg));
+    if (myMsg.username == username) {
+      $("#messages").append(rightMsg(myMsg.username, myMsg.msg));
+    }  else {
+      $("#messages").append(leftMsg(myMsg.username, myMsg.msg));
+    }
+    $("#msg-container").animate({ scrollTop: $('#msg-container').prop("scrollHeight") }, 1000);
   });
 
   $("#sendBtn").on("click", function(event){
     event.preventDefault();
-    let msg = {"username": username, "msg": $('#myMsg').val()}
-    socket.send(JSON.stringify(msg));
-    // socket.emit("send_msg", {'msg': msg, 'room': target_room});
-    $('#myMsg').val('');
+    let msgText = $('#myMsg').val();
+    if (msgText) {
+      let msg = {"username": username, "msg": msgText}
+      socket.send(JSON.stringify(msg));
+      // socket.emit("send_msg", {'msg': msg, 'room': target_room});
+      $('#myMsg').val('');
+    }
   });
 
   $("#leave_room").on("click", function(){
@@ -50,4 +59,13 @@ $(document).ready(function() {
     socket.emit("leave_room", username);
     socket.disconnect();
   });
+});
+
+
+$(document).keypress(function(event){
+    var keycode = (event.keyCode ? event.keyCode : event.which);
+    if(keycode == '13'){
+      event.preventDefault();
+      $("#sendBtn").click();
+    }
 });

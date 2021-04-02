@@ -75,10 +75,10 @@ def handleMessage(msg):
 	print(msg)
 	msg_decoded = json.loads(msg)
 	username = msg_decoded["username"]
-	msg = msg_decoded["msg"]
+	# msg = msg_decoded["msg"]
 	user = all_users[username]
 	room_id = user.current_room_id
-	send(f'{username}: {msg}', room=room_id)
+	send(msg, room=room_id)
 
 # @socket.on('send_msg')
 # def send_message(msg):
