@@ -9,11 +9,15 @@ class User(UserMixin):
         # roomID -> msg queue
         self.rooms = {}
         self.current_room_id = current_room_id
+        self.sid = None
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
+
+    def update_sid(self, sid):
+        self.sid = sid
 
     # open a chat interface (get all the buffered msgs)
     def join_room(self, room_id):

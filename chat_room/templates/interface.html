@@ -20,16 +20,7 @@
 			  </div>
 			</div>
 			<div class="container-content" id="chats-container">
-				<div id="chats">
-					{% for room in rooms %}
-						<div class="chat-box">
-							<div class="room-box room-name">
-								<span><i class="fa fa-lg fa-comments-o" aria-hidden="true"></i> {{room['name']}} :</span>
-							</div>
-							<div class="room-box room-users">my users</div>
-						</div>
-					{% endfor %}
-				</div>
+				<div id="chats"></div>
 			</div>
 		</div>
 
@@ -66,17 +57,7 @@
 						<div class="card-header">
 					    <h4>Please select a room or ...</h4>
 					  </div>
-						<ul class="list-group list-group-flush" id="rooms">
-							{% for room in rooms %}
-							<li class="list-group-item">
-								<form action="/add_to_room" methods="POST" class="room-item">
-									<input class="d-none form-control-plaintext" type="text" name="room" value="{{room['id']}}" readonly>
-									<span>{{room['name']}}</span>
-									<input class="btn btn-sm btn-primary float-right" type="submit" value="Join">
-								</form>
-							</li>
-							{% endfor %}
-						</ul>
+						<ul class="list-group list-group-flush" id="rooms"></ul>
 					</div>
 				</div>
 				<div id="user-wrap">
@@ -84,16 +65,7 @@
 						<div class="card-header">
 					    <h4>Select a user to start chatting!</h4>
 					  </div>
-						<ul class="list-group list-group-flush" id="users">
-							{% for user in users %}
-							<li class="list-group-item">
-								<form action="/invite_user" methods="POST" class="user-item">
-									<input class="d-none form-control-plaintext" type="text" name="user" value="{{user}}" readonly>
-									<input class="btn btn-sm btn-outline-primary" type="submit" value="{{user}}">
-								</form>
-							</li>
-							{% endfor %}
-						</ul>
+						<ul class="list-group list-group-flush" id="users"></ul>
 					</div>
 				</div>
 			</div>

@@ -18,6 +18,12 @@ def get_all_rooms():
         rooms.append({"id": room_id, "name": room.name})
     return rooms
 
+def get_all_rooms_and_users():
+    rooms = []
+    for room_id, room in all_rooms.items():
+        rooms.append({"id": room_id, "name": room.name, "users":", ".join(room.members)})
+    return rooms
+
 def get_active_users(username):
     users = []
     for user in active_users.keys():
@@ -46,3 +52,28 @@ def handle_leave_room(username, room_id):
     if username in all_users:
         all_users[username].leave_room(room_id)
     emit("client_left", username, room=room_id)
+
+
+###
+# def handle_join_room(username, room_id):
+#     all_users[username].join_room(room_id)
+#
+# def handle_add_room(username, room_id, target_user=None):
+#     join_room(room_id)
+#     all_users[username].join_room(room_id)
+#     if target_user:
+#         all_users[user].join_room(room_id)
+#     all_rooms[room_id].join(username)
+#     emit("client_joined", {"msg": f'{username} joined', "room": room_id}, room=room_id)
+#
+# def handle_leave_page(username, room_id):
+#     all_users[username].leave_page(room_id)
+#     emit("client_left", f'{username} left this page', room=room_id)
+#
+#
+# def handle_leave_room(username, room_id):
+#     leave_room(room_id)
+#     if username in all_users:
+#         all_users[username].leave_room(room_id)
+#
+#     emit("client_left", f'{username} left', room=room_id)

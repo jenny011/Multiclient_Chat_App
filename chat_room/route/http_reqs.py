@@ -59,9 +59,9 @@ def login():
 @login_required
 def chat():
 	username = current_user.id
-	room_ids = get_all_rooms()
-	user_ids = get_active_users(username)
-	return render_template('interface.html', username=username, rooms=room_ids, users=user_ids)
+	# room_ids = get_all_rooms_and_users()
+	# user_ids = get_active_users(username)
+	return render_template('interface.html', username=username)
 
 @app.route('/updateLists', methods=['GET'])
 @login_required
@@ -70,6 +70,15 @@ def update_lists():
 	room_ids = get_all_rooms()
 	user_ids = get_active_users(username)
 	return make_response(jsonify({"rooms": room_ids, "users": user_ids}), 200)
+
+@app.route('/updateMyRooms', methods=['GET'])
+@login_required
+def update_my_rooms():
+	user = all_users[current_user.id]
+	rooms = []
+	for k in user.rooms.keys():
+		rooms.append({'id': k, 'name': all_rooms[k].name, 'users': ", ".join(all_rooms[k].members)})
+	return make_response(jsonify(rooms), 200)
 
 
 #---leave_room---

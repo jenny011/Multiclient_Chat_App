@@ -17,6 +17,11 @@ def on_connect():
 	print("Hi --------", all_rooms.keys())
 	print("Connect")
 
+@socket.on('say_hi')
+def say_hi(username):
+	all_users[username].update_sid(request.sid)
+	print(all_users[username].sid)
+
 @socket.on('disconnect')
 def on_disconnect():
     print("Disconnect")
@@ -50,26 +55,32 @@ def on_join_room(msg):
 	msg_decoded = json.loads(msg)
 	username = msg_decoded['username']
 	room_id = msg_decoded['room']
-	# print(f'{username} joining {room_id}')
-	success, ret = all_rooms[room_id].add(username)
-	if success:
-		# print(f'{room_id} members:', ret)
-		handle_join_room(username, room_id)
-	else:
-		send(ret)
-
-@socket.on('leave_room')
-def on_leave_room(username):
-	user = all_users[username]
-	room_id = user.current_room_id
-	if room_id:
-		# print(f'{username} leaving {room_id}')
-		success, ret = all_rooms[room_id].remove(username)
+	# don't join again
+	if all_users[username].current_room_id != room_id:
+		print(f'{username} joining {room_id}')
+		success, ret = all_rooms[room_id].add(username)
 		if success:
-			# print(f'{username} left {room_id}, remaining members:', ret)
-			handle_leave_room(username, room_id)
+			# print(f'{room_id} members:', ret)
+			handle_join_room(username, room_id)
 		else:
 			send(ret)
+
+@socket.on('leave_room')
+def on_leave_room(msg):
+	msg_decoded = json.loads(msg)
+	username = msg_decoded['username']
+	user = all_users[username]
+	room_id = user.current_room_id
+	# for clientjs go to room
+	if not ('room' in msg_decoded and msg_decoded['room'] == room_id):
+		if room_id:
+			print(f'{username} leaving {room_id}')
+			success, ret = all_rooms[room_id].remove(username)
+			if success:
+				# print(f'{username} left {room_id}, remaining members:', ret)
+				handle_leave_room(username, room_id)
+			else:
+				send(ret)
 
 
 #---------------messaging------------------------
