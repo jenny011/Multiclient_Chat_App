@@ -14,7 +14,7 @@ class Room:
         self.private = False
 
     '''True/False, detailed msg'''
-    def join(self, user):
+    def add(self, user):
         if self.status == False:
             return False, "Room closed"
         if user not in self.members:
@@ -25,7 +25,7 @@ class Room:
         return True, self.members
 
     '''True/False, detailed msg'''
-    def leave(self, user):
+    def remove(self, user):
         if user not in self.members:
             return False, "User already left"
         # JENNY: DEBUG

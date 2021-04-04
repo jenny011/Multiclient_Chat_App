@@ -19,18 +19,17 @@
 				  <a href="/logout" id="logout" class="btn btn-sm btn-primary">logout</a>
 			  </div>
 			</div>
-			<div class="container-content card" id="chats-container">
-				<ul class="list-group list-group-flush" id="chats">
+			<div class="container-content" id="chats-container">
+				<div id="chats">
 					{% for room in rooms %}
-						<li class="chat-box list-group-item">
-							<div class="room-box">
-								<div class="room-id">{{room['name']}}</div>
-								<div class="room-avatar"><i class="fa fa-lg comments" aria-hidden="true"></i></div>
+						<div class="chat-box">
+							<div class="room-box room-name">
+								<span><i class="fa fa-lg fa-comments-o" aria-hidden="true"></i> {{room['name']}} :</span>
 							</div>
-							<div class="room-msg">{{room['users']}}</div>
-						</li>
+							<div class="room-box room-users">my users</div>
+						</div>
 					{% endfor %}
-				</ul>
+				</div>
 			</div>
 		</div>
 

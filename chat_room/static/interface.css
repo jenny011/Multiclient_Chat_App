@@ -23,6 +23,19 @@ html, body {
   background-color: lightblue;
 }
 
+.chat-box {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  border-bottom: 1px solid #ccc;
+  padding: 10px 0px 10px 0px;
+}
+
+.room-box {
+  margin: 0px 0px 0px 10px;
+}
+
 .right-container {
   margin:0%;
   padding-left:5px;

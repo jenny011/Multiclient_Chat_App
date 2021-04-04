@@ -26,17 +26,17 @@ def on_disconnect():
 #------------create, join, leave----------------------
 @socket.on('create_room')
 def on_create_room(msg):
+	msg_decoded = json.loads(msg)
 	print("Create --------", all_rooms.keys())
-	print(msg)
-	username = msg['username']
-	user_id = msg['user']
+	username = msg_decoded['username']
+	user_id = msg_decoded['user']
 	if not user_id:
 		print(f'{username} Create my own room')
 		new_room = create_room(username, [username])
 		handle_join_room(username, new_room.id)
 	else:
 		for room_id in all_users[username].rooms.keys():
-			print("===", username, room_id, all_rooms[room_id].members)
+			print("========", username, room_id, all_rooms[room_id].members)
 			if user_id in all_rooms[room_id].members:
 				handle_join_room(username, room_id)
 				return
@@ -47,12 +47,13 @@ def on_create_room(msg):
 
 @socket.on('join_room')
 def on_join_room(msg):
-	username = msg['username']
-	room_id = msg['room']
-	print(f'{username} joining {room_id}')
-	success, ret = all_rooms[room_id].join(username)
+	msg_decoded = json.loads(msg)
+	username = msg_decoded['username']
+	room_id = msg_decoded['room']
+	# print(f'{username} joining {room_id}')
+	success, ret = all_rooms[room_id].add(username)
 	if success:
-		print(f'{room_id} members:', ret)
+		# print(f'{room_id} members:', ret)
 		handle_join_room(username, room_id)
 	else:
 		send(ret)
@@ -61,19 +62,20 @@ def on_join_room(msg):
 def on_leave_room(username):
 	user = all_users[username]
 	room_id = user.current_room_id
-	print(f'{username} leaving {room_id}')
-	success, ret = all_rooms[room_id].leave(username)
-	if success:
-		print(f'{username} left {room_id}, remaining members:', ret)
-		handle_leave_room(username, room_id)
-	else:
-		send(ret)
+	if room_id:
+		# print(f'{username} leaving {room_id}')
+		success, ret = all_rooms[room_id].remove(username)
+		if success:
+			# print(f'{username} left {room_id}, remaining members:', ret)
+			handle_leave_room(username, room_id)
+		else:
+			send(ret)
 
 
 #---------------messaging------------------------
 @socket.on('message')
 def handleMessage(msg):
-	print(msg)
+	# print(msg)
 	msg_decoded = json.loads(msg)
 	username = msg_decoded["username"]
 	# msg = msg_decoded["msg"]

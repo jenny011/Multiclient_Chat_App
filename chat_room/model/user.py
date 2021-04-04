@@ -27,6 +27,7 @@ class User(UserMixin):
         if self.current_room_id == room_id:
             print("leave", self.id, room_id, self.current_room_id, self.rooms)
             self.current_room_id = None
+            print(self.current_room_id)
             self.rooms.pop(room_id)
 
     # buffer a msg if room_id != current_room_id

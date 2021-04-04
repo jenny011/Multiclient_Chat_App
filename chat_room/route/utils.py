@@ -36,11 +36,9 @@ def create_room(room_name, users):
     all_rooms[new_room.id] = new_room
     return new_room
 
-def handle_join_room(username, room_id, target_user=None):
+def handle_join_room(username, room_id):
     join_room(room_id)
     all_users[username].join_room(room_id)
-    if target_user:
-        all_users[user].join_room(room_id)
     emit("client_joined", username, room=room_id)
 
 def handle_leave_room(username, room_id):

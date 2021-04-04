@@ -1,8 +1,6 @@
+var socket = io.connect("http://localhost:5000");
+
 $(document).ready(function() {
-  var refreshEntrance = setInterval(sendRequest, 2000, "updateLists", "GET", null, updateLists);
-
-  var socket = io.connect("http://localhost:5000");
-
   socket.on('connect', function(){
     //socket.emit('get_room', username);
     console.log("connected", username);
@@ -13,6 +11,13 @@ $(document).ready(function() {
     socket.emit('leave_room', username);
   });
 
+  //-----refresh entrance list-----
+  var refreshEntrance = setInterval(sendRequest, 2000, "updateLists", "GET", null, updateLists);
+
+  $(".room-item").on("submit", refreshRoomList);
+  $(".user-item").on("submit", refreshUserList);
+
+  //-----rooms list-----
   socket.on('display_room', function(msg){
     let myMsg = JSON.parse(replaceSymbols(msg));
     for (let i=0; i++; i<myMsg.length) {
@@ -27,6 +32,8 @@ $(document).ready(function() {
     };
   });
 
+  //-----messaging-----
+  //---system messages---
   socket.on('client_joined', function(user){
     if (user == username) {
       $("#entrance-container").hide();
@@ -47,6 +54,7 @@ $(document).ready(function() {
     $("#messages").append('<div class="system-msg"><i>' + displayMsg + '</i></div>');
   });
 
+  //---user messages---
   socket.on('message', function(msg){
     let myMsg = JSON.parse(replaceSymbols(msg));
     if (myMsg.username == username) {
@@ -68,18 +76,7 @@ $(document).ready(function() {
     }
   });
 
-  $(".room-item").on("submit", function(event){
-    event.preventDefault();
-    var data = $(this).serializeArray();
-    socket.emit('join_room', {'username': username, 'room': data[0].value});
-  });
-
-  $(".user-item").on("submit", function(event){
-    event.preventDefault();
-    var data = $(this).serializeArray();
-    socket.emit('create_room', {'username': username, 'user': data[0].value});
-  });
-
+  //-----leave-----
   $("#leave_room").on("click", function(){
     //socket.emit("leave_room", {'username': username, 'room': target_room});
     console.log(username);
@@ -102,7 +99,8 @@ $(document).keypress(function(event){
     }
 });
 
-function updateLists(data, socket) {
+
+function updateLists(data) {
   $("#rooms").empty();
   $("#users").empty();
   for (let i=0; i<data['rooms'].length; i++) {
@@ -119,12 +117,14 @@ function updateLists(data, socket) {
 
 function refreshRoomList(event){
   event.preventDefault();
-  var data = $(this).serializeArray();
-  socket.emit('add_room', {'username': username, 'room': data.value});
+  let data = $(this).serializeArray();
+  let msg = {'username': username, 'room': data[0].value};
+  socket.emit('join_room', JSON.stringify(msg));
 }
 
 function refreshUserList(event) {
   event.preventDefault();
   var data = $(this).serializeArray();
-  socket.emit('create_room', {'username': username, 'user': data.value});
+  let msg = {'username': username, 'user': data[0].value};
+  socket.emit('create_room', JSON.stringify(msg));
 }

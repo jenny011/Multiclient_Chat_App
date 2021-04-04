@@ -71,33 +71,6 @@ def update_lists():
 	user_ids = get_active_users(username)
 	return make_response(jsonify({"rooms": room_ids, "users": user_ids}), 200)
 
-#---go to chat page---
-@app.route('/add_to_room', methods=['POST'])
-@login_required
-def chat_room():
-	room_id = request.form['room']
-	username = current_user.id
-	room = all_rooms[target_room_id]
-	room.join(username)
-	all_users[username].join_room(room_id)
-	print(username, current_user.rooms)
-	socket.emit('display_room', jsonify([{"name": room.name, "users": ",".join(room.members)}]))
-	return 0
-	# return render_template('interface.html', username=username, target_room=target_room_id, target_user="")
-
-
-@app.route('/invite_user', methods=['POST'])
-@login_required
-def chat_user():
-	user_id = request.form['user']
-	username = current_user.id
-	print(username, current_user.rooms)
-	socket.emit('add_room_invitation', jsonify())
-	return 0
-	# return render_template('interface.html', username=username, target_user=target_user_id, target_room="")
-
-
-
 
 #---leave_room---
 @app.route('/leave_room', methods=['GET'])
