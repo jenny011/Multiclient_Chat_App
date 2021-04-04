@@ -27,6 +27,7 @@ def on_disconnect():
 @socket.on('create_room')
 def on_create_room(msg):
 	print("Create --------", all_rooms.keys())
+	print(msg)
 	username = msg['username']
 	user_id = msg['user']
 	if not user_id:

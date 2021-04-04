@@ -41,10 +41,10 @@ def handle_join_room(username, room_id, target_user=None):
     all_users[username].join_room(room_id)
     if target_user:
         all_users[user].join_room(room_id)
-    emit("client_joined", {"msg": f'{username} joined', "room": room_id}, room=room_id)
+    emit("client_joined", username, room=room_id)
 
 def handle_leave_room(username, room_id):
     leave_room(room_id)
     if username in all_users:
         all_users[username].leave_room(room_id)
-    emit("client_left", f'{username} left', room=room_id)
+    emit("client_left", username, room=room_id)

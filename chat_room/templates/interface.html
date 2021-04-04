@@ -12,20 +12,30 @@
 </head>
 <body>
 	<div class="row">
-		<div class="container-split col-3" id="left-container">
+		<div class="container-split col-3 left-container" id="panel-container">
 			<div class="container-title" id="user-container">
 				<div class="float-left"><h1>{{username}}</h1></div>
 				<div class="float-right" id="user-action" style="padding:5pt;">
 				  <a href="/logout" id="logout" class="btn btn-sm btn-primary">logout</a>
 			  </div>
 			</div>
-			<div class="container-content" id="chats-container">
-				<ul id="chats"></ul>
+			<div class="container-content card" id="chats-container">
+				<ul class="list-group list-group-flush" id="chats">
+					{% for room in rooms %}
+						<li class="chat-box list-group-item">
+							<div class="room-box">
+								<div class="room-id">{{room['name']}}</div>
+								<div class="room-avatar"><i class="fa fa-lg comments" aria-hidden="true"></i></div>
+							</div>
+							<div class="room-msg">{{room['users']}}</div>
+						</li>
+					{% endfor %}
+				</ul>
 			</div>
 		</div>
 
-
-		<div class="container-split col-9" id="right-container">
+<!-- chat interface -->
+		<div class="container-split col-9 right-container" id="interface-container" style="display:none;">
 			<div class="container-title" id="current-chat-container">
 				<div class="float-left"><h1>Placeholder</h1></div>
 				<div class="float-right" id="chat-action" style="padding:5pt;">
@@ -44,12 +54,55 @@
 				</form>
 		  </div>
 		</div>
+
+<!-- entrance -->
+		<div class="container-split col-9 right-container" id="entrance-container" style="">
+			<div class="container-title" id="current-chat-container">
+				<div class="float-left"><h1>Hi, {{username}}!</h1></div>
+		  </div>
+
+			<div id="content-container" style="padding:30px">
+				<div id="room-wrap">
+					<div class="card">
+						<div class="card-header">
+					    <h4>Please select a room or ...</h4>
+					  </div>
+						<ul class="list-group list-group-flush" id="rooms">
+							{% for room in rooms %}
+							<li class="list-group-item">
+								<form action="/add_to_room" methods="POST" class="room-item">
+									<input class="d-none form-control-plaintext" type="text" name="room" value="{{room['id']}}" readonly>
+									<span>{{room['name']}}</span>
+									<input class="btn btn-sm btn-primary float-right" type="submit" value="Join">
+								</form>
+							</li>
+							{% endfor %}
+						</ul>
+					</div>
+				</div>
+				<div id="user-wrap">
+					<div class="card">
+						<div class="card-header">
+					    <h4>Select a user to start chatting!</h4>
+					  </div>
+						<ul class="list-group list-group-flush" id="users">
+							{% for user in users %}
+							<li class="list-group-item">
+								<form action="/invite_user" methods="POST" class="user-item">
+									<input class="d-none form-control-plaintext" type="text" name="user" value="{{user}}" readonly>
+									<input class="btn btn-sm btn-outline-primary" type="submit" value="{{user}}">
+								</form>
+							</li>
+							{% endfor %}
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 
 	<script type="text/javascript">
 		var username = '{{ username }}';
-		var target_room = '{{ target_room }}';
-		var target_user = '{{ target_user }}';
 	</script>
 	<script type="text/javascript" src="/static/client.js"></script>
 	<script type="text/javascript" src="/static/utils.js"></script>

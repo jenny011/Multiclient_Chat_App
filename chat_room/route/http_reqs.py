@@ -48,20 +48,20 @@ def login():
 			return render_template('login.html', err="Username and password don't match!")
 		login_user(user)
 		active_users[username] = True
-		return redirect(url_for("entrance"))
+		return redirect(url_for("chat"))
 	elif current_user.is_authenticated:
-		return redirect(url_for("entrance"))
+		return redirect(url_for("chat"))
 	else:
 		active_users.pop(username)
 		return render_template('login.html', err="Unknown error")
 
-@app.route('/entrance', methods=['GET'])
+@app.route('/chat', methods=['GET'])
 @login_required
-def entrance():
+def chat():
 	username = current_user.id
 	room_ids = get_all_rooms()
 	user_ids = get_active_users(username)
-	return render_template('entrance.html', username=username, rooms=room_ids, users=user_ids)
+	return render_template('interface.html', username=username, rooms=room_ids, users=user_ids)
 
 @app.route('/updateLists', methods=['GET'])
 @login_required
@@ -72,29 +72,38 @@ def update_lists():
 	return make_response(jsonify({"rooms": room_ids, "users": user_ids}), 200)
 
 #---go to chat page---
-@app.route('/join_chat_room', methods=['POST'])
+@app.route('/add_to_room', methods=['POST'])
 @login_required
 def chat_room():
-	target_room_id = request.form['target']
+	room_id = request.form['room']
 	username = current_user.id
+	room = all_rooms[target_room_id]
+	room.join(username)
+	all_users[username].join_room(room_id)
 	print(username, current_user.rooms)
-	return render_template('interface.html', username=username, target_room=target_room_id, target_user="")
+	socket.emit('display_room', jsonify([{"name": room.name, "users": ",".join(room.members)}]))
+	return 0
+	# return render_template('interface.html', username=username, target_room=target_room_id, target_user="")
 
 
-@app.route('/start_chat_user', methods=['POST'])
+@app.route('/invite_user', methods=['POST'])
 @login_required
 def chat_user():
-	target_user_id = request.form['target']
+	user_id = request.form['user']
 	username = current_user.id
 	print(username, current_user.rooms)
-	return render_template('interface.html', username=username, target_user=target_user_id, target_room="")
+	socket.emit('add_room_invitation', jsonify())
+	return 0
+	# return render_template('interface.html', username=username, target_user=target_user_id, target_room="")
+
+
 
 
 #---leave_room---
 @app.route('/leave_room', methods=['GET'])
 @login_required
 def leave_room():
-	return redirect(url_for("entrance"))
+	return redirect(url_for("chat"))
 
 
 #---log out---
