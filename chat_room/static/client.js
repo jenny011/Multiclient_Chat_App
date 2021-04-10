@@ -83,7 +83,12 @@ $(document).ready(function() {
   //-----leave-----
   $("#leave_room").on("click", function(){
     //socket.emit("leave_room", {'username': username, 'room': target_room});
-    socket.emit("leave_room", JSON.stringify({'username':username}));
+    // socket.emit("leave_room", JSON.stringify({'username':username}));
+    var refreshEntrance = setInterval(sendRequest, 5000, "updateLists", "GET", null, updateLists);
+    sendRequest("updateMyRooms", "GET", null, updateMyRooms);
+    $("#entrance-container").hide();
+    $("#interface-container").show();
+    $("#messages").empty();
   });
 
   $("#logout").on("click", function(){
