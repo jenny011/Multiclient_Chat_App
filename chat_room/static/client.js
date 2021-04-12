@@ -1,5 +1,6 @@
 var socket = io.connect("http://localhost:5000");
 var interval = 3000;
+var msg_buffer = new Map();
 
 $(document).ready(function() {
   socket.on('connect', function(){
@@ -35,13 +36,21 @@ $(document).ready(function() {
     alert(msg.msg);
   });
 
-  socket.on('client_joined', function(user){
+  socket.on('client_joined', function(msg){
+    let msg_decoded = JSON.parse(msg);
+    let user = msg_decoded.username;
+    let room = msg_decoded.room;
     if (user == username) {
       clearInterval(refreshEntrance);
       sendRequest("updateMyRooms", "GET", null, updateMyRooms);
       $("#entrance-container").hide();
       $("#interface-container").show();
+      $('#room-header').text(room);
       $("#messages").empty();
+      if (msg_buffer.has(room) && msg_buffer.get(room).length > 0) {
+        msg_buffer.get(room).forEach(element => displayMessage(element.username, element.msg));
+        msg_buffer.set(room, []);
+      }
     }
   });
 
@@ -86,13 +95,21 @@ $(document).ready(function() {
 
   //---user messages---
   socket.on('message', function(msg){
-    let myMsg = JSON.parse(replaceSymbols(msg));
-    if (myMsg.username == username) {
-      $("#messages").append(rightMsg(myMsg.username, myMsg.msg));
-    }  else {
-      $("#messages").append(leftMsg(myMsg.username, myMsg.msg));
+    let msg_decoded = JSON.parse(replaceSymbols(msg));
+    let room = msg_decoded.room;
+    let current_room = $('#room-header').text();
+    if ( room != current_room) {
+      if (msg_buffer.has(room)) {
+        let msgs = msg_buffer.get(room);
+        msgs.push({"username": msg_decoded.username, "msg": msg_decoded.msg});
+        msg_buffer.set(room, msgs);
+      } else {
+        let msgs = [{"username": msg_decoded.username, "msg": msg_decoded.msg}];
+        msg_buffer.set(room, msgs);
+      }
+    } else {
+      displayMessage(msg_decoded.username, msg_decoded.msg);
     }
-    $("#msg-container").animate({ scrollTop: $('#msg-container').prop("scrollHeight") }, 1000);
   });
 
   socket.on('refresh', function(room_id){
@@ -185,4 +202,13 @@ function goToRoom(event){
   let data = $(this).serializeArray();
   let msg = {'username': username, 'room': data[0].value};
   socket.emit('switch_room', JSON.stringify(msg));
+}
+
+function displayMessage(user, msg) {
+  if (user == username) {
+    $("#messages").append(rightMsg(user, msg));
+  }  else {
+    $("#messages").append(leftMsg(user, msg));
+  }
+  $("#msg-container").animate({ scrollTop: $('#msg-container').prop("scrollHeight") }, 1000);
 }

@@ -19,7 +19,9 @@ def on_connect():
 
 @socket.on('say_hi')
 def say_hi(username):
-	all_users[username].update_sid(request.sid)
+	user = all_users[username]
+	user.update_sid(request.sid)
+	user.current_room_id = None
 	print(all_users[username].sid)
 
 @socket.on('disconnect')
@@ -163,8 +165,8 @@ def handleMessage(msg):
 	# msg = msg_decoded["msg"]
 	user = all_users[username]
 	room_id = user.current_room_id
-	print("====", msg)
-	send(msg, room=room_id)
+	msg_decoded["room"] = room_id
+	send(json.dumps(msg_decoded), room=room_id)
 
 # @socket.on('send_msg')
 # def send_message(msg):
