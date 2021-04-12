@@ -1,6 +1,7 @@
 import json
 from flask import Flask, request, jsonify, session, flash
 from flask_socketio import SocketIO, send, emit, disconnect, join_room, leave_room
+from flask_login import LoginManager, login_user, logout_user, current_user, login_required
 from flask_cors import CORS
 import chat_room
 from .utils import *
@@ -18,16 +19,19 @@ def on_connect():
 	print("Connect")
 
 @socket.on('say_hi')
+@login_required
 def say_hi(username):
-	user = all_users[username]
-	user.update_sid(request.sid)
-	user.current_room_id = None
-	print(all_users[username].sid)
+	if current_user.id == username:
+		user = all_users[username]
+		user.update_sid(request.sid)
+		user.current_room_id = None
+		print(all_users[username].sid)
 
 @socket.on('disconnect')
 def on_disconnect():
-    print("Disconnect")
-    return redirect(url_for('public'))
+	print("Disconnect")
+	all_users[current_user.id].current_room_id = None
+	return redirect(url_for('public'))
 
 
 #------------invite, join----------------------

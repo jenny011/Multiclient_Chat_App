@@ -26,7 +26,7 @@ html, body {
 .chat-box {
   display: flex;
   flex-direction: row;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid #ccc;
   padding: 10px 0px 10px 0px;
@@ -154,4 +154,17 @@ html, body {
 .right-msg {
   text-align: left;
   background-color: rgba(230,230,230);
+}
+
+
+i.fa-comment {
+  color: red;
+}
+
+span.num {
+  font-size: 0.3em;
+  color: #fff;
+  position: relative; /* Position the badge within the relatively positioned button */
+  top: 0;
+  right: 18px;
 }

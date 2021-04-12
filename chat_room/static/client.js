@@ -126,7 +126,7 @@ $(document).ready(function() {
       socket.send(JSON.stringify(msg));
       // socket.emit("send_msg", {'msg': msg, 'room': target_room});
       $('#myMsg').val('');
-    }
+    };
   });
 
   //-----leave-----
@@ -191,7 +191,7 @@ function updateMyRooms(data) {
     if (data[i].current) {
       $("#chats").append(active_chatbox(data[i].id, data[i].name, data[i].users));
     } else {
-      $("#chats").append(chatbox(data[i].id, data[i].name, data[i].users));
+      $("#chats").append(chatbox(data[i].id, data[i].name, data[i].users, 2));
       $("#chats form").submit(goToRoom);
     }
   };

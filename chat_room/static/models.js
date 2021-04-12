@@ -17,10 +17,10 @@ function rightMsg(user, msg) {
 }
 
 //-----chat room display-----
-function chatbox(id, name, users) {
-  return '<form class="chat-box"> <input class="d-none form-control-plaintext" type="text" name="room" value=' + id + ' readonly> <input class="btn btn-sm btn-outline-primary" type="submit" value=' + name + '> <div class="room-box room-users">' + users + '</div> </form>';
+function chatbox(id, name, users, number) {
+  return '<div class="chat-box"> <form> <input class="d-none form-control-plaintext" type="text" name="room" value=' + id + ' readonly> <input class="btn btn-sm btn-outline-primary" type="submit" value=' + name + '> <span class="room-box room-users">' + users + ' </span> </form> <div class="float-right"> <i class="fa fa-lg fa-comment"></i> <span class="num">' + number + '</span> </div> </div>';
 }
 
 function active_chatbox(id, name, users) {
-  return '<form class="active-chat-box chat-box"> <input class="d-none form-control-plaintext" type="text" name="room" value=' + id + ' readonly> <div class="btn btn-sm btn-outline-primary">' + name + '</div> <div class="room-box room-users">' + users + '</div> </form>';
+  return '<div class="active-chat-box chat-box"> <form> <input class="d-none form-control-plaintext" type="text" name="room" value=' + id + ' readonly> <div class="btn btn-sm btn-outline-primary">' + name + '</div> <span class="room-box room-users">' + users + ' </span> </form> </div>';
 }
