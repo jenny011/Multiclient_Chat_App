@@ -67,7 +67,7 @@ def chat():
 @login_required
 def update_lists():
 	username = current_user.id
-	room_ids = get_all_rooms()
+	room_ids = get_all_rooms_except_mine(username)
 	user_ids = get_active_users(username)
 	return make_response(jsonify({"rooms": room_ids, "users": user_ids}), 200)
 
@@ -77,7 +77,9 @@ def update_my_rooms():
 	user = all_users[current_user.id]
 	rooms = []
 	for k in user.rooms.keys():
-		rooms.append({'id': k, 'name': all_rooms[k].name, 'users': ", ".join(all_rooms[k].members)})
+		room = all_rooms[k]
+		current = k == user.current_room_id
+		rooms.append({'id': k, 'name': room.name, 'users': ", ".join(room.members), 'current':current})
 	return make_response(jsonify(rooms), 200)
 
 

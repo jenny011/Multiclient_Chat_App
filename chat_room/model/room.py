@@ -5,13 +5,17 @@ import chat_room
 from .user import *
 
 class Room:
-    def __init__(self,name,id,users):
+    def __init__(self, name, id, users, limit=5):
         self.name = name
         self.id = id
         self.members = users
         self.number = len(users)
         self.status = True
         self.private = False
+        self.limit = limit
+
+    def is_full(self):
+        return self.number >= self.limit
 
     '''True/False, detailed msg'''
     def add(self, user):

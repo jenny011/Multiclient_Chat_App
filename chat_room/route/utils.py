@@ -18,6 +18,14 @@ def get_all_rooms():
         rooms.append({"id": room_id, "name": room.name})
     return rooms
 
+def get_all_rooms_except_mine(username):
+    user = all_users[username]
+    rooms = []
+    for room_id, room in all_rooms.items():
+        if room_id not in user.rooms.keys():
+            rooms.append({"id": room_id, "name": room.name})
+    return rooms
+
 def get_all_rooms_and_users():
     rooms = []
     for room_id, room in all_rooms.items():
@@ -39,19 +47,40 @@ def create_room(room_name, users):
         room_id = str(chat_room.next_room_id)
         chat_room.next_room_id += 1
     new_room = Room(room_name, room_id, users)
-    all_rooms[new_room.id] = new_room
-    return new_room
+    all_rooms[room_id] = new_room
+    return room_id
 
 def handle_join_room(username, room_id):
+    user = all_users[username]
+    user.join_room(room_id)
+    emit("client_joined", username, room=user.sid)
+
+def handle_switch_room(username, room_id):
+    user = all_users[username]
+    if user.current_room_id:
+        leave_room(user.current_room_id)
+        user.leave_page()
     join_room(room_id)
-    all_users[username].join_room(room_id)
-    emit("client_joined", username, room=room_id)
+    user.join_room(room_id)
+    emit("client_joined", username, room=user.sid)
+
+def handle_leave_page(username):
+    user = all_users[username]
+    all_users[username].leave_page()
+    emit("client_left", username, room=user.sid)
+
+def handle_add_room(username, room_id):
+    join_room(room_id)
+    all_users[username].add_room(room_id)
+    ret = {"username": username, "room": room_id}
+    emit("client_added", json.dumps(ret), room=room_id)
 
 def handle_leave_room(username, room_id):
-    leave_room(room_id)
     if username in all_users:
         all_users[username].leave_room(room_id)
-    emit("client_left", username, room=room_id)
+    print("LEAVING" ,room_id)
+    emit("client_removed", username, room=room_id)
+    leave_room(room_id)
 
 
 ###

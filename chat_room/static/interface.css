@@ -32,6 +32,10 @@ html, body {
   padding: 10px 0px 10px 0px;
 }
 
+.active-chat-box {
+  background-color: white;
+}
+
 .room-box {
   margin: 0px 0px 0px 10px;
 }

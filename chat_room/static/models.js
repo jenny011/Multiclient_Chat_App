@@ -20,3 +20,7 @@ function rightMsg(user, msg) {
 function chatbox(id, name, users) {
   return '<form class="chat-box"> <input class="d-none form-control-plaintext" type="text" name="room" value=' + id + ' readonly> <input class="btn btn-sm btn-outline-primary" type="submit" value=' + name + '> <div class="room-box room-users">' + users + '</div> </form>';
 }
+
+function active_chatbox(id, name, users) {
+  return '<form class="active-chat-box chat-box"> <input class="d-none form-control-plaintext" type="text" name="room" value=' + id + ' readonly> <div class="btn btn-sm btn-outline-primary">' + name + '</div> <div class="room-box room-users">' + users + '</div> </form>';
+}
