@@ -38,6 +38,7 @@ from .route import http_reqs, tcp_events, utils
 for i in range(10):
 	username = str(i)
 	all_users[username] = user.User(username, username)
+	active_users[username] = False
 
 
 # if __name__ == '__main__':

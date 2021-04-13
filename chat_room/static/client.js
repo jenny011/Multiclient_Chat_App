@@ -1,5 +1,5 @@
 var socket = io.connect("http://localhost:5000");
-var interval = 3000;
+var interval = 5000;
 var msg_buffer = new Map();
 
 $(document).ready(function() {
@@ -21,9 +21,6 @@ $(document).ready(function() {
   //-----refresh entrance list-----
   sendRequest("updateLists", "GET", null, updateLists);
   var refreshEntrance = setInterval(sendRequest, interval, "updateLists", "GET", null, updateLists);
-
-  $(".room-item").on("submit", joinRoom);
-  $(".user-item").on("submit", inviteUser);
 
   //-----rooms list-----
   sendRequest("updateMyRooms", "GET", null, updateMyRooms);
@@ -48,7 +45,7 @@ $(document).ready(function() {
       $('#room-header').text(room);
       $("#messages").empty();
       if (msg_buffer.has(room) && msg_buffer.get(room).length > 0) {
-        msg_buffer.get(room).forEach(element => displayMessage(element.username, element.msg));
+        msg_buffer.get(room).forEach(element => displayMessage(element.username, element.msg, element.private));
         msg_buffer.set(room, []);
       }
     }
@@ -98,17 +95,22 @@ $(document).ready(function() {
     let msg_decoded = JSON.parse(replaceSymbols(msg));
     let room = msg_decoded.room;
     let current_room = $('#room-header').text();
-    if ( room != current_room) {
+    let private = false;
+    if (msg_decoded.target) {
+      private = true;
+    }
+    console.log(msg_decoded.username, msg_decoded.msg, private);
+    if (room != current_room) {
       if (msg_buffer.has(room)) {
         let msgs = msg_buffer.get(room);
-        msgs.push({"username": msg_decoded.username, "msg": msg_decoded.msg});
+        msgs.push({"username": msg_decoded.username, "msg": msg_decoded.msg, "private": private});
         msg_buffer.set(room, msgs);
       } else {
-        let msgs = [{"username": msg_decoded.username, "msg": msg_decoded.msg}];
+        let msgs = [{"username": msg_decoded.username, "msg": msg_decoded.msg, "private": private}];
         msg_buffer.set(room, msgs);
       }
     } else {
-      displayMessage(msg_decoded.username, msg_decoded.msg);
+      displayMessage(msg_decoded.username, msg_decoded.msg, private);
     }
   });
 
@@ -116,15 +118,29 @@ $(document).ready(function() {
     alert("Room " + room_id + " has been dismissed.");
     sendRequest("updateLists", "GET", null, updateLists);
     sendRequest("updateMyRooms", "GET", null, updateMyRooms);
-  })
+  });
 
-  $("#sendBtn").on("click", function(event){
+
+  //-----------DOM------------
+  $(".room-item").on("submit", joinRoom);
+  $("#active-users-list").submit(inviteUser);
+
+  $("#msgform").on("submit", function(event){
     event.preventDefault();
-    let msgText = $('#myMsg').val();
+    let data = $(this).serializeArray();
+    let target = data[0].value;
+    let msgText = data[1].value;
     if (msgText) {
-      let msg = {"username": username, "msg": msgText}
-      socket.send(JSON.stringify(msg));
-      // socket.emit("send_msg", {'msg': msg, 'room': target_room});
+      if (target) {
+        console.log("private");
+        let msg = {"username": username, "msg": msgText, "target": target};
+        socket.send(JSON.stringify(msg));
+      } else {
+        console.log("public");
+        let msg = {"username": username, "msg": msgText, "target": target};
+        socket.send(JSON.stringify(msg));
+        // socket.emit("send_msg", {'msg': msg, 'room': target_room});
+      }
       $('#myMsg').val('');
     };
   });
@@ -167,7 +183,6 @@ function updateLists(data) {
   for (let i=0; i<data["users"].length; i++) {
     let id = data['users'][i];
     $("#users").append(usersList(id));
-    $("#user-id-"+id).submit(inviteUser);
   }
 };
 
@@ -181,8 +196,15 @@ function joinRoom(event){
 function inviteUser(event) {
   event.preventDefault();
   let data = $(this).serializeArray();
-  let msg = {'username': username, 'user': data[0].value, 'room': ""};
-  socket.emit('invite', JSON.stringify(msg));
+  if (data.length >= 2 && data[0].value) {
+    let users = [];
+    for (var i = 1; i < data.length; i++) {
+      users.push(data[i].value);
+    }
+    let msg = {'username': username, 'users': users, 'room': data[0].value};
+    socket.emit('invite', JSON.stringify(msg));
+    $('#newroom-name').val('');
+  };
 }
 
 function updateMyRooms(data) {
@@ -204,11 +226,20 @@ function goToRoom(event){
   socket.emit('switch_room', JSON.stringify(msg));
 }
 
-function displayMessage(user, msg) {
-  if (user == username) {
-    $("#messages").append(rightMsg(user, msg));
-  }  else {
-    $("#messages").append(leftMsg(user, msg));
+function displayMessage(user, msg, private) {
+  if (private) {
+    if (user == username) {
+      console.log("display private", user, msg, private);
+      $("#messages").append(rightPrivateMsg(user, msg));
+    } else {
+      $("#messages").append(leftPrivateMsg(user, msg));
+    }
+  } else {
+    if (user == username) {
+      $("#messages").append(rightMsg(user, msg));
+    } else {
+        $("#messages").append(leftMsg(user, msg));
+    }
   }
   $("#msg-container").animate({ scrollTop: $('#msg-container').prop("scrollHeight") }, 1000);
 }

@@ -26,20 +26,34 @@ def goToLogin():
 
 @app.route('/register', methods=['POST'])
 def register():
-    username = request.form['username']
-    password = request.form['password']
-    if username in all_users:
-        return render_template('register.html', err='Username already exists!')
-    new_user = User(username, password)
-    all_users[username] = new_user
-    print(all_users.keys())
-    return render_template('login.html')
+	username = request.form['username']
+	password = request.form['password']
+	if username in all_users:
+		return render_template('register.html', err='Username already exists!')
+	new_user = User(username, password)
+	all_users[username] = new_user
+	print(all_users.keys())
+	active_users[username] = False
+	return render_template('login.html')
 
 #---go to entrance page---
 @app.route('/login', methods=['POST'])
 def login():
 	username = request.form['username']
-	if username not in active_users:
+	if current_user.is_authenticated:
+		if current_user.id != username:
+			if active_users[current_user.id]:
+				return render_template('login.html', err="You already have a user logged in on the browser")
+			else:
+				return render_template('login.html', err="Unknown error")
+		else:
+			if active_users[username]:
+				return render_template('login.html', err="User already logged in")
+			else:
+				active_users[username] = True
+				return redirect(url_for("chat"))
+				# return render_template('login.html', err="Unknown error")
+	if not active_users[username]:
 		password = request.form['password']
 		user = all_users[username]
 		if not user:
@@ -49,10 +63,8 @@ def login():
 		login_user(user)
 		active_users[username] = True
 		return redirect(url_for("chat"))
-	elif current_user.is_authenticated:
-		return redirect(url_for("chat"))
 	else:
-		active_users.pop(username)
+		active_users[username] = False
 		return render_template('login.html', err="Unknown error")
 
 @app.route('/chat', methods=['GET'])
@@ -96,6 +108,6 @@ def leave_room():
 def logout():
 	username = current_user.id
 	if username in active_users:
-		active_users.pop(username)
+		active_users[username] = False
 	logout_user()
 	return redirect(url_for('public'))

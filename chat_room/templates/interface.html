@@ -9,6 +9,7 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.2/socket.io.js"></script>
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
 </head>
 <body>
 	<div class="row">
@@ -27,23 +28,91 @@
 <!-- chat interface -->
 		<div class="container-split col-9 right-container" id="interface-container" style="display:none;">
 			<div class="container-title" id="current-chat-container">
-				<div class="float-left">
+				<div class="float-left" id="current-chat-header">
 					<h1 id="room-header">Placeholder</h1>
-					<a id="leave_room" class="btn btn-sm btn-primary">leave</a>
+					<!-- <button id="edit-room-btn" type="button" class="btn btn-sm btn-light" data-toggle="modal" data-target="#edit-room"><i class="fa fa-lg fa-gear"></i></button> -->
+					<div id="leave_room" class="btn btn-sm btn-outline-primary">leave</div>
 				</div>
 				<div class="float-right" id="chat-action" style="padding:5pt;">
 					<a id="search" class="btn btn-outline-primary"><i class="fa fa-search"></i></a>
 			  </div>
 		  </div>
 
+			<!-- <div class="modal fade" id="edit-room" tabindex="-1" role="dialog" aria-labelledby="edit-room" aria-hidden="true">
+			  <div class="modal-dialog modal-dialog-scrollable modal-xl">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <h5 class="modal-title" id="room-title">Placeholder</h5>
+			        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			          <span aria-hidden="true">&times;</span>
+			        </button>
+			      </div>
+			      <div class="modal-body">
+							<div class="container-fluid">
+								<h5>Users in the room</h5>
+								<button class="btn btn-sm btn-outline-primary" type="button" data-toggle="collapse" data-target="#room-users" aria-expanded="false" aria-controls="room-users">
+							    show
+							  </button>
+								<div id="room-users" class="collapse">
+									<div id="room-users-card" class="card card-body">
+								    <ul>
+											<li>user1</li>
+										</ul>
+								  </div>
+								</div>
+								<hr>
+								<h5>Chat room settings</h5>
+								<form id="room-settings">
+									<div class="form-group row">
+					          <label for="roomname" class="col-4 col-form-label"><b>Room name</b></label>
+										<div class="col-6">
+					            <input type="text" class="form-control" id="roomname" name="roomname" value="">
+										</div>
+									</div>
+									<div class="form-group row">
+										<label for="owner" class="col-4 col-form-label"><b>Owner</b></label>
+										<div class="col-6">
+											<select class="form-control" id="owner" name="owner">
+									      <option value="owner">owner</option>
+												<option value="username">username</option>
+									    </select>
+										</div>
+									</div>
+									<div class="form-group row">
+										<label for="alias" class="col-4 col-form-label"><b>My alias</b></label>
+										<div class="col-6">
+					          	<input type="text" class="form-control" id="alias" name="alias" value="">
+										</div>
+									</div>
+									<input type="submit" id="editRoom" class="btn btn-sm btn-primary" value="Submit"/>
+					      </form>
+							</div>
+							<hr>
+							<div id="leave_room" class="btn btn-primary">leave the room</div>
+			      </div>
+			    </div>
+			  </div>
+			</div> -->
+
 			<div class="container-content" id="msg-container">
 				<div id="messages"></div>
 		  </div>
 
+<!-- <i class="fa fa-send"></i> -->
+
 			<div class="container-send" id="send-container">
-				<form>
-					<textarea class="form-control" id="myMsg" rows="3"></textarea>
-					<button class="btn btn-sm btn-primary float-right" id="sendBtn"><i class="fa fa-send"></i> Send</button>
+				<form id="msgform">
+					<div class="form-group row">
+						<div class="col-5">
+							<select class="form-control" id="private" name="private">
+								<option value="" selected>send to everyone</option>
+					      <option value="1">1</option>
+								<option value="2">2</option>
+					    </select>
+						</div>
+						<input type="submit" class="col-3 btn btn-sm btn-primary float-right" id="sendBtn" value="Send">
+					</div>
+					<textarea class="form-control" id="myMsg" name="myMsg" rows="3"></textarea>
 				</form>
 		  </div>
 		</div>
@@ -58,18 +127,23 @@
 				<div id="room-wrap">
 					<div class="card">
 						<div class="card-header">
-					    <h4>Please select a room or ...</h4>
+					    <h4>Please join a chat room or ...</h4>
 					  </div>
 						<ul class="list-group list-group-flush" id="rooms"></ul>
 					</div>
 				</div>
 				<div id="user-wrap">
-					<div class="card">
-						<div class="card-header">
-					    <h4>Select a user to start chatting!</h4>
-					  </div>
-						<ul class="list-group list-group-flush" id="users"></ul>
-					</div>
+					<form id="active-users-list">
+						<div class="card">
+							<div class="card-header">
+						    <h4>Create a new chat room with active user(s)!</h4>
+								<label for="newroom-name">Give the new room a name:</label>
+								<input type="text" id="newroom-name" name="newroom-name" value="">
+								<input class="btn btn-primary" type="submit" value="Create">
+						  </div>
+							<ul class="list-group list-group-flush" id="users"></ul>
+						</div>
+					</form>
 				</div>
 			</div>
 		</div>

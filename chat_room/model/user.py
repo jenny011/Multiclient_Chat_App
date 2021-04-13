@@ -23,9 +23,9 @@ class User(UserMixin):
     def join_room(self, room_id):
         self.current_room_id = room_id
 
-    def add_room(self, room_id):
+    def add_room(self, room_id, t):
         print("join", self.id, room_id, self.current_room_id, self.rooms)
-        self.rooms[room_id] = []
+        self.rooms[room_id] = t
 
     def leave_room(self, room_id):
         if self.current_room_id == room_id:
