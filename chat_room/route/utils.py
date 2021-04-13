@@ -55,7 +55,7 @@ def create_room(room_name, users):
 def handle_join_room(username, room_id):
     user = all_users[username]
     user.join_room(room_id)
-    ret = {"username": username, "room": room_id}
+    ret = {"username": username, "room": room_id, "roomname": all_rooms[room_id].name}
     emit("client_joined", json.dumps(ret), room=user.sid)
 
 def handle_switch_room(username, room_id):
@@ -63,7 +63,7 @@ def handle_switch_room(username, room_id):
     if user.current_room_id:
         user.leave_page()
     user.join_room(room_id)
-    ret = {"username": username, "room": room_id}
+    ret = {"username": username, "room": room_id, "roomname": all_rooms[room_id].name}
     emit("client_joined", json.dumps(ret), room=user.sid)
 
 def handle_leave_page(username):

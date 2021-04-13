@@ -37,12 +37,13 @@ $(document).ready(function() {
     let msg_decoded = JSON.parse(msg);
     let user = msg_decoded.username;
     let room = msg_decoded.room;
+    let roomname = msg_decoded.roomname;
     if (user == username) {
       clearInterval(refreshEntrance);
       sendRequest("updateMyRooms", "GET", null, updateMyRooms);
       $("#entrance-container").hide();
       $("#interface-container").show();
-      $('#room-header').text(room);
+      $('#room-header').text(roomname);
       $("#messages").empty();
       if (msg_buffer.has(room) && msg_buffer.get(room).length > 0) {
         msg_buffer.get(room).forEach(element => displayMessage(element.username, element.msg, element.private));
