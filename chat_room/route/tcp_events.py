@@ -7,6 +7,8 @@ import chat_room
 from .utils import *
 from ..model.user import *
 from ..model.room import *
+import time
+from datetime import datetime
 
 
 ###---------------------TCP events---------------------###
@@ -44,20 +46,22 @@ def on_invite(msg):
 	room_id = ""
 	if not room_id:
 		#f'{username}, {user_id}'
-		room_id = create_room(roomname, [username])
+		room_id = create_room(roomname, [username], len(user_ids) + 1)
+		if not room_id:
+			send(f'You can only create a room with {room_member_limit} users')
+			return
 		if not roomname:
 			all_rooms[room_id].name = room_id
 	else:
-		if all_rooms[room].is_full():
-			send('too many people in this room')
-		# if user_id in all_rooms[room_id]:
-		# 	send('user already in this room')
+		if all_rooms[room_id].is_full():
+			send('Room is full')
+			return
 	# Add user A
 	handle_add_room(username, room_id)
 	handle_join_room(username, room_id)
 	# Tell user B
 	for user_id in user_ids:
-		ret = {"msg": f'{username} invited you to join room {room_id}', "username": username, "room": room_id}
+		ret = {"msg": f'{username} invited you to join room {roomname}', "username": username, "room": room_id}
 		emit("client_invited", json.dumps(ret), room=all_users[user_id].sid)
 
 # @socket.on('accept')
@@ -82,7 +86,8 @@ def on_add_room(msg):
 	room_id = msg['room']
 	if room_id in all_rooms:
 		if all_rooms[room_id].is_full():
-			send('too many people in this room')
+			send('Room is full')
+			return
 		print(f'{username} joining {room_id}')
 		success, ret = all_rooms[room_id].add(username)
 		if success:
@@ -174,6 +179,10 @@ def handleMessage(msg):
 	else:
 		# msg = msg_decoded["msg"]
 		send(json.dumps(msg_decoded), room=room_id)
+	#--------record-------
+	Time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+	handle_record_msg(room_id, username, target, Time, msg)
+	print(all_rooms[room_id].msg)
 
 # @socket.on('send_msg')
 # def send_message(msg):

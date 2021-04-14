@@ -30,7 +30,6 @@ all_rooms = {}
 # username -> ?
 active_users = {}
 
-
 from .model import user, room
 from .route import http_reqs, tcp_events, utils
 

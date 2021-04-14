@@ -29,10 +29,14 @@ function rightPrivateMsg(user, msg) {
 }
 
 //-----chat room display-----
-function chatbox(id, name, users, number) {
-  return '<div class="chat-box"> <form> <input class="d-none form-control-plaintext" type="text" name="room" value=' + id + ' readonly> <input class="btn btn-sm btn-primary" type="submit" value=' + name + '> <span class="room-box room-users">' + users + ' </span> </form> <div class="float-right"> <i class="fa fa-lg fa-comment"></i> <span class="num">' + number + '</span> </div> </div>';
+function chatbox(id, name, unread_number) {
+  if (unread_number) {
+    return '<div class="chat-box"> <form id="chat-form-' + id + '"> <input class="d-none form-control-plaintext" type="text" name="room" value=' + id + ' readonly> <input class="btn btn-sm btn-primary" type="submit" value=' + name + '> </form> <div class="float-right" id="notification-' + id + '"> <i class="fa fa-lg fa-comment"></i> <span class="num">' + unread_number + '</span> </div> </div>';
+  } else {
+    return '<div class="chat-box"> <form id="chat-form-' + id + '"> <input class="d-none form-control-plaintext" type="text" name="room" value=' + id + ' readonly> <input class="btn btn-sm btn-primary" type="submit" value=' + name + '> </form> <div class="d-none float-right" id="notification-' + id + '"> <i class="fa fa-lg fa-comment"></i> <span class="num">' + unread_number + '</span> </div>';
+  }
 }
 
-function active_chatbox(id, name, users) {
-  return '<div class="active-chat-box chat-box"> <form> <input class="d-none form-control-plaintext" type="text" name="room" value=' + id + ' readonly> <div class="btn btn-sm btn-outline-primary">' + name + '</div> <span class="room-box room-users">' + users + ' </span> </form> </div>';
+function active_chatbox(id, name) {
+  return '<div class="active-chat-box chat-box"> <form> <input class="d-none form-control-plaintext" type="text" name="room" value=' + id + ' readonly> <div class="btn btn-sm btn-outline-primary">' + name + '</div> </form> </div>';
 }

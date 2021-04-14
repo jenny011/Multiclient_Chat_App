@@ -41,8 +41,17 @@ def get_active_users(username):
             users.append(user)
     return users
 
+def get_active_users_in_room(room_id):
+    users = []
+    for user in all_rooms[room_id].members:
+        if active_users[user]:
+            users.append(user)
+    return users
+
 #------create, join, leave------
-def create_room(room_name, users):
+def create_room(room_name, users, user_number):
+    if user_number > room_member_limit:
+        return ""
     if available_room_ids:
         room_id = available_room_ids.pop(0)
     else:
@@ -55,21 +64,24 @@ def create_room(room_name, users):
 def handle_join_room(username, room_id):
     user = all_users[username]
     user.join_room(room_id)
-    ret = {"username": username, "room": room_id, "roomname": all_rooms[room_id].name}
-    emit("client_joined", json.dumps(ret), room=user.sid)
+    ret = {"username": username, "room": room_id, "roomname": all_rooms[room_id].name, "active_users": get_active_users_in_room(room_id)}
+    emit("client_joined", json.dumps(ret), room=room_id)
 
 def handle_switch_room(username, room_id):
     user = all_users[username]
-    if user.current_room_id:
+    old_room_id = user.current_room_id
+    if old_room_id:
         user.leave_page()
+        emit("client_left", username, room=old_room_id)
     user.join_room(room_id)
-    ret = {"username": username, "room": room_id, "roomname": all_rooms[room_id].name}
-    emit("client_joined", json.dumps(ret), room=user.sid)
+    ret = {"username": username, "room": room_id, "roomname": all_rooms[room_id].name, "active_users": get_active_users_in_room(room_id)}
+    emit("client_joined", json.dumps(ret), room=room_id)
 
 def handle_leave_page(username):
     user = all_users[username]
+    room_id = user.current_room_id
     all_users[username].leave_page()
-    emit("client_left", username, room=user.sid)
+    emit("client_left", username, room=room_id)
 
 def handle_add_room(username, room_id):
     join_room(room_id)
@@ -82,6 +94,10 @@ def handle_leave_room(username, room_id):
         all_users[username].leave_room(room_id)
     emit("client_removed", username, room=room_id)
     leave_room(room_id)
+
+def handle_record_msg(room_id, sender, receiver, time, message):
+    room = all_rooms[room_id]
+    room.record_msg(sender, receiver, time, message)
 
 
 ###

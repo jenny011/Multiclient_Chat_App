@@ -13,6 +13,12 @@ from ..model.room import *
 #---go to login page---
 @app.route('/')
 def public():
+	if current_user.is_authenticated:
+		if active_users[current_user.id]:
+			return render_template('register.html', err="You already have a user logged in on the browser")
+		else:
+			active_users[current_user.id] = True
+			return redirect(url_for("chat"))
 	return render_template('index.html')
 
 @app.route('/goToRegister', methods=['GET'])
@@ -45,7 +51,7 @@ def login():
 			if active_users[current_user.id]:
 				return render_template('login.html', err="You already have a user logged in on the browser")
 			else:
-				return render_template('login.html', err="Unknown error")
+				return render_template('login.html', err="User status error")
 		else:
 			if active_users[username]:
 				return render_template('login.html', err="User already logged in")
