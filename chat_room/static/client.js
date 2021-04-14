@@ -1,6 +1,7 @@
 var socket = io.connect("http://localhost:5000");
 var interval = 5000;
 var msg_buffer = new Map();
+var current_room = null;
 
 $(document).ready(function() {
   socket.on('connect', function(){
@@ -45,6 +46,7 @@ $(document).ready(function() {
       $("#interface-container").show();
       $('#room-header').text(roomname);
       $("#messages").empty();
+      current_room = room;
       if (msg_buffer.has(room) && msg_buffer.get(room).length > 0) {
         msg_buffer.get(room).forEach(element => displayMessage(element.username, element.msg, element.private));
         msg_buffer.set(room, []);
@@ -95,7 +97,6 @@ $(document).ready(function() {
   socket.on('message', function(msg){
     let msg_decoded = JSON.parse(replaceSymbols(msg));
     let room = msg_decoded.room;
-    let current_room = $('#room-header').text();
     let private = false;
     if (msg_decoded.target) {
       private = true;
