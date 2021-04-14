@@ -55,15 +55,20 @@ def create_room(room_name, users):
 def handle_join_room(username, room_id):
     user = all_users[username]
     user.join_room(room_id)
-    ret = {"username": username, "room": room_id, "roomname": all_rooms[room_id].name}
+    #----fetch history----
+    boundary = all_rooms[room_id].get_msg_length()-1
+    handle_fetch_msg(username, room_id, boundary, 0)
+    #---------------------
+    ret = {"username": username, "room": room_id, "roomname": all_rooms[room_id].get_name()}
     emit("client_joined", json.dumps(ret), room=user.sid)
+
 
 def handle_switch_room(username, room_id):
     user = all_users[username]
     if user.current_room_id:
         user.leave_page()
     user.join_room(room_id)
-    ret = {"username": username, "room": room_id, "roomname": all_rooms[room_id].name}
+    ret = {"username": username, "room": room_id, "roomname": all_rooms[room_id].get_name()}
     emit("client_joined", json.dumps(ret), room=user.sid)
 
 def handle_leave_page(username):
@@ -82,6 +87,21 @@ def handle_leave_room(username, room_id):
         all_users[username].leave_room(room_id)
     emit("client_removed", username, room=room_id)
     leave_room(room_id)
+
+def handle_record_msg(room_id, sender, receiver, time, message):
+    room = all_rooms[room_id]
+    room.record_msg(sender, receiver, time, message)
+    return
+
+def handle_fetch_msg(username, room_id, boundary, count):
+    ###send msg boundary
+	if boundary <= 10:
+		chat_history = all_rooms[room_id].fetch_msg(0, boundary)
+	else:
+		chat_history = all_rooms[room_id].fetch_msg(boundary-count-10, boundary-count)
+	ret = {"msg": chat_history, "boundary": boundary}
+	send(json.dumps(ret), room=all_users[username].sid)
+
 
 
 ###

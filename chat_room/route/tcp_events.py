@@ -7,6 +7,7 @@ import chat_room
 from .utils import *
 from ..model.user import *
 from ..model.room import *
+import time
 
 
 ###---------------------TCP events---------------------###
@@ -100,6 +101,8 @@ def on_join_room(msg):
 	username = msg['username']
 	room_id = msg['room']
 	handle_join_room(username, room_id)
+	
+
 
 
 @socket.on('switch_room')
@@ -141,6 +144,16 @@ def on_dismiss_room(room_id):
 	else:
 		print(ret)
 
+@socket.on('fetch_history')
+def on_fetch_history(msg):
+	#msg: username, room, boundary, count
+	#每次返回10条历史记录
+	username = msg["username"]
+	room_id = msg["room"]
+	boundary = msg["boundary"]
+	count = msg["count"]
+	handle_fetch_msg(username, room_id, boundary, count)
+
 # @socket.on('leave_room')
 # def on_leave_room(msg):
 # 	msg_decoded = json.loads(msg)
@@ -174,6 +187,11 @@ def handleMessage(msg):
 	else:
 		# msg = msg_decoded["msg"]
 		send(json.dumps(msg_decoded), room=room_id)
+	#--------record-------
+	Time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()) 
+	handle_record_msg(room_id, username, target, Time, msg)
+	print(all_rooms[room_id].msg)
+	#---------------------
 
 # @socket.on('send_msg')
 # def send_message(msg):

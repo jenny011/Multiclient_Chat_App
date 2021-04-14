@@ -13,6 +13,14 @@ class Room:
         self.status = True
         self.private = False
         self.limit = limit
+        self.msg = []
+        #[(sender, receiver, time, message)]
+
+    def get_name(self):
+        return self.name
+
+    def get_msg_length(self):
+        return len(self.msg)
 
     def is_full(self):
         return self.number >= self.limit
@@ -47,6 +55,15 @@ class Room:
         chat_room.all_rooms.pop(self.id)
         chat_room.available_room_ids.append(self.id)
         return True, "Room closed successfully"
+
+    def record_msg(self, sender, receiver, time, message):
+        self.msg.append((sender, receiver, time, message))
+        #print(self.msg)
+        return
+
+    def fetch_msg(self, ptr1, ptr2):
+        result = self.msg[ptr1:ptr2]
+        return result
 
 
 """
