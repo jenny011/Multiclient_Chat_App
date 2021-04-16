@@ -30,12 +30,14 @@ $(document).ready(function() {
 
   //-----------messaging-----------
   socket.on('client_active', function(msg){
+    console.log(msg);
     let msg_decoded = JSON.parse(msg);
     let active_users = msg_decoded.active_users;
     updateRecvrList(msg_decoded.room, msg_decoded.active_users);
   });
 
   socket.on('client_inactive', function(msg){
+    console.log(msg);
     let msg_decoded = JSON.parse(msg);
     let active_users = msg_decoded.active_users;
     updateRecvrList(msg_decoded.room, msg_decoded.active_users);
