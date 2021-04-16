@@ -31,12 +31,12 @@ function rightPrivateMsg(user, target, msg) {
 //-----chat room display-----
 function chatbox(id, name, unread_number) {
   if (unread_number) {
-    return '<div class="chat-box"> <form id="chat-form-' + id + '"> <input class="d-none form-control-plaintext" type="text" name="room" value=' + id + ' readonly> <input class="btn btn-sm btn-primary" type="submit" value=' + name + '> </form> <div class="float-right" id="notification-' + id + '"> <i class="fa fa-lg fa-comment"></i> <span class="num">' + unread_number + '</span> </div> </div>';
+    return '<div class="chat-box"> <form id="chat-form-' + id + '"> <input class="d-none form-control-plaintext" type="text" name="room" value=' + id + ' readonly> <input class="btn btn-primary" type="submit" value=' + name + '> </form> <div class="float-right" id="notification-' + id + '"> <i class="fa fa-lg fa-comment"></i> <span class="num">' + unread_number + '</span> </div> </div>';
   } else {
-    return '<div class="chat-box"> <form id="chat-form-' + id + '"> <input class="d-none form-control-plaintext" type="text" name="room" value=' + id + ' readonly> <input class="btn btn-sm btn-primary" type="submit" value=' + name + '> </form> <div class="d-none float-right" id="notification-' + id + '"> <i class="fa fa-lg fa-comment"></i> <span class="num">' + unread_number + '</span> </div>';
+    return '<div class="chat-box"> <form id="chat-form-' + id + '"> <input class="d-none form-control-plaintext" type="text" name="room" value=' + id + ' readonly> <input class="btn btn-primary" type="submit" value=' + name + '> </form> <div class="d-none float-right" id="notification-' + id + '"> <i class="fa fa-lg fa-comment"></i> <span class="num">' + unread_number + '</span> </div>';
   }
 }
 
 function active_chatbox(id, name) {
-  return '<div class="active-chat-box chat-box"> <form> <input class="d-none form-control-plaintext" type="text" name="room" value=' + id + ' readonly> <div class="btn btn-sm btn-outline-primary">' + name + '</div> </form> </div>';
+  return '<div class="active-chat-box chat-box"> <form> <input class="d-none form-control-plaintext" type="text" name="room" value=' + id + ' readonly> <div class="btn btn-outline-primary">' + name + '</div> </form> </div>';
 }

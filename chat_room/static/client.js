@@ -30,14 +30,12 @@ $(document).ready(function() {
 
   //-----------messaging-----------
   socket.on('client_active', function(msg){
-    console.log(msg);
     let msg_decoded = JSON.parse(msg);
     let active_users = msg_decoded.active_users;
     updateRecvrList(msg_decoded.room, msg_decoded.active_users);
   });
 
   socket.on('client_inactive', function(msg){
-    console.log(msg);
     let msg_decoded = JSON.parse(msg);
     let active_users = msg_decoded.active_users;
     updateRecvrList(msg_decoded.room, msg_decoded.active_users);
@@ -77,7 +75,7 @@ $(document).ready(function() {
     if (user == username) {
       sendRequest("updateLists", "GET", null, updateLists);
       sendRequest("updateMyRooms", "GET", null, updateMyRooms);
-      var refreshEntrance = setInterval(sendRequest, interval, "updateLists", "GET", null, updateLists);
+      var refreshEntrance = setInterval(freezeOrUpdate, interval)
       $("#entrance-container").show();
       $("#interface-container").hide();
       $("#messages").empty();
@@ -91,7 +89,7 @@ $(document).ready(function() {
       socket.emit('join_room', msg);
       sendRequest("updateMyRooms", "GET", null, updateMyRooms);
     } else {
-      let displayMsg = replaceSymbols(user) + " joined";
+      let displayMsg = escapeHtml(user) + " joined";
       $("#messages").append('<div class="system-msg"><i>' + displayMsg + '</i></div>');
     };
     $("#msg-container").animate({ scrollTop: $('#msg-container').prop("scrollHeight") }, 1000);
@@ -101,12 +99,12 @@ $(document).ready(function() {
     if (user == username) {
       sendRequest("updateLists", "GET", null, updateLists);
       sendRequest("updateMyRooms", "GET", null, updateMyRooms);
-      var refreshEntrance = setInterval(sendRequest, interval, "updateLists", "GET", null, updateLists);
+      var refreshEntrance = setInterval(freezeOrUpdate, interval);
       $("#interface-container").hide();
       $("#entrance-container").show();
       $("#messages").empty();
     } else {
-      let displayMsg = replaceSymbols(user) + " left";
+      let displayMsg = escapeHtml(user) + " left";
       $("#messages").append('<div class="system-msg"><i>' + displayMsg + '</i></div>');
       $("#private option[value='" + user + "']").remove();
     }
@@ -117,7 +115,9 @@ $(document).ready(function() {
   socket.on('message', function(msg){
     let msg_decoded = null;
     try{
-      msg_decoded = JSON.parse(replaceSymbols(msg));
+      msg_decoded = JSON.parse(msg);
+      msg_decoded.msg = escapeHtml(msg_decoded.msg);
+      msg_decoded.target = escapeHtml(msg_decoded.target);
     } catch (err) {
       alert(msg);
       return;
@@ -145,8 +145,14 @@ $(document).ready(function() {
     };
   });
 
-  socket.on('refresh', function(room_id){
+  socket.on('refreshRoom', function(room_id){
     alert("Room " + room_id + " has been dismissed.");
+    sendRequest("updateLists", "GET", null, updateLists);
+    sendRequest("updateMyRooms", "GET", null, updateMyRooms);
+  });
+
+  socket.on('refreshUser', function(user){
+    alert("User " + user + " is not active any more.");
     sendRequest("updateLists", "GET", null, updateLists);
     sendRequest("updateMyRooms", "GET", null, updateMyRooms);
   });
@@ -185,7 +191,6 @@ $(document).ready(function() {
     //DEBUG: emit an event, others update user list on logout
     // $("#private option[value='" + username + "']").remove();
     socket.emit("set_inactive", username);
-    // socket.emit("leave_room", JSON.stringify({'username':username}));
   });
 
   //-----leave-----

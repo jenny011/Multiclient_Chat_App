@@ -26,6 +26,9 @@ class Room:
     def is_full(self):
         return self.number >= self.limit
 
+    def is_member(self, username):
+        return username in self.members
+
     '''True/False, detailed msg'''
     def add(self, user):
         if self.status == False:

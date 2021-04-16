@@ -22,9 +22,18 @@ function sendRequest(route, type, data, successHandler){
     }
   });
 }
+// 
+// function replaceSymbols(msg) {
+//   let ret = msg.replaceAll("<", "&lt;");
+//   ret = ret.replaceAll(">", "&gt;");
+//   return ret;
+// }
 
-function replaceSymbols(msg) {
-  let ret = msg.replaceAll("<", "&lt;");
-  ret = ret.replaceAll(">", "&gt;");
-  return ret;
-}
+function escapeHtml(msg) {
+    return msg
+         .replace(/&/g, "&amp;")
+         .replace(/</g, "&lt;")
+         .replace(/>/g, "&gt;")
+         .replace(/"/g, "&quot;")
+         .replace(/'/g, "&#039;");
+ }

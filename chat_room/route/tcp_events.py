@@ -45,6 +45,10 @@ def on_invite(msg):
 	user_ids = msg['users']
 	roomname = msg['room']
 	room_id = ""
+	for user_id in user_ids:
+		if not active_users[user_id]:
+			emit('refreshUser', user_id)
+			return
 	if not room_id:
 		#f'{username}, {user_id}'
 		room_id = create_room(roomname, [username], len(user_ids) + 1)
@@ -97,7 +101,7 @@ def on_add_room(msg):
 		else:
 			send(ret)
 	else:
-		emit('refresh', room_id)
+		emit('refreshRoom', room_id)
 
 
 @socket.on('join_room')
@@ -181,18 +185,21 @@ def handleMessage(msg):
 	msg_decoded = json.loads(msg)
 	username = msg_decoded["username"]
 	room_id = current_user.current_room_id
-	msg_decoded["room"] = room_id
-	target = msg_decoded["target"]
-	if target:
-		send(json.dumps(msg_decoded), room=all_users[target].sid)
-		send(json.dumps(msg_decoded), room=current_user.sid)
-	else:
-		# msg = msg_decoded["msg"]
-		send(json.dumps(msg_decoded), room=room_id)
-	#--------record-------
-	Time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-	handle_record_msg(room_id, username, target, Time, msg)
-	print(all_rooms[room_id].msg)
+	if room_id:
+		msg_decoded["room"] = room_id
+		target = msg_decoded["target"]
+		if target and all_rooms[room_id].is_member(target):
+			send(json.dumps(msg_decoded), room=all_users[target].sid)
+			send(json.dumps(msg_decoded), room=current_user.sid)
+		else:
+			# msg = msg_decoded["msg"]
+			if target:
+				msg_decoded["target"] = ""
+			send(json.dumps(msg_decoded), room=room_id)
+		#--------record-------
+		Time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+		handle_record_msg(room_id, username, target, Time, msg)
+		print(all_rooms[room_id].msg)
 
 # @socket.on('send_msg')
 # def send_message(msg):
