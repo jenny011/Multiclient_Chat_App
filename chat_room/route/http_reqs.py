@@ -14,11 +14,8 @@ from ..model.room import *
 @app.route('/')
 def public():
 	if current_user.is_authenticated:
-		if active_users[current_user.id]:
-			return render_template('register.html', err="You already have a user logged in on the browser")
-		else:
-			active_users[current_user.id] = True
-			return redirect(url_for("chat"))
+		active_users[current_user.id] = True
+		return redirect(url_for("chat"))
 	return render_template('index.html')
 
 @app.route('/goToRegister', methods=['GET'])
@@ -32,6 +29,9 @@ def goToLogin():
 
 @app.route('/register', methods=['POST'])
 def register():
+	if current_user.is_authenticated:
+		active_users[current_user.id] = True
+		return redirect(url_for("chat"))
 	username = request.form['username']
 	password = request.form['password']
 	if username in all_users:
@@ -47,18 +47,8 @@ def register():
 def login():
 	username = request.form['username']
 	if current_user.is_authenticated:
-		if current_user.id != username:
-			if active_users[current_user.id]:
-				return render_template('login.html', err="You already have a user logged in on the browser")
-			else:
-				return render_template('login.html', err="User status error")
-		else:
-			if active_users[username]:
-				return render_template('login.html', err="User already logged in")
-			else:
-				active_users[username] = True
-				return redirect(url_for("chat"))
-				# return render_template('login.html', err="Unknown error")
+		active_users[current_user.id] = True
+		return redirect(url_for("chat"))
 	if not active_users[username]:
 		password = request.form['password']
 		user = all_users[username]
@@ -71,7 +61,7 @@ def login():
 		return redirect(url_for("chat"))
 	else:
 		active_users[username] = False
-		return render_template('login.html', err="Unknown error")
+		return render_template('login.html', err="Unknown error, try again")
 
 @app.route('/chat', methods=['GET'])
 @login_required

@@ -81,7 +81,7 @@ def handle_leave_page(username):
     user = all_users[username]
     room_id = user.current_room_id
     all_users[username].leave_page()
-    emit("client_left", username, room=room_id)
+    emit("client_left", username, room=user.sid)
 
 def handle_add_room(username, room_id):
     join_room(room_id)
@@ -98,6 +98,10 @@ def handle_leave_room(username, room_id):
 def handle_record_msg(room_id, sender, receiver, time, message):
     room = all_rooms[room_id]
     room.record_msg(sender, receiver, time, message)
+
+def broadcastStatusChange(user, status):
+    for room in user.rooms.keys():
+        emit(f'client_{status}', json.dumps({"username": user.id, "room": room, "active_users": get_active_users_in_room(room)}), room=room)
 
 
 ###

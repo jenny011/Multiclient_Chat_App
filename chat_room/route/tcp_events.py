@@ -27,6 +27,7 @@ def say_hi(username):
 		print(username, current_user.sid)
 		for room_id in current_user.rooms.keys():
 			join_room(room_id)
+		broadcastStatusChange(current_user, "active")
 
 @socket.on('disconnect')
 def on_disconnect():
@@ -134,6 +135,15 @@ def on_leave_page(username):
 	user = all_users[username]
 	#user.current_room_id = None
 	handle_leave_page(username)
+
+@socket.on('set_inactive')
+def on_set_inactive(username):
+	user = all_users[username]
+	room_id = user.current_room_id
+	user.leave_page()
+	active_users[username] = False
+	broadcastStatusChange(user, "inactive")
+	disconnect()
 
 @socket.on('dismiss_room')
 def on_dismiss_room(room_id):

@@ -16,7 +16,7 @@ $(document).ready(function() {
 
   socket.on('disconnect', function(){
     clearInterval(refreshEntrance);
-    socket.emit('leave_room', username);
+    current_room = null;
   });
 
   //-----refresh entrance list-----
@@ -29,7 +29,18 @@ $(document).ready(function() {
   sendRequest("updateMyRooms", "GET", null, updateMyRooms);
 
   //-----------messaging-----------
-  //---system messages---
+  socket.on('client_active', function(msg){
+    let msg_decoded = JSON.parse(msg);
+    let active_users = msg_decoded.active_users;
+    updateRecvrList(msg_decoded.room, msg_decoded.active_users);
+  });
+
+  socket.on('client_inactive', function(msg){
+    let msg_decoded = JSON.parse(msg);
+    let active_users = msg_decoded.active_users;
+    updateRecvrList(msg_decoded.room, msg_decoded.active_users);
+  });
+
   socket.on('client_invited', function(data) {
     let msg = JSON.parse(data);
     socket.emit('add_room', JSON.stringify({"username": username, "room": msg.room}));
@@ -41,7 +52,6 @@ $(document).ready(function() {
     let user = msg_decoded.username;
     let room = msg_decoded.room;
     let roomname = msg_decoded.roomname;
-    let active_users = msg_decoded.active_users;
     if (user == username) {
       clearInterval(refreshEntrance);
       sendRequest("updateMyRooms", "GET", null, updateMyRooms);
@@ -53,23 +63,12 @@ $(document).ready(function() {
       if (msg_buffer.has(room) && msg_buffer.get(room).length > 0) {
         let buffered_msgs = msg_buffer.get(room);
         for (let i=0; i<buffered_msgs.length; i++) {
-          displayMessage(buffered_msgs[i].username, buffered_msgs[i].msg, buffered_msgs[i].private, i==buffered_msgs.length-1);
+          displayMessage(buffered_msgs[i].username, buffered_msgs[i].target, buffered_msgs[i].msg, buffered_msgs[i].private, i==buffered_msgs.length-1);
         }
         msg_buffer.set(room, []);
       };
     };
-    if (room == current_room) {
-      $('#private option').each(function() {
-          if ( $(this).val() ) {
-              $(this).remove();
-          }
-      });
-      active_users.forEach(user => {
-        if (user != username) {
-          $("#private").append(new Option(user, user));
-        };
-      });
-    };
+    updateRecvrList(room, msg_decoded.active_users);
   });
 
   socket.on('client_left', function(user){
@@ -120,28 +119,28 @@ $(document).ready(function() {
     } catch (err) {
       alert(msg);
       return;
-    }
+    };
     let room = msg_decoded.room;
     let private = false;
     if (msg_decoded.target) {
       private = true;
-    }
+    };
     //console.log(msg_decoded.username, msg_decoded.msg, private);
     if (room != current_room) {
       if (msg_buffer.has(room)) {
         let msgs = msg_buffer.get(room);
-        msgs.push({"username": msg_decoded.username, "msg": msg_decoded.msg, "private": private});
+        msgs.push({"username": msg_decoded.username, "user": msg_decoded.target_user, "msg": msg_decoded.msg, "private": private});
         msg_buffer.set(room, msgs);
       } else {
-        let msgs = [{"username": msg_decoded.username, "msg": msg_decoded.msg, "private": private}];
+        let msgs = [{"username": msg_decoded.username, "user": msg_decoded.target_user, "msg": msg_decoded.msg, "private": private}];
         msg_buffer.set(room, msgs);
       }
       let unread_number = msg_buffer.get(room).length <= 99 ? msg_buffer.get(room).length.toString() : "...";
       $("#notification-" + room + " span").text(unread_number);
       $("#notification-" + room).removeClass("d-none");
     } else {
-      displayMessage(msg_decoded.username, msg_decoded.msg, private, true);
-    }
+      displayMessage(msg_decoded.username, msg_decoded.target, msg_decoded.msg, private, true);
+    };
   });
 
   socket.on('refresh', function(room_id){
@@ -168,7 +167,7 @@ $(document).ready(function() {
         let msg = {"username": username, "msg": msgText, "target": target};
         socket.send(JSON.stringify(msg));
         // socket.emit("send_msg", {'msg': msg, 'room': target_room});
-      }
+      };
       $('#myMsg').val('');
     };
   });
@@ -182,10 +181,9 @@ $(document).ready(function() {
   $("#logout").on("click", function(){
     current_room = null;
     //DEBUG: emit an event, others update user list on logout
-    $("#private option[value='" + user + "']").remove();
-    //socket.emit("leave_room", {'username': username, 'room': target_room});
+    // $("#private option[value='" + username + "']").remove();
+    socket.emit("set_inactive", username);
     // socket.emit("leave_room", JSON.stringify({'username':username}));
-    socket.disconnect();
   });
 
   //-----leave-----
@@ -202,7 +200,7 @@ $(document).keypress(function(event){
     if(keycode == '13'){
       event.preventDefault();
       $("#sendBtn").click();
-    }
+    };
 });
 
 function freezeOrUpdate() {
@@ -211,23 +209,23 @@ function freezeOrUpdate() {
   };
 }
 
-function displayMessage(user, msg, private, scroll) {
+function displayMessage(user, target, msg, private, scroll) {
   if (private) {
     if (user == username) {
-      $("#messages").append(rightPrivateMsg(user, msg));
+      $("#messages").append(rightPrivateMsg(user, "(to " + target + ")",  msg));
     } else {
       $("#messages").append(leftPrivateMsg(user, msg));
-    }
+    };
   } else {
     if (user == username) {
       $("#messages").append(rightMsg(user, msg));
     } else {
         $("#messages").append(leftMsg(user, msg));
-    }
-  }
+    };
+  };
   if (scroll) {
     $("#msg-container").animate({ scrollTop: $('#msg-container').prop("scrollHeight") }, 800);
-  }
+  };
 }
 
 //------Update Entrance-----
@@ -288,4 +286,19 @@ function goToRoom(event){
   let data = $(this).serializeArray();
   let msg = {'username': username, 'room': data[0].value};
   socket.emit('switch_room', JSON.stringify(msg));
+}
+
+function updateRecvrList(room, active_users){
+  if (room == current_room) {
+    $('#private option').each(function() {
+        if ( $(this).val() ) {
+            $(this).remove();
+        }
+    });
+    active_users.forEach(user => {
+      if (user != username) {
+        $("#private").append(new Option(user, user));
+      };
+    });
+  };
 }

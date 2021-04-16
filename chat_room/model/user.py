@@ -6,7 +6,7 @@ class User(UserMixin):
     def __init__(self, username, password, current_room_id=None):
         self.id = username
         self.password = self.set_password(password)
-        # roomID -> msg queue
+        # roomID -> time
         self.rooms = {}
         self.current_room_id = current_room_id
         self.sid = None
