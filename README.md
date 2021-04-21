@@ -40,6 +40,7 @@ You can also register your own user. <br>
 <i><b>Entrance version:</b></i> A list of chat rooms and active users.<br>
 1. The user can create a new chat room with an active user and he/she must provide a room name.<br>
 2. The user can join an existing chat instead. <br>
+
 <i><b>Chat room version:</b></i> A list of action buttons, a message display box and a message sending box. <br>
 1. <i>"search" button:</i> go to the entrance version. <br>
 2. <i>"chat history" button:</i> view chat histories that were sent before the user started chatting in the room. <br>
