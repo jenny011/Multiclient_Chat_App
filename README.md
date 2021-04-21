@@ -18,7 +18,7 @@ Jingyi Zhu, Yannan Fei
 `$ flask run` <br>
 #### If the above installation does not work
 `$ pip install` these packages: 'Flask', 'Flask-SocketIO', 'flask-login', 'flask-cors', 'numpy', 'Werkzeug' <br>
-`$ python run.py` <br>
+`$ python run.py` in folder `Multiclient_Chat_App` <br>
 
 ## Use the app
 ### Open the app, register and login
