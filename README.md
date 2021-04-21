@@ -26,17 +26,16 @@ You can also register your own user. <br>
 
 ### Funtionalities
 #### Left panel
-logout button: logout of the app. The use is not removed from any chat room.<br>
-My chat rooms: a list of the chat room which the user is in. The user can click on a room to switch the right panel to that chat room. The user can also receive notifications for the rooms which he/she is not currently chatting in.<br>
+1. "logout" button: logout of the app. The use is not removed from any chat room.<br>
+2. My chat rooms: a list of the chat room which the user is in. The user can click on a room to switch the right panel to that chat room. The user can also receive notifications for the rooms which he/she is not currently chatting in.<br>
 #### Right panel
 <b>Entrance version:</b> A list of chat rooms and active users. The user can create a new chat room with an active user and he/she must provide a room name. The user can join an existing chat instead. <br>
 <b>Chat room version:</b> A list of action buttons, a message display box and a message sending box. <br>
-<hr>
-"search" button: go to the entrance version. <br>
+1. "search" button: go to the entrance version. <br>
 "chat history" button: view chat histories that were sent before the user started chatting in the room. <br>
 "leave this room" button: remove the user him/herself from the room. <br>
-message display box: where the messages are displayed. The messages with borders are private messages, otherwise, they are public messages of the chat room. <br>
-message sending box: The user can select an active target user in the dropdown menu to send private messages to. The user can also send public messages to everyone in the chat room. <br>
+2. message display box: where the messages are displayed. The messages with borders are private messages, otherwise, they are public messages of the chat room. <br>
+3. message sending box: The user can select an active target user in the dropdown menu to send private messages to. The user can also send public messages to everyone in the chat room. <br>
 
 
 #This is the main branch
