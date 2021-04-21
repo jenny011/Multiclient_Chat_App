@@ -1,3 +1,6 @@
+#This is the main branch
+Commit ONLY Jenny's updates and merged updates to the main branch
+
 # Multiclient Chat App
 Spring 2021 Computer Networking Course Project <br>
 Jingyi Zhu, Yannan Fei
@@ -36,7 +39,3 @@ You can also register your own user. <br>
 "leave this room" button: remove the user him/herself from the room. <br>
 2. message display box: where the messages are displayed. The messages with borders are private messages, otherwise, they are public messages of the chat room. <br>
 3. message sending box: The user can select an active target user in the dropdown menu to send private messages to. The user can also send public messages to everyone in the chat room. <br>
-
-
-#This is the main branch
-Commit ONLY Jenny's updates and merged updates to the main branch
