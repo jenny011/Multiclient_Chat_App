@@ -64,7 +64,12 @@ def create_room(room_name, users, user_number):
 def handle_join_room(username, room_id):
     user = all_users[username]
     user.join_room(room_id)
-    ret = {"username": username, "room": room_id, "roomname": all_rooms[room_id].name, "active_users": get_active_users_in_room(room_id)}
+    msg_history_len = len(all_rooms[room_id].msg)
+    if msg_history_len < 10:
+        last_ten_msgs = all_rooms[room_id].msg
+    else:
+        last_ten_msgs = all_rooms[room_id].msg[msg_history_len-10 : ]
+    ret = {"username": username, "room": room_id, "roomname": all_rooms[room_id].name, "active_users": get_active_users_in_room(room_id), "boundary": msg_history_len, "last_ten_msgs": last_ten_msgs}
     emit("client_joined", json.dumps(ret), room=room_id)
 
 def handle_switch_room(username, room_id):
@@ -74,7 +79,12 @@ def handle_switch_room(username, room_id):
         user.leave_page()
         emit("client_left", username, room=old_room_id)
     user.join_room(room_id)
-    ret = {"username": username, "room": room_id, "roomname": all_rooms[room_id].name, "active_users": get_active_users_in_room(room_id)}
+    msg_history_len = len(all_rooms[room_id].msg)
+    if msg_history_len < 10:
+        last_ten_msgs = all_rooms[room_id].msg
+    else:
+        last_ten_msgs = all_rooms[room_id].msg[msg_history_len-10 : ]
+    ret = {"username": username, "room": room_id, "roomname": all_rooms[room_id].name, "active_users": get_active_users_in_room(room_id), "boundary": msg_history_len, "last_ten_msgs": last_ten_msgs}
     emit("client_joined", json.dumps(ret), room=room_id)
 
 def handle_leave_page(username):
@@ -95,9 +105,23 @@ def handle_leave_room(username, room_id):
     emit("client_removed", username, room=room_id)
     leave_room(room_id)
 
-def handle_record_msg(room_id, sender, receiver, time, message):
+def handle_record_msg(room_id, message):
     room = all_rooms[room_id]
-    room.record_msg(sender, receiver, time, message)
+    room.record_msg(message)
+
+def handle_fetch_msg(username, room_id, boundary, pointer):
+    ###send msg boundary
+    if boundary <= 10:
+        chat_history = all_rooms[room_id].fetch_msg(0, boundary)
+    else:
+        ptr2 = boundary-pointer
+        ptr1 = ptr2-10
+        if ptr1 < 0:
+            ptr1 = 0
+        chat_history = all_rooms[room_id].fetch_msg(ptr1, ptr2)
+    ret = {"history": chat_history, "boundary": boundary}
+    print(ret)
+    emit("history", json.dumps(ret), room=all_users[username].sid)
 
 def broadcastStatusChange(user, status):
     for room in user.rooms.keys():

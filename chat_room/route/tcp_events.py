@@ -186,20 +186,32 @@ def handleMessage(msg):
 	username = msg_decoded["username"]
 	room_id = current_user.current_room_id
 	if room_id:
+		msg_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 		msg_decoded["room"] = room_id
+		msg_decoded["time"] = msg_time
 		target = msg_decoded["target"]
-		if target and all_rooms[room_id].is_member(target):
-			send(json.dumps(msg_decoded), room=all_users[target].sid)
-			send(json.dumps(msg_decoded), room=current_user.sid)
+		if target and not all_rooms[room_id].is_member(target):
+			target = ""
+			msg_decoded["target"] = ""
+		processed_msg = json.dumps(msg_decoded)
+		if target:
+			send(processed_msg, room=all_users[target].sid)
+			send(processed_msg, room=current_user.sid)
 		else:
-			# msg = msg_decoded["msg"]
-			if target:
-				msg_decoded["target"] = ""
-			send(json.dumps(msg_decoded), room=room_id)
+			send(processed_msg, room=room_id)
 		#--------record-------
-		Time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-		handle_record_msg(room_id, username, target, Time, msg)
-		print(all_rooms[room_id].msg)
+		handle_record_msg(room_id, processed_msg)
+
+@socket.on('fetch_history')
+def on_fetch_history(msg):
+	#msg: username, room, boundary, count
+	#每次返回10条历史记录
+	msg_decoded = json.loads(msg)
+	username = msg_decoded["username"]
+	room_id = msg_decoded["room"]
+	boundary = msg_decoded["boundary"]
+	pointer = msg_decoded["pointer"]
+	handle_fetch_msg(username, room_id, boundary, pointer)
 
 # @socket.on('send_msg')
 # def send_message(msg):

@@ -23,13 +23,23 @@ html, body {
   background-color: lightblue;
 }
 
+.chats {
+  max-width:100%;
+  width:100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .chat-box {
+  max-width:100%;
+  width:100%;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid #ccc;
-  padding: 10px 0px 10px 0px;
+  padding: 10px 0px 10px 10px;
 }
 
 .active-chat-box {
@@ -48,7 +58,7 @@ html, body {
 
 .container-title {
   max-height: 10%;
-  height: 10%;
+  height: 8%;
 }
 
 
@@ -56,10 +66,10 @@ html, body {
   border-bottom: 1px solid #eee;
 }
 
-#current-chat-header h1, #current-chat-header div {
+#current-chat-header h1, #current-chat-header div, #user-header h1, #user-header div {
   display: inline;
   vertical-align: middle;
-  margin: 0px 3px 0px 3px;
+  padding: 5px 10px 5px 10px;
 }
 
 #msg-container {
@@ -186,4 +196,8 @@ span.num {
   position: relative; /* Position the badge within the relatively positioned button */
   top: 0;
   right: 20px;
+}
+
+.name {
+  padding: 5px 10px 5px 10px;
 }

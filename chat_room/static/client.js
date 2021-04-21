@@ -2,6 +2,8 @@ var socket = io.connect("http://localhost:5000");
 var interval = 5000;
 var msg_buffer = new Map();
 var current_room = null;
+var boundary = -1;
+var pointer = 0;
 
 $(document).ready(function() {
   socket.on('connect', function(){
@@ -53,6 +55,13 @@ $(document).ready(function() {
     let room = msg_decoded.room;
     let roomname = msg_decoded.roomname;
     if (user == username) {
+      boundary = msg_decoded.boundary;
+      let last_ten_msgs = msg_decoded.last_ten_msgs;
+      if (boundary == 0) {
+        $("prev-history").addClass("disabled");
+        $("next-history").addClass("disabled");
+      }
+
       clearInterval(refreshEntrance);
       sendRequest("updateMyRooms", "GET", null, updateMyRooms);
       $("#entrance-container").hide();
@@ -60,12 +69,28 @@ $(document).ready(function() {
       $('#room-header').text(roomname);
       $("#messages").empty();
       current_room = room;
+
       if (msg_buffer.has(room) && msg_buffer.get(room).length > 0) {
         let buffered_msgs = msg_buffer.get(room);
+        //display 10-len(buffer) history msgs
+        if (buffered_msgs.length < last_ten_msgs.length){
+          for (let i=0; i<last_ten_msgs.length - buffered_msgs.length; i++) {
+            let one_msg = JSON.parse(last_ten_msgs[i]);
+            console.log("history",one_msg.target);
+            displayMessage(one_msg.username, one_msg.target, one_msg.msg, one_msg.target != "", i==one_msg.length-1);
+          };
+        }
+        //display buffered msgs
         for (let i=0; i<buffered_msgs.length; i++) {
           displayMessage(buffered_msgs[i].username, buffered_msgs[i].target, buffered_msgs[i].msg, buffered_msgs[i].private, i==buffered_msgs.length-1);
         }
         msg_buffer.set(room, []);
+      } else {
+        for (let i=0; i<last_ten_msgs.length; i++) {
+          //display 10 history msgs
+          let one_msg = JSON.parse(last_ten_msgs[i]);
+          displayMessage(one_msg.username, one_msg.target, one_msg.msg, one_msg.target != "", i==one_msg.length-1);
+        };
       };
     };
     updateRecvrList(room, msg_decoded.active_users);
@@ -123,18 +148,15 @@ $(document).ready(function() {
       return;
     };
     let room = msg_decoded.room;
-    let private = false;
-    if (msg_decoded.target) {
-      private = true;
-    };
+    let private = msg_decoded.target != "";
     //console.log(msg_decoded.username, msg_decoded.msg, private);
     if (room != current_room) {
       if (msg_buffer.has(room)) {
         let msgs = msg_buffer.get(room);
-        msgs.push({"username": msg_decoded.username, "user": msg_decoded.target_user, "msg": msg_decoded.msg, "private": private});
+        msgs.push({"username":msg_decoded.username, "target":msg_decoded.target, "msg":msg_decoded.msg, "private":private});
         msg_buffer.set(room, msgs);
       } else {
-        let msgs = [{"username": msg_decoded.username, "user": msg_decoded.target_user, "msg": msg_decoded.msg, "private": private}];
+        let msgs = [{"username":msg_decoded.username, "target":msg_decoded.target, "msg":msg_decoded.msg, "private":private}];
         msg_buffer.set(room, msgs);
       }
       let unread_number = msg_buffer.get(room).length <= 99 ? msg_buffer.get(room).length.toString() : "...";
@@ -142,6 +164,17 @@ $(document).ready(function() {
       $("#notification-" + room).removeClass("d-none");
     } else {
       displayMessage(msg_decoded.username, msg_decoded.target, msg_decoded.msg, private, true);
+    };
+  });
+
+  socket.on('history', function(msg){
+    $("#history-messages").empty();
+    msg_decoded = JSON.parse(msg);
+    let history_msgs = msg_decoded.history;
+    for (let i=0; i<history_msgs.length; i++) {
+      //display 10 history msgs
+      let one_msg = JSON.parse(history_msgs[i]);
+      displayHistoryMessage(one_msg.username, one_msg.target, one_msg.msg, one_msg.target != "");
     };
   });
 
@@ -182,6 +215,9 @@ $(document).ready(function() {
 
   //-----leave-----
   $("#leave_room").on("click", function(){
+    if (msg_buffer.has(current_room)) {
+      msg_buffer.delete(current_room);
+    }
     current_room = null;
     socket.emit("leave_room", username);
   });
@@ -193,10 +229,33 @@ $(document).ready(function() {
     socket.emit("set_inactive", username);
   });
 
-  //-----leave-----
+  //-----search-----
   $("#search").on("click", function(){
     current_room = null;
     socket.emit("leave_page", username);
+  });
+
+  //-----prev & next 10-----
+  $("#history-page-btn").on("click", function(){
+    console.log(boundary);
+    socket.emit("fetch_history", JSON.stringify({"username":username, "room":current_room, "boundary":boundary, "pointer":pointer}));
+  });
+
+  $("#prev-history").on("click", function(){
+    if (pointer < boundary) {
+      pointer = pointer + 10;
+      socket.emit("fetch_history", JSON.stringify({"username":username, "room":current_room, "boundary":boundary, "pointer":pointer}));
+    }
+  });
+
+  $("#next-history").on("click", function(){
+    if (pointer > 0) {
+      pointer = pointer - 10;
+      if (pointer <= 0) {
+        pointer = 0;
+      };
+      socket.emit("fetch_history", JSON.stringify({"username":username, "room":current_room, "boundary":boundary, "pointer":pointer}));
+    }
   });
 });
 
@@ -217,17 +276,27 @@ function freezeOrUpdate() {
 }
 
 function displayMessage(user, target, msg, private, scroll) {
+  displayMsgHelper("#messages", user, target, msg, private, scroll);
+}
+
+function displayHistoryMessage(user, target, msg, private) {
+  displayMsgHelper("#history-messages", user, target, msg, private, false);
+};
+
+function displayMsgHelper(div_id, user, target, msg, private, scroll) {
   if (private) {
     if (user == username) {
-      $("#messages").append(rightPrivateMsg(user, "(to " + target + ")",  msg));
+      $(div_id).append(rightPrivateMsg(user, "(to " + target + ")",  msg));
     } else {
-      $("#messages").append(leftPrivateMsg(user, msg));
+      if (target == username) {
+        $(div_id).append(leftPrivateMsg(user, msg));
+      };
     };
   } else {
     if (user == username) {
-      $("#messages").append(rightMsg(user, msg));
+      $(div_id).append(rightMsg(user, msg));
     } else {
-        $("#messages").append(leftMsg(user, msg));
+      $(div_id).append(leftMsg(user, msg));
     };
   };
   if (scroll) {

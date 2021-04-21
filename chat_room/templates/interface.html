@@ -15,7 +15,9 @@
 	<div class="row">
 		<div class="container-split col-3 left-container" id="panel-container">
 			<div class="container-title" id="user-container">
-				<div class="float-left"><h1>{{username}}</h1></div>
+				<div class="float-left" id="user-header">
+					<h1>{{username}}</h1>
+				</div>
 				<div class="float-right" id="user-action" style="padding:5pt;">
 				  <a href="/logout" id="logout" class="btn btn-sm btn-primary">logout</a>
 			  </div>
@@ -31,12 +33,40 @@
 				<div class="float-left" id="current-chat-header">
 					<h1 id="room-header">Placeholder</h1>
 					<!-- <button id="edit-room-btn" type="button" class="btn btn-sm btn-light" data-toggle="modal" data-target="#edit-room"><i class="fa fa-lg fa-gear"></i></button> -->
-					<div id="leave_room" class="btn btn-sm btn-outline-primary">leave</div>
+					<button id="search" class="btn btn-primary"><i class="fa fa-search"></i></button>
+					<button id="history-page-btn" type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#history-page">Chat History</button>
 				</div>
 				<div class="float-right" id="chat-action" style="padding:5pt;">
-					<a id="search" class="btn btn-outline-primary"><i class="fa fa-search"></i></a>
+					<button id="leave_room" class="btn btn-sm btn-outline-primary">leave this room</button>
 			  </div>
 		  </div>
+
+			<div class="modal fade" id="history-page" tabindex="-1" role="dialog" aria-labelledby="history-page" aria-hidden="true">
+			  <div class="modal-dialog modal-dialog-scrollable modal-lg">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <h5 class="modal-title" id="history-title">Chat History</h5>
+			        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			          <span aria-hidden="true">&times;</span>
+			        </button>
+			      </div>
+			      <div class="modal-body">
+							<div class="container-fluid">
+								<nav aria-label="history-page">
+								  <ul class="pagination pagination-sm">
+								    <li class="page-item" id="prev-history"><a class="page-link">Previous</a></li>
+								    <li class="page-item" id="next-history"><a class="page-link">Next</a></li>
+								  </ul>
+								</nav>
+								<hr>
+								<div class="container-content" id="history-msg-container">
+									<div id="history-messages"></div>
+							  </div>
+							</div>
+			      </div>
+			    </div>
+			  </div>
+			</div>
 
 			<!-- <div class="modal fade" id="edit-room" tabindex="-1" role="dialog" aria-labelledby="edit-room" aria-hidden="true">
 			  <div class="modal-dialog modal-dialog-scrollable modal-xl">

@@ -60,12 +60,13 @@ class Room:
         chat_room.available_room_ids.append(self.id)
         return True, "Room closed successfully"
 
-    def record_msg(self, sender, receiver, time, message):
-        self.msg.append((sender, receiver, time, message))
+    def record_msg(self, message):
+        self.msg.append(message)
         #print(self.msg)
         return
 
     def fetch_msg(self, ptr1, ptr2):
+        print(ptr1, ptr2)
         result = self.msg[ptr1:ptr2]
         return result
 
