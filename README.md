@@ -22,7 +22,7 @@ Jingyi Zhu, Yannan Fei
 
 ## Please Note that
 All the data are stored at the server. <br>
-Once the server is stopped, everything happened in the app will be erased. <br>
+Once the server is stopped, everything happened in the app is erased. <br>
 
 ## Use the app
 ### Open the app, register and login

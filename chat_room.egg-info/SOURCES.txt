@@ -1,9 +1,0 @@
-README.md
-setup.py
-chat_room/__init__.py
-chat_room.egg-info/PKG-INFO
-chat_room.egg-info/SOURCES.txt
-chat_room.egg-info/dependency_links.txt
-chat_room.egg-info/not-zip-safe
-chat_room.egg-info/requires.txt
-chat_room.egg-info/top_level.txt
