@@ -4,7 +4,7 @@ Jingyi Zhu, Yannan Fei
 
 ## Install and run the project
 Please use Python 3+. <br>
-Create an Anaconda Python virtural environment. (Strongly recommend)</br>
+Create an <a href="https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html">Anaconda Python virtural environment</a>. (Strongly recommend)</br>
 `$ conda create -n myenv python=3` <br>
 `$ conda activate myenv` <br>
 Download this github repository as a folder `Multiclient_Chat_App`.</br>
