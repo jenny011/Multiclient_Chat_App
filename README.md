@@ -19,7 +19,8 @@ Jingyi Zhu, Yannan Fei
 #### If the above installation does not work
 `$ pip install` these packages: 'Flask', 'Flask-SocketIO', 'flask-login', 'flask-cors', 'numpy', 'Werkzeug' <br>
 `$ python run.py` in folder `Multiclient_Chat_App` <br>
-### Please Note that
+
+## Please Note that
 All the data are stored at the server. <br>
 Once the server is stopped, everything happened in the app will be erased. <br>
 
