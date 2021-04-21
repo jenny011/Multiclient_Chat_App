@@ -19,11 +19,14 @@ Jingyi Zhu, Yannan Fei
 #### If the above installation does not work
 `$ pip install` these packages: 'Flask', 'Flask-SocketIO', 'flask-login', 'flask-cors', 'numpy', 'Werkzeug' <br>
 `$ python run.py` in folder `Multiclient_Chat_App` <br>
+### Please Note that
+All the data are stored at the server. <br>
+Once the server is stopped, everything happened in the app will be erased. <br>
 
 ## Use the app
 ### Open the app, register and login
-Open ONE browser per user. </br>
-You can use Chrome, Chrome Incognito, Safari, Firefox, etc. <br>
+Open ONE browser per user. </br> You can use Chrome, Chrome Incognito, Safari, Firefox, etc. <br>
+Safari might not work when you run the app for the first time. In that case, you can restart the server.<br>
 On each browser, go to `http://localhost:5000`. <br>
 You can login with pre-registered users, username 1 to 10. Password is the same as username. <br>
 You can also register your own user. <br>
