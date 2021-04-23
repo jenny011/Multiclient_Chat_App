@@ -37,7 +37,10 @@ You can also register your own user. <br>
 1. <i>"logout" button:</i> logout of the app. The use is not removed from any chat room.<br>
 2. <i>My chat rooms:</i> a list of the chat room which the user is in. The user can click on a room to switch the right panel to that chat room. The user can also receive notifications for the rooms which he/she is not currently chatting in.<br>
 #### Right panel
-<i><b>Entrance version:</b></i> A list of chat rooms and active users. The user can create a new chat room with an active user and he/she must provide a room name. The user can join an existing chat instead. <br>
+<i><b>Entrance version:</b></i> A list of chat rooms and active users.<br>
+1. The user can create a new chat room with an active user and he/she must provide a room name.<br>
+2. The user can join an existing chat instead. <br>
+
 <i><b>Chat room version:</b></i> A list of action buttons, a message display box and a message sending box. <br>
 1. <i>"search" button:</i> go to the entrance version. <br>
 2. <i>"chat history" button:</i> view chat histories that were sent before the user started chatting in the room. <br>
