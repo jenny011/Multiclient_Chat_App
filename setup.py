@@ -7,5 +7,5 @@ setup(
     packages=find_packages(),
     include_package_data=False,
     zip_safe=False,
-    install_requires=['Flask', 'Flask-SocketIO', 'flask-login', 'flask-cors', 'numpy', 'Werkzeug']
+    install_requires=['Flask', 'Flask-SocketIO', 'flask-login', 'flask-cors', 'Werkzeug']
 )

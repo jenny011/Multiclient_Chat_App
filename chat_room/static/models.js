@@ -3,10 +3,6 @@ function roomsList(id, name) {
   return "<li class='list-group-item'> <form class='room-item' id='room-id-" + id + "'> <input class='d-none form-control-plaintext' type='text' name='room' value=" + id + " readonly> <span>" + name + "</span> <input class='btn btn-sm btn-primary float-right' type='submit' value='Join'> </form> </li>";
 }
 
-// function usersList(user) {
-//   return "<li class='list-group-item'> <form class='user-item' id='user-id-" + user + "'> <input class='d-none form-control-plaintext' type='text' name='user' value=" + user + " readonly> <input class='btn btn-sm btn-outline-primary' type='submit' value=" + user + "> </form> </li>";
-// }
-
 function usersList(user) {
   return "<li class='list-group-item'> <input type='checkbox' id='user-id-" + user + "' name='user-" + user + "' value='" + user + "'> <label for='user-" + user + "'>" + user + "</label> </li>";
 }
