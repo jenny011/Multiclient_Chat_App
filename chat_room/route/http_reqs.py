@@ -40,7 +40,6 @@ def register():
 			return render_template('register.html', err='Username already exists!')
 		new_user = User(username, password)
 		all_users[username] = new_user
-		print(all_users.keys())
 		active_users[username] = False
 	return render_template('login.html')
 
