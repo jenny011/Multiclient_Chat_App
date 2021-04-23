@@ -1,5 +1,4 @@
 #This is the main branch
-Commit ONLY Jenny's updates and merged updates to the main branch
 
 # Multiclient Chat App
 Spring 2021 Computer Networking Course Project <br>
@@ -7,8 +6,7 @@ Jingyi Zhu, Yannan Fei
 
 ## Please Note that
 1. All the data are stored at the server. Once the server is stopped, everything happened in the app is erased. <br>
-2. Make sure to logout of all users that you registered before stopping the server. Otherwise, the server will permanently crash. <br>
-3. Safari and Firefox periodically drop inactive TCP connections after timeout. If you find the chat interface not working (eg. messages not being sent), please simply refresh the page.<br>
+2. Safari and Firefox periodically drop inactive TCP connections after timeout. If you find the chat interface not working (eg. messages not being sent), please simply refresh the page.<br>
 
 
 ## Install and run the project
@@ -28,7 +26,7 @@ Jingyi Zhu, Yannan Fei
 
 ## Use the app
 ### Open the app, register and login
-Open ONE browser per user. </br> You can use Chrome, Chrome Incognito, Safari, Firefox, etc. <br>
+Open ONE browser per user. </br> You can use Chrome, Safari, Firefox, etc. and their Incognito. <br>
 Safari might not work when you run the app for the first time. In that case, you can restart the server.<br>
 On each browser, go to `http://localhost:5000`. <br>
 You can login with pre-registered users, username 1 to 10. Password is the same as username. <br>
