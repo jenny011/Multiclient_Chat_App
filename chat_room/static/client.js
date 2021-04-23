@@ -54,6 +54,7 @@ $(document).ready(function() {
     let user = msg_decoded.username;
     let room = msg_decoded.room;
     let roomname = msg_decoded.roomname;
+    let private_chat = msg_decoded.private_chat;
     if (user == username) {
       boundary = msg_decoded.boundary;
       let last_ten_msgs = msg_decoded.last_ten_msgs;
@@ -66,26 +67,34 @@ $(document).ready(function() {
       sendRequest("updateMyRooms", "GET", null, updateMyRooms);
       $("#entrance-container").hide();
       $("#interface-container").show();
-      $('#room-header').text(roomname);
+      if (private_chat) {
+        $('#room-header').text(roomname + "*");
+      } else {
+        $('#room-header').text(roomname);
+      };
       $("#messages").empty();
       current_room = room;
 
       if (msg_buffer.has(room) && msg_buffer.get(room).length > 0) {
+        //if this room has buffered msgs
         let buffered_msgs = msg_buffer.get(room);
         //display 10-len(buffer) history msgs
         if (buffered_msgs.length < last_ten_msgs.length){
-          for (let i=0; i<last_ten_msgs.length - buffered_msgs.length; i++) {
+          console.log("<", buffered_msgs.length, last_ten_msgs.length);
+          for (let i=0; i<last_ten_msgs.length; i++) {
             let one_msg = JSON.parse(last_ten_msgs[i]);
-            console.log("history",one_msg.target);
-            displayMessage(one_msg.username, one_msg.target, one_msg.msg, one_msg.target != "", i==one_msg.length-1);
+            displayMessage(one_msg.username, one_msg.target, one_msg.msg, one_msg.target != "", i==last_ten_msgs.length-1);
           };
-        }
-        //display buffered msgs
-        for (let i=0; i<buffered_msgs.length; i++) {
-          displayMessage(buffered_msgs[i].username, buffered_msgs[i].target, buffered_msgs[i].msg, buffered_msgs[i].private, i==buffered_msgs.length-1);
+        } else {
+          console.log(">=", buffered_msgs.length, last_ten_msgs.length);
+          for (let i=0; i<buffered_msgs.length; i++) {
+            let one_msg = JSON.parse(buffered_msgs[i]);
+            displayMessage(one_msg.username, one_msg.target, one_msg.msg, one_msg.private, i==buffered_msgs.length-1);
+          }
         }
         msg_buffer.set(room, []);
       } else {
+        //if this room DOESNT have buffered msgs
         for (let i=0; i<last_ten_msgs.length; i++) {
           //display 10 history msgs
           let one_msg = JSON.parse(last_ten_msgs[i]);
@@ -224,8 +233,6 @@ $(document).ready(function() {
 
   $("#logout").on("click", function(){
     current_room = null;
-    //DEBUG: emit an event, others update user list on logout
-    // $("#private option[value='" + username + "']").remove();
     socket.emit("set_inactive", username);
   });
 
@@ -275,6 +282,7 @@ function freezeOrUpdate() {
   };
 }
 
+//-----display messages-----
 function displayMessage(user, target, msg, private, scroll) {
   displayMsgHelper("#messages", user, target, msg, private, scroll);
 }
@@ -329,12 +337,24 @@ function joinRoom(event){
 function inviteUser(event) {
   event.preventDefault();
   let data = $(this).serializeArray();
-  if (data.length >= 2 && data[0].value) {
+  if (data.length >= 3 && data[0].name == "newroom-private" && data[1].name == "newroom-name" && data[2].name.startsWith("user")) {
+    let users = [];
+    for (var i = 2; i < data.length; i++) {
+      users.push(data[i].value);
+    }
+
+    let msg = {'username': username, 'users': users, 'room': data[1].value, 'private_chat': data[0].value};
+    $("#newroom-private").prop('checked', false);
+    socket.emit('invite', JSON.stringify(msg));
+    $('#newroom-name').val('');
+  } else if (data.length >= 2 && data[0].name == "newroom-name" && data[1].name.startsWith("user")) {
     let users = [];
     for (var i = 1; i < data.length; i++) {
       users.push(data[i].value);
     }
-    let msg = {'username': username, 'users': users, 'room': data[0].value};
+
+    let msg = {'username': username, 'users': users, 'room': data[0].value, 'private_chat': 'off'};
+    $("#newroom-private").prop('checked', false);
     socket.emit('invite', JSON.stringify(msg));
     $('#newroom-name').val('');
   };

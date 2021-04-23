@@ -44,6 +44,7 @@ def on_invite(msg):
 	username = msg['username']
 	user_ids = msg['users']
 	roomname = msg['room']
+	private_chat = msg['private_chat'] == 'on'
 	room_id = ""
 	for user_id in user_ids:
 		if not active_users[user_id]:
@@ -51,7 +52,7 @@ def on_invite(msg):
 			return
 	if not room_id:
 		#f'{username}, {user_id}'
-		room_id = create_room(roomname, [username], len(user_ids) + 1)
+		room_id = create_room(roomname, [username], len(user_ids) + 1, private_chat)
 		if not room_id:
 			send(f'You can only create a room with {room_member_limit} users')
 			return

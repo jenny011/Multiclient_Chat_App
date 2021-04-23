@@ -24,7 +24,7 @@ def get_all_rooms_except_mine(username):
     user = all_users[username]
     rooms = []
     for room_id, room in all_rooms.items():
-        if room_id not in user.rooms.keys():
+        if room_id not in user.rooms.keys() and not room.private:
             rooms.append({"id": room_id, "name": room.name})
     return rooms
 
@@ -49,7 +49,7 @@ def get_active_users_in_room(room_id):
     return users
 
 #------create, join, leave------
-def create_room(room_name, users, user_number):
+def create_room(room_name, users, user_number, private_chat):
     if user_number > room_member_limit:
         return ""
     if available_room_ids:
@@ -57,19 +57,22 @@ def create_room(room_name, users, user_number):
     else:
         room_id = str(chat_room.next_room_id)
         chat_room.next_room_id += 1
-    new_room = Room(room_name, room_id, users)
+    new_room = Room(room_name, room_id, users, private_chat)
     all_rooms[room_id] = new_room
     return room_id
 
 def handle_join_room(username, room_id):
     user = all_users[username]
     user.join_room(room_id)
-    msg_history_len = len(all_rooms[room_id].msg)
+
+    room = all_rooms[room_id]
+    msg_history_len = len(room.msg)
     if msg_history_len < 10:
-        last_ten_msgs = all_rooms[room_id].msg
+        last_ten_msgs = room.msg
     else:
-        last_ten_msgs = all_rooms[room_id].msg[msg_history_len-10 : ]
-    ret = {"username": username, "room": room_id, "roomname": all_rooms[room_id].name, "active_users": get_active_users_in_room(room_id), "boundary": msg_history_len, "last_ten_msgs": last_ten_msgs}
+        last_ten_msgs = room.msg[msg_history_len-10 : ]
+
+    ret = {"username": username, "room": room_id, "roomname":room.name, "private_chat":room.private, "active_users":get_active_users_in_room(room_id), "boundary": msg_history_len, "last_ten_msgs": last_ten_msgs}
     emit("client_joined", json.dumps(ret), room=room_id)
 
 def handle_switch_room(username, room_id):
@@ -79,12 +82,15 @@ def handle_switch_room(username, room_id):
         user.leave_page()
         emit("client_left", username, room=old_room_id)
     user.join_room(room_id)
-    msg_history_len = len(all_rooms[room_id].msg)
+
+    room = all_rooms[room_id]
+    msg_history_len = len(room.msg)
     if msg_history_len < 10:
-        last_ten_msgs = all_rooms[room_id].msg
+        last_ten_msgs = room.msg
     else:
-        last_ten_msgs = all_rooms[room_id].msg[msg_history_len-10 : ]
-    ret = {"username": username, "room": room_id, "roomname": all_rooms[room_id].name, "active_users": get_active_users_in_room(room_id), "boundary": msg_history_len, "last_ten_msgs": last_ten_msgs}
+        last_ten_msgs = room.msg[msg_history_len-10 : ]
+        
+    ret = {"username":username, "room":room_id, "roomname":room.name, "private_chat":room.private, "active_users":get_active_users_in_room(room_id), "boundary": msg_history_len, "last_ten_msgs": last_ten_msgs}
     emit("client_joined", json.dumps(ret), room=room_id)
 
 def handle_leave_page(username):
