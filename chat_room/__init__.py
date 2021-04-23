@@ -27,18 +27,14 @@ next_room_id = 0
 available_room_ids = []
 # roomID -> room object
 all_rooms = {}
-# username -> ?
+# username -> status
 active_users = {}
 
 from .model import user, room
 from .route import http_reqs, tcp_events, utils
 
-
+#-------generate default users 1 to 10-------
 for i in range(10):
 	username = str(i)
 	all_users[username] = user.User(username, username)
 	active_users[username] = False
-
-
-# if __name__ == '__main__':
-#     socket.run(app, host="127.0.0.1", port=5000)

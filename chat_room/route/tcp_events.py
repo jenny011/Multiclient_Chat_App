@@ -36,8 +36,7 @@ def on_disconnect():
 	return redirect(url_for('public'))
 
 
-#------------invite, join----------------------
-
+#------------invite----------------------
 @socket.on('invite')
 def on_invite(msg):
 	msg = json.loads(msg)
@@ -70,21 +69,8 @@ def on_invite(msg):
 		ret = {"msg": f'{username} invited you to join room {roomname}', "username": username, "room": room_id}
 		emit("client_invited", json.dumps(ret), room=all_users[user_id].sid)
 
-# @socket.on('accept')
-# def on_accept(msg):
-# 	# Add user B
-# 	# msg = json.loads(msg)
-# 	# user_id = msg["username"]
-# 	# room_id = msg["room"]
-# 	on_add_room(msg)
 
-# @socket.on('reject')
-# def on_reject(msg):
-# 	username = msg['username']
-# 	user_id = msg['user']
-# 	room = msg['room_id']
-# 	emit("client_refused", {"msg": f'{username} refused to join room {room}', "user": user_id}, user=all_users[user_id].sid)
-
+#---------------add------------------
 @socket.on('add_room')
 def on_add_room(msg):
 	msg = json.loads(msg)
@@ -105,11 +91,13 @@ def on_add_room(msg):
 		emit('refreshRoom', room_id)
 
 
+#---------------join chat------------------
 @socket.on('join_room')
 def on_join_room(msg):
 	msg = json.loads(msg)
 	username = msg['username']
 	room_id = msg['room']
+	print(msg)
 	handle_join_room(username, room_id)
 
 
@@ -118,11 +106,11 @@ def on_switch_room(msg):
 	msg = json.loads(msg)
 	username = msg["username"]
 	room = msg["room"]
+	print(msg)
 	handle_switch_room(username, room)
 
 
 #---------------leave------------------
-
 @socket.on('leave_room')
 def on_leave_room(username):
 	user = all_users[username]
@@ -161,23 +149,6 @@ def on_dismiss_room(room_id):
 	else:
 		print(ret)
 
-# @socket.on('leave_room')
-# def on_leave_room(msg):
-# 	msg_decoded = json.loads(msg)
-# 	username = msg_decoded['username']
-# 	user = all_users[username]
-# 	room_id = user.current_room_id
-# 	# for clientjs go to room
-# 	if not ('room' in msg_decoded and msg_decoded['room'] == room_id):
-# 		if room_id:
-# 			print(f'{username} leaving {room_id}')
-# 			success, ret = all_rooms[room_id].remove(username)
-# 			if success:
-# 				# print(f'{username} left {room_id}, remaining members:', ret)
-# 				handle_leave_room(username, room_id)
-# 			else:
-# 				send(ret)
-
 
 #---------------messaging------------------------
 @socket.on('message')
@@ -205,16 +176,11 @@ def handleMessage(msg):
 
 @socket.on('fetch_history')
 def on_fetch_history(msg):
-	#msg: username, room, boundary, count
-	#每次返回10条历史记录
 	msg_decoded = json.loads(msg)
 	username = msg_decoded["username"]
 	room_id = msg_decoded["room"]
 	boundary = msg_decoded["boundary"]
-	pointer = msg_decoded["pointer"]
-	handle_fetch_msg(username, room_id, boundary, pointer)
-
-# @socket.on('send_msg')
-# def send_message(msg):
-# 	print(request.sid, "sent:", msg["msg"])
-# 	send(msg["msg"], room=msg["room"])
+	ptr1 = msg_decoded["ptr1"]
+	ptr2 = msg_decoded["ptr2"]
+	direction = msg_decoded["direction"]
+	handle_fetch_msg(username, room_id, boundary, ptr1, ptr2, direction)

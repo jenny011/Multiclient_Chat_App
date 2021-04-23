@@ -44,7 +44,6 @@ class Room:
     def remove(self, user):
         if user not in self.members:
             return False, "User already left"
-        # JENNY: DEBUG
         self.members.remove(user)
         self.number -= 1
         if self.number == 0:
@@ -62,101 +61,26 @@ class Room:
 
     def record_msg(self, message):
         self.msg.append(message)
-        #print(self.msg)
         return
 
-    def fetch_msg(self, ptr1, ptr2):
-        print(ptr1, ptr2)
-        result = self.msg[ptr1:ptr2]
-        return result
-
-
-"""
-if __name__ == "__main__":
-    room1 = Room("Room1",1,"a","b")
-    print(room1.members)
-    print(room1.number)
-    room1.join("c")
-    print(room1.members)
-    print(room1.number)
-    room1.leave("a")
-    print(room1.members)
-    print(room1.number)
-    print(room1.status)
-
-    room1.leave("b")
-    room1.leave("c")
-    print(room1.members)
-    print(room1.status)
-
-    room1.join("a")
-"""
-
-
-# @socket.on('invite')
-# #only invite one user at a time
-# def on_invite(msg):
-#     #attributes needed
-#     if id == "":
-#         create_room(room_name, user1, user2)
-#         send("successfully invited", broadcast = False)
-#     else:
-#
-#         result, members = Room[id].join_room(user2)
-#         #members could be sent
-#         if result == 1:
-#             send("this room is already closed, please try another one", broadcast = False)
-#         if result == False:
-#             send("you are already in this room", broadcast = False)
-#         if result == 2:
-#             send("this room is already full", broadcast = False)
-#         active_users[user] = request.sid
-#         send(user + " joined", broadcast=True)
-
-
-"""
-@socket.on("create_room")
-def on_create(msg):
-    return
-"""
-"""
-@socket.on("accept")
-def on_accept(msg):
-    return
-"""
-
-
-# @socket.on('join_room')
-# def on_join(msg):
-#     user = msg['username']
-#     #id needs to be fetched
-#     result, members = id.join_room(user)
-#     #members could be sent
-#     if result == 1:
-#         send("this room is already closed, please try another one", broadcast = False)
-#     if result == False:
-#         send("you are already in this room", broadcast = False)
-#     if result == 2:
-#         send("this room is already full", broadcast = False)
-#     active_users[user] = request.sid
-#     send(user + " joined", broadcast=True)
-#
-# @socket.on('leave_room')
-# def on_leave(msg):
-#     user = msg['username']
-#     result, members = id.leave_room(user)
-#     if result == False:
-#         send("user already left", broadcast = False)
-#     if result == 1:
-#         send(user + " left," + "Room" + id "closed", broadcast=True)
-# 	active_users.pop(user)
-# 	send(user + " left", broadcast=True)
-#
-# @socket.on('close_room')
-# def on_close(msg):
-# 	user = msg['username']
-#     result = close_room(user)
-#     if result == False:
-#         send("Room" + id + "already closed", broadcast = False)
-# 	send("Room" + id "closed", broadcast=True)
-    #all users in this room need to be freed
+    def fetch_msg(self, username, boundary, ptr1, ptr2, direction):
+        n_msgs = 0
+        result = []
+        if direction == "prev":
+            ptr2 = ptr1 + 1
+            while n_msgs < 10 and ptr1 >= 0:
+                this_msg = json.loads(self.msg[ptr1])
+                if this_msg["username"] == username or this_msg["target"] == username or not this_msg["target"]:
+                    result.append(self.msg[ptr1])
+                    n_msgs += 1
+                ptr1 -= 1
+            result.reverse()
+        elif direction == "next":
+            ptr1 = ptr2 - 1
+            while n_msgs < 10 and ptr2 <= boundary:
+                this_msg = json.loads(self.msg[ptr2])
+                if this_msg["username"] == username or this_msg["target"] == username or not this_msg["target"]:
+                    result.append(self.msg[ptr2])
+                    n_msgs += 1
+                ptr2 += 1
+        return result, ptr1, ptr2

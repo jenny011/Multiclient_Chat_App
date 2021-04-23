@@ -27,48 +27,55 @@ def goToLogin():
     return render_template('login.html')
 
 
+#---register, login---
 @app.route('/register', methods=['POST'])
 def register():
 	if current_user.is_authenticated:
 		active_users[current_user.id] = True
 		return redirect(url_for("chat"))
-	username = request.form['username']
-	password = request.form['password']
-	if username in all_users:
-		return render_template('register.html', err='Username already exists!')
-	new_user = User(username, password)
-	all_users[username] = new_user
-	print(all_users.keys())
-	active_users[username] = False
+	else:
+		username = request.form['username']
+		password = request.form['password']
+		if username in all_users:
+			return render_template('register.html', err='Username already exists!')
+		new_user = User(username, password)
+		all_users[username] = new_user
+		print(all_users.keys())
+		active_users[username] = False
 	return render_template('login.html')
 
-#---go to entrance page---
+
 @app.route('/login', methods=['POST'])
 def login():
 	username = request.form['username']
 	if current_user.is_authenticated:
 		active_users[current_user.id] = True
 		return redirect(url_for("chat"))
-	if not active_users[username]:
-		password = request.form['password']
-		user = all_users[username]
-		if not user:
-			return render_template('register.html', err='Please register!')
-		if not user.check_password(password):
-			return render_template('login.html', err="Username and password don't match!")
-		login_user(user)
-		active_users[username] = True
-		return redirect(url_for("chat"))
 	else:
-		active_users[username] = False
-		return render_template('login.html', err="Unknown error, try again")
+		if username in all_users and not active_users[username]:
+			password = request.form['password']
+			user = all_users[username]
+			if not user:
+				return render_template('register.html', err='Please register!')
+			if not user.check_password(password):
+				return render_template('login.html', err="Username and password don't match!")
+			login_user(user)
+			active_users[username] = True
+			return redirect(url_for("chat"))
+		else:
+			if username in active_users:
+				active_users[username] = False
+				return render_template('login.html', err="Unknown error, try again")
+			else:
+				return render_template('login.html', err="Please register!")
 
+
+
+#----chat interface----
 @app.route('/chat', methods=['GET'])
 @login_required
 def chat():
 	username = current_user.id
-	# room_ids = get_all_rooms_and_users()
-	# user_ids = get_active_users(username)
 	return render_template('interface.html', username=username)
 
 @app.route('/updateLists', methods=['GET'])

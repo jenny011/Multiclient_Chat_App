@@ -8,6 +8,8 @@ html, body {
   float: left;
   max-height: 100vh;
   height: 100vh;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 .container-content {
@@ -23,7 +25,7 @@ html, body {
   background-color: lightblue;
 }
 
-.chats {
+#chats {
   max-width:100%;
   width:100%;
   display: flex;
@@ -39,7 +41,7 @@ html, body {
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid #ccc;
-  padding: 10px 0px 10px 10px;
+  padding: 10px 0px 10px 5px;
 }
 
 .active-chat-box {
@@ -85,6 +87,8 @@ html, body {
 #chats-container {
   max-height: 90%;
   height: 90%;
+  max-width:100%;
+  width:100%;
 }
 
 #send-container {
@@ -201,3 +205,7 @@ span.num {
 .name {
   padding: 5px 10px 5px 10px;
 }
+
+li.page-item.disabled {
+      pointer-events: none;
+  }

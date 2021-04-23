@@ -5,6 +5,12 @@ Commit ONLY Jenny's updates and merged updates to the main branch
 Spring 2021 Computer Networking Course Project <br>
 Jingyi Zhu, Yannan Fei
 
+## Please Note that
+1. All the data are stored at the server. Once the server is stopped, everything happened in the app is erased. <br>
+2. Make sure to logout of all users that you registered before stopping the server. Otherwise, the server will permanently crash. <br>
+3. Safari and Firefox periodically drop inactive TCP connections after timeout. If you find the chat interface not working (eg. messages not being sent), please simply refresh the page.<br>
+
+
 ## Install and run the project
 ### Please use Python 3+. <br>
 0. Create a Python virtual environment (Strongly recommend).
@@ -19,10 +25,6 @@ Jingyi Zhu, Yannan Fei
 #### If the above installation does not work
 `$ pip install` these packages: 'Flask', 'Flask-SocketIO', 'flask-login', 'flask-cors', 'numpy', 'Werkzeug' <br>
 `$ python run.py` in folder `Multiclient_Chat_App` <br>
-
-## Please Note that
-All the data are stored at the server. <br>
-Once the server is stopped, everything happened in the app is erased. <br>
 
 ## Use the app
 ### Open the app, register and login
