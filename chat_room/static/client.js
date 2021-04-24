@@ -172,7 +172,7 @@ $(document).ready(function() {
       msg_decoded.target = escapeHtml(msg_decoded.target);
     } catch (err) {
       console.log(err);
-      alert("An error occurred, try again.");
+      alert(msg);
       return;
     };
     let room = msg_decoded.room;

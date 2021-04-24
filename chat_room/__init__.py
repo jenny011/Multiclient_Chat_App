@@ -34,7 +34,7 @@ from .model import user, room
 from .route import http_reqs, tcp_events, utils
 
 #-------generate default users 1 to 10-------
-for i in range(10):
-	username = str(i)
-	all_users[username] = user.User(username, username)
-	active_users[username] = False
+# for i in range(10):
+# 	username = str(i)
+# 	all_users[username] = user.User(username, username)
+# 	active_users[username] = False

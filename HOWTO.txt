@@ -4,7 +4,7 @@
 We have prepared a more readble README.md on our Github page.
 Github page: https://github.com/jenny011/Multiclient_Chat_App
 It contains contents of both HOWTO.txt and README.txt.
-YouTube presentation: 
+YouTube presentation:
 
 ----------------------
  | Please Note that |
@@ -22,16 +22,10 @@ YouTube presentation:
 ==============================================================================================
 # How to install and run our Multiclient Chat App #
 
-## (Optional, but recommended) Virtual Environment Setup ##
-Create a Python virtual environment with Python 3+
-If you have Anaconda, it's easy to create an Anaconda Python virtural environment.
-https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html
-In the terminal, run the commands:
-  `$ conda create -n myenv python=[the python 3+ version you have]`
-  `$ conda activate myenv`
+## (Optional) Setup Python Virtual Environment ##
 
 ## Install and run the server ##
-1. Unzip the zip file "Multiclient_Chat_App".
+1. Unzip "Multiclient_Chat_App.zip".
 2. In the terminal, go into the folder "Multiclient_Chat_App".
 3. Run the commands:
   `$ export FLASK_APP=chat_room`

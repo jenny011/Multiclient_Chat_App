@@ -17,11 +17,7 @@ If you find the chat interface not working (eg. messages not being sent, images 
 
 ## How to Install and Run our Multiclient Chat App
 
-### (Optional, but recommended) Virtual Environment Setup
-If you have Anaconda: <a href="https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html">Anaconda Python virtural environment</a></br>
-In the terminal, run: <br>
-`$ conda create -n chatenv python=[the python 3+ version you have]` <br>
-`$ conda activate chatenv` <br>
+### (Optional) Setup Python Virtual Environment
 
 ### Install and run the server
 #### Please use Python 3+.
