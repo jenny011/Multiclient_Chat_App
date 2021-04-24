@@ -4,21 +4,24 @@
 We have prepared a more readble README.md on our Github page.
 Github page: https://github.com/jenny011/Multiclient_Chat_App
 It contains contents of both HOWTO.txt and README.txt.
+YouTube presentation: 
 
----------------------
- |Please Note that |
----------------------
+----------------------
+ | Please Note that |
+----------------------
 1. Please use Python 3.6+.
 2. Please logout of all the users when you halt the server.
   All the data are stored at the server.
   Once the server is stopped, the logged-in users remain logged-in.
   Everything else happened in the app is erased.
 3. Safari and Firefox periodically drop inactive TCP connections after timeout.
-  If you find the chat interface not working (eg. messages not being sent), please simply refresh the page.
+  If you find the chat interface not working (eg. messages not being sent, images not being displayed), please simply refresh the page.
 4. For a better user experience, please give the browser windows a reasonable size.
 
-----------------------------------------------------------------------------------------
+
+==============================================================================================
 # Operating instructions —— How to Use the App #
+
 Our app requires users to register and then login.
 Our app periodically retrieves a list of available chat rooms and active users.
 It can detect out-of-date information in user requests and handle the requests gracefully.
@@ -61,3 +64,35 @@ Our app saves the following chat status:
   8. `"send" button`: The user can send messages by clicking this button or tapping "enter" on the keyboard.
   9. `"emoji" button`: A modal of eight emojis is displayed after the button is clicked.
                         The user can click on an emoji to end to the chat room publicly or privately (users dropdown menu also works here).
+
+
+==============================================================================================
+# A List of Files —— The Structure of the "MultiClient_Chat_App" Folder #
+
+- Multiclient_Chat_App/
+  -- chat_room/
+    --- __init__.py: Define all the variables for app, login-manager, socket and data storage.
+    --- model/
+      1. room.py: the chat room object
+      2. user.py: the user object
+    --- route/
+      1. http_reqs.py: handle AJAX requests such as register and login.
+      2. tcp_events.py: handle TCP events such as joining chat rooms and sending messages.
+    --- templates/
+      1. index.html: entrance page
+      2. register.html: register page
+      3. login.html: login page
+      4. interface.html: user home and chat interface page
+    --- static/
+      1. client.js: client side of our application. Send AJAX requests, handle AJAX responses and handle TCP events. 
+      2. model.js: HTML element generator 
+      3. utils.js: utility functions
+      4. interface.css: styling script for interface.html
+      5. images/: a folder which stores the emojis
+  -- run.py: Run the app.
+  -- setup.py: Configuration and specify the packages to be pip installed.
+
+
+----------------
+ | Thank you! |
+----------------

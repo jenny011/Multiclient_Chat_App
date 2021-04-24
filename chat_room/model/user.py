@@ -37,9 +37,3 @@ class User(UserMixin):
     def leave_page(self):
         self.current_room_id = None
 
-    def enqueue_msg(room_id, msg):
-        self.rooms[room_id].append(msg)
-
-    def dequeue_msg(room_id):
-        for msg in self.rooms[room_id]:
-            yield msg

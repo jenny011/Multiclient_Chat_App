@@ -4,20 +4,22 @@
 We have prepared a more readble README.md on our Github page.
 Github page: https://github.com/jenny011/Multiclient_Chat_App
 It contains contents of both HOWTO.txt and README.txt.
+YouTube presentation: 
 
----------------------
- |Please Note that |
----------------------
+----------------------
+ | Please Note that |
+----------------------
 1. Please use Python 3.6+.
 2. Please logout of all the users when you halt the server.
   All the data are stored at the server.
   Once the server is stopped, the logged-in users remain logged-in.
   Everything else happened in the app is erased.
 3. Safari and Firefox periodically drop inactive TCP connections after timeout.
-  If you find the chat interface not working (eg. messages not being sent), please simply refresh the page.
+  If you find the chat interface not working (eg. messages not being sent, images not being displayed), please simply refresh the page.
 4. For a better user experience, please give the browser windows a reasonable size.
 
-----------------------------------------------------------------------------------------
+
+==============================================================================================
 # How to install and run our Multiclient Chat App #
 
 ## (Optional, but recommended) Virtual Environment Setup ##
@@ -51,3 +53,8 @@ Run the commands in the folder "Multiclient_Chat_App":
   We recommend using Chrome, Chrome Incognito, Safari, Safari Incognito, Firefox and Firefox Incognito.
   Safari might not work when you run the app for the first time. In that case, you can restart the server.
 2. In each browser, go to `http://localhost:5000`.
+
+
+----------------
+ | Thank you! |
+----------------
