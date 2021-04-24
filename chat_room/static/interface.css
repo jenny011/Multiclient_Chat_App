@@ -195,9 +195,9 @@ i.fa-comment {
 }
 
 span.num {
-  font-size: 0.3em;
+  font-size: 0.5em;
   color: #fff;
-  position: relative; /* Position the badge within the relatively positioned button */
+  position: relative;
   top: 0;
   right: 20px;
 }

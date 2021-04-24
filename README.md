@@ -50,33 +50,43 @@ Safari might not work when you run the app for the first time. In that case, you
 
 
 ## How to Use the App (Operating instructions)
+Our app requires users to register and then login.<br>
+Our app periodically retrieves a list of available chat rooms and active users. It can detect out-of-date information in user requests and handle the requests gracefully.<br>
+Our app saves the following chat status:<br>
+1. the chat rooms which each user has joined
+2. the chat history of all the chat rooms
+
 ### Register and login
-You can login with pre-registered users, username 1 to 10. Password is the same as username.<br>
-You can also register your own user.<br>
+1. Register users with unique username and password.
+2. Login users.
 
-
-### Chat Interface Functionalities
+### Chat Interface Elements and Functionalities
 #### Left panel
 1. `"logout" button`: <br>
-Click the button to logout of the app.
+Click the button to logout of the app.<br>
 The user is not removed from any chat room on logout.<br>
-2. <i>My chat rooms:</i> <br>
-A list of the chat room which the user is in.
-The user can click on a room to switch the active chat room.
+2. `My chat rooms`: <br>
+A list of the chat room which the user is in.<br>
+The user can click on a room to switch the active chat room.<br>
 Notifications are displayed for the rooms which he/she is not currently chatting in.<br>
 
 #### Right panel
-<i><b>Entrance version:</b></i> A list of chat rooms and active users.<br>
+<b>`User Home version`:</b> A list of chat rooms and active users.<br>
 1. The user can join an existing chat room if it is not full.<br>
 2. The user can also create a new chat room with one or more active users and he/she must provide a room name.<br>
 On room creation, the room can be set as private (only the users chosen can see and join it) or non-private (all users can see and join it).<br>
-Rooms in the chat app has a size limit. A room can have at most 5 users.<br>
+Rooms in the chat app has a size limit. A room can have at most 5 users. If a room is full, it will not be visible to the users in the `User Home`.<br>
+A user will automatically join a chat room and switch to that chat room if someone else created a room with him/her.
 
-<i><b>Chat room version:</b></i> A list of action buttons, a message display box and a message sending box. <br>
-1. <i>"search" button:</i> go to the entrance version.<br>
-2. <i>"chat history" button:</i> view chat histories that were sent before the user started chatting in the room.<br>
-3. <i>"leave this room" button:</i> remove the user him/herself from the room.<br>
-4. <i>message display box:</i> where the messages are displayed. The messages with borders are private messages, otherwise, they are public messages of the chat room.<br>
-5. <i>message sending box:</i> The user can select an active target user in the dropdown menu to send private messages to. The user can also send public messages to everyone in the chat room.<br>
+<b>`Chat room version`:</b> A list of action buttons, a message display box and a message sending box.<br>
+1. `"search" button`: go to the `User Home Version`.<br>
+2. `"chat history" button`: View chat histories that were sent before the user started chatting in the room.<br>
+3. `"leave this room" button`: Remove the user him/herself from the chat room.<br>
+4. `message display box`: where the messages are displayed. The messages with borders are private messages, otherwise, they are public messages of the chat room.<br>
+5. `users dropdown menu`: The user can send public messages to everyone in the chat room by selecting "send to everyone" from the dropdown menu.<br>
+The user can also send private messages to an active user in the chat room selected from the dropdown menu.<br>
+6. `message text box`: The user can type in a message to be sent.<br>
+7. `"send" button`: The user can send messages by clicking this button or tapping "enter" on the keyboard.<br>
+8. `"emoji" button`: A modal of eight emojis is displayed after the button is clicked. The user can click on an emoji to end to the chat room publicly or privately (users dropdown menu also works here).<br>
 
 ## Thank you!
