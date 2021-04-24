@@ -88,7 +88,7 @@ The user can also send private messages to an active user in the chat room selec
 ## A List of Files —— The Structure of the `MultiClient_Chat_App` Folder
 ### - Multiclient_Chat_App/
 #### -- chat_room/
-##### --- \__init__.py
+##### --- \_\_init\_\_.py
 Define all the variables for app, login-manager, socket and data storage.
 ##### --- model/
 1. room.py: the chat room object
