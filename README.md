@@ -96,28 +96,32 @@ The user can also send private messages to an active user in the chat room selec
 ### Multiclient_Chat_App/
 #### chat_room/
 ##### __init__.py
-	Define all the variables for app, login-manager, socket and data storage.
+Define all the variables for app, login-manager, socket and data storage.
 ##### model/
-	1. room.py: the chat room object
-	2. user.py: the user object
+1. room.py: the chat room object
+2. user.py: the user object
+
 ##### route/
-	1. http_reqs.py: handle AJAX requests such as register and login.
-	2. tcp_events.py: handle TCP events such as joining chat rooms and sending messages.
+1. http_reqs.py: handle AJAX requests such as register and login.
+2. tcp_events.py: handle TCP events such as joining chat rooms and sending messages.
+
 ##### templates/
-	1. index.html: entrance page
-	2. register.html: register page
-	3. login.html: login page
-	4. interface.html: user home and chat interface page
+1. index.html: entrance page
+2. register.html: register page
+3. login.html: login page
+4. interface.html: user home and chat interface page
+
 ##### static/
-	1. client.js: client side of our application. Send AJAX requests, handle AJAX responses and handle TCP events. 
-	2. model.js: HTML element generator 
-	3. utils.js: utility functions
-	4. interface.css: styling script for interface.html
-	5. images/: a folder which stores the emojis
+1. client.js: client side of our application. Send AJAX requests, handle AJAX responses and handle TCP events. 
+2. model.js: HTML element generator 
+3. utils.js: utility functions
+4. interface.css: styling script for interface.html
+5. images/: a folder which stores the emojis
+
 #### run.py
-	Run the app.
+Run the app.
 #### setup.py
-	Configuration and specify the packages to be pip installed.
+Configuration and specify the packages to be pip installed.
 
 
 ## Thank you!
