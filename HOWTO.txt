@@ -9,7 +9,7 @@ YouTube presentation:
 ----------------------
  | Please Note that |
 ----------------------
-1. Please use Python 3.6+.
+1. Please use Python 3+.
 2. Please logout of all the users when you halt the server.
   All the data are stored at the server.
   Once the server is stopped, the logged-in users remain logged-in.
@@ -23,11 +23,11 @@ YouTube presentation:
 # How to install and run our Multiclient Chat App #
 
 ## (Optional, but recommended) Virtual Environment Setup ##
-Create a Python virtual environment with Python 3.6+
+Create a Python virtual environment with Python 3+
 If you have Anaconda, it's easy to create an Anaconda Python virtural environment.
 https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html
 In the terminal, run the commands:
-  `$ conda create -n myenv python=3.7`
+  `$ conda create -n myenv python=[the python 3+ version you have]`
   `$ conda activate myenv`
 
 ## Install and run the server ##

@@ -5,7 +5,7 @@ Github repository: <a href="https://github.com/jenny011/Multiclient_Chat_App">ht
 Presentation Video: <a></a>
 
 ## Please Note that
-1. Python 3.6+ is required for the server to behave properly.<br>
+1. Python 3+ is required for the server to behave properly.<br>
 2. Please logout of all the users when you halt the server.
 All the data are stored at the server.
 Once the server is stopped, the logged-in users remain logged-in.
@@ -20,11 +20,11 @@ If you find the chat interface not working (eg. messages not being sent, images 
 ### (Optional, but recommended) Virtual Environment Setup
 If you have Anaconda: <a href="https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html">Anaconda Python virtural environment</a></br>
 In the terminal, run: <br>
-`$ conda create -n myenv python=3` <br>
-`$ conda activate myenv` <br>
+`$ conda create -n chatenv python=[the python 3+ version you have]` <br>
+`$ conda activate chatenv` <br>
 
 ### Install and run the server
-#### Please use Python 3.6+.
+#### Please use Python 3+.
 1. Download this github repository as a folder `Multiclient_Chat_App`.</br>
 2. In the terminal, go into the folder `Multiclient_Chat_App`.</br>
 3. Run the commands: <br>

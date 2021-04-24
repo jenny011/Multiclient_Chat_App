@@ -9,7 +9,7 @@ YouTube presentation:
 ----------------------
  | Please Note that |
 ----------------------
-1. Please use Python 3.6+.
+1. Please use Python 3+.
 2. Please logout of all the users when you halt the server.
   All the data are stored at the server.
   Once the server is stopped, the logged-in users remain logged-in.
