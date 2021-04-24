@@ -10,6 +10,10 @@ from ..model.room import *
 
 DATETIME_FORMAT="%Y-%m-%d %H:%M"
 
+@login.unauthorized_handler
+def unauthorized_callback():
+       return redirect(url_for('goToLogin'))
+
 @login.user_loader
 def load_user(username):
     if username in all_users:
@@ -26,7 +30,7 @@ def get_all_rooms_except_mine(username):
     user = all_users[username]
     rooms = []
     for room_id, room in all_rooms.items():
-        if room_id not in user.rooms.keys() and not room.private:
+        if room_id not in user.rooms.keys() and not room.private and not room.is_full():
             rooms.append({"id": room_id, "name": room.name})
     return rooms
 
@@ -128,7 +132,7 @@ def handle_leave_page(username):
 def handle_leave_room(username, room_id):
     if username in all_users:
         all_users[username].leave_room(room_id)
-    emit("client_removed", username, room=room_id)
+    emit("client_removed", json.dumps({'username':username, 'room':room_id}), room=room_id)
     leave_room(room_id)
 
 

@@ -1,0 +1,49 @@
+---------------------------------------------
+ | Checkout Our Documentation on Github :) |
+---------------------------------------------
+We have prepared a more readble README.md on our Github page.
+Github page: https://github.com/jenny011/Multiclient_Chat_App
+It contains contents of both HOWTO.txt and README.txt.
+
+---------------------
+ |Please Note that |
+---------------------
+1. Use Python 3.6+.
+2. All the data are stored at the server. Once the server is stopped, everything happened in the app is erased.
+3. Safari and Firefox periodically drop inactive TCP connections after timeout. If you find the chat interface not working (eg. messages not being sent), please simply refresh the page.
+4. For a better user experience, give the browser windows a reasonable size.
+
+----------------------------------------------------------------------------------------
+# How to install and run our Multiclient Chat App #
+
+## (Optional, but recommended) Virtual Environment Setup ##
+Create a Python virtual environment with Python 3.6+
+If you have Anaconda, it's easy to create an Anaconda Python virtural environment.
+https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html
+In the terminal, run the commands:
+`$ conda create -n myenv python=3.7`
+`$ conda activate myenv`
+
+## Installation ##
+1. Unzip the zip file "Multiclient_Chat_App".
+2. In the terminal, go into the folder "Multiclient_Chat_App".
+3. Run the commands:
+`$ export FLASK_APP=chat_room`
+`$ pip install -e .`
+`$ flask run`
+
+* If the above installation does not work *
+Please do the following:
+`$ pip install` these packages: 'Flask', 'Flask-SocketIO', 'Flask-Login', 'Flask-Cors', 'Werkzeug'
+`$ python run.py` in the folder "Multiclient_Chat_App".
+
+## Start the Server after installation ##
+Run the commands in the folder "Multiclient_Chat_App":
+`$ export FLASK_APP=chat_room`
+`$ flask run`
+
+## Start the Clients ##
+1. Open ONE browser per client.
+We recommend using Chrome, Chrome Incognito, Safari, Safari Incognito, Firefox and Firefox Incognito.
+Safari might not work when you run the app for the first time. In that case, you can restart the server.
+2. In each browser, go to `http://localhost:5000`.

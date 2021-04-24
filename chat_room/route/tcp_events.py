@@ -16,6 +16,7 @@ from datetime import datetime
 ###---------------------TCP events---------------------###
 #---------------connection----------------------------
 @socket.on('connect')
+@login_required
 def on_connect():
 	print("Connect")
 
@@ -30,6 +31,7 @@ def say_hi(username):
 		broadcastStatusChange(current_user, "active")
 
 @socket.on('disconnect')
+@login_required
 def on_disconnect():
 	print("Disconnect")
 	current_user.current_room_id = None
@@ -38,6 +40,7 @@ def on_disconnect():
 
 #------------invite----------------------
 @socket.on('invite')
+@login_required
 def on_invite(msg):
 	msg = json.loads(msg)
 	username = msg['username']
@@ -59,7 +62,7 @@ def on_invite(msg):
 			all_rooms[room_id].name = room_id
 	else:
 		if all_rooms[room_id].is_full():
-			send('Room is full')
+			emit('refreshRoom', "Room is full")
 			return
 	# Add user A
 	handle_add_room(username, room_id)
@@ -72,27 +75,30 @@ def on_invite(msg):
 
 #---------------add------------------
 @socket.on('add_room')
+@login_required
 def on_add_room(msg):
 	msg = json.loads(msg)
 	username = msg['username']
 	room_id = msg['room']
 	if room_id in all_rooms:
-		if all_rooms[room_id].is_full():
-			send('Room is full')
+		room = all_rooms[room_id]
+		if room.is_full():
+			emit('refreshRoom', "Room is full")
 			return
 		print(f'{username} joining {room_id}')
-		success, ret = all_rooms[room_id].add(username)
+		success, ret = room.add(username)
 		if success:
 			print(f'{room_id} members:', ret)
 			handle_add_room(username, room_id)
 		else:
 			send(ret)
 	else:
-		emit('refreshRoom', room_id)
+		emit('refreshRoom', "Room is dismissed")
 
 
 #---------------join chat------------------
 @socket.on('join_room')
+@login_required
 def on_join_room(msg):
 	msg = json.loads(msg)
 	username = msg['username']
@@ -102,6 +108,7 @@ def on_join_room(msg):
 
 
 @socket.on('switch_room')
+@login_required
 def on_switch_room(msg):
 	msg = json.loads(msg)
 	username = msg["username"]
@@ -112,6 +119,7 @@ def on_switch_room(msg):
 
 #---------------leave------------------
 @socket.on('leave_room')
+@login_required
 def on_leave_room(username):
 	user = all_users[username]
 	room_id = user.current_room_id
@@ -124,12 +132,14 @@ def on_leave_room(username):
 		print(ret)
 
 @socket.on('leave_page')
+@login_required
 def on_leave_page(username):
 	user = all_users[username]
 	#user.current_room_id = None
 	handle_leave_page(username)
 
 @socket.on('set_inactive')
+@login_required
 def on_set_inactive(username):
 	user = all_users[username]
 	room_id = user.current_room_id
@@ -139,6 +149,7 @@ def on_set_inactive(username):
 	disconnect()
 
 @socket.on('dismiss_room')
+@login_required
 def on_dismiss_room(room_id):
 	room = all_rooms[roome_id]
 	success, ret = room.close()
@@ -152,6 +163,7 @@ def on_dismiss_room(room_id):
 
 #---------------messaging------------------------
 @socket.on('message')
+@login_required
 def handleMessage(msg):
 	msg_decoded = json.loads(msg)
 	username = msg_decoded["username"]
@@ -174,6 +186,7 @@ def handleMessage(msg):
 		handle_record_msg(room_id, processed_msg)
 
 @socket.on('fetch_history')
+@login_required
 def on_fetch_history(msg):
 	msg_decoded = json.loads(msg)
 	username = msg_decoded["username"]

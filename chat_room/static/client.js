@@ -10,11 +10,15 @@ var refreshEntrance = null;
 $(document).ready(function() {
   /** TCP socket connection **/
   socket.on('connect', function(){
+    console.log(current_room);
+    current_room = null;
     socket.emit('say_hi', username);
     console.log("connected", username);
   });
 
   socket.on('reconnect', function(){
+    console.log(current_room);
+    current_room = null;
     socket.emit('say_hi', username);
     console.log("reconnected", username);
   });
@@ -34,8 +38,8 @@ $(document).ready(function() {
 
   /** TCP events **/
   //-----refresh content-----
-  socket.on('refreshRoom', function(room_id){
-    alert("The room has been dismissed.");
+  socket.on('refreshRoom', function(err_msg){
+    alert(err_msg);
     sendRequest("updateLists", "GET", null, updateLists);
     sendRequest("updateMyRooms", "GET", null, updateMyRooms);
   });
@@ -75,20 +79,26 @@ $(document).ready(function() {
       socket.emit('join_room', msg);
       sendRequest("updateMyRooms", "GET", null, updateMyRooms);
     } else {
-      let displayMsg = escapeHtml(user) + " joined";
-      $("#messages").append('<div class="system-msg"><i>' + displayMsg + '</i></div>');
+      if (msg_decoded.room == current_room) {
+        let displayMsg = escapeHtml(user) + " joined";
+        $("#messages").append('<div class="system-msg"><i>' + displayMsg + '</i></div>');
+      };
     };
     $("#msg-container").animate({ scrollTop: $('#msg-container').prop("scrollHeight") }, 1000);
   });
 
-  socket.on('client_removed', function(user){
+  socket.on('client_removed', function(msg){
+    let msg_decoded = JSON.parse(msg);
+    let user = msg_decoded.username;
     if (user == username) {
       toggleInterface(false);
     } else {
-      let displayMsg = escapeHtml(user) + " left";
-      $("#messages").append('<div class="system-msg"><i>' + displayMsg + '</i></div>');
-      $("#private option[value='" + user + "']").remove();
-    }
+      if (msg_decoded.room == current_room) {
+        let displayMsg = escapeHtml(user) + " left";
+        $("#messages").append('<div class="system-msg"><i>' + displayMsg + '</i></div>');
+        $("#private option[value='" + user + "']").remove();
+      };
+    };
     $("#msg-container").animate({ scrollTop: $('#msg-container').prop("scrollHeight") }, 1000);
   });
 
@@ -362,6 +372,7 @@ function createRoomWithUser(data, roomIndex, rooms, is_private){
 
 //------Left Panel Actions-----
 function updateMyRooms(data) {
+  console.log("update left");
   $("#chats").empty();
   for (let i=0; i<data.length; i++) {
     if (data[i].current) {

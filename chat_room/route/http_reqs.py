@@ -67,8 +67,7 @@ def login():
 			return redirect(url_for("chat"))
 		else:
 			if username in active_users:
-				active_users[username] = False
-				return render_template('login.html', err="Unknown error, try again")
+				return render_template('login.html', err="Already logged in, try another user")
 			else:
 				return render_template('login.html', err="Please register!")
 
