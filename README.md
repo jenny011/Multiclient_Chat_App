@@ -20,8 +20,8 @@ If you find the chat interface not working (eg. messages not being sent, images 
 ### (Optional, but recommended) Virtual Environment Setup
 If you have Anaconda: <a href="https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html">Anaconda Python virtural environment</a></br>
 In the terminal, run: <br>
-`$ conda create -n myenv python=[the python 3.6+ version you have]` <br>
-`$ conda activate myenv` <br>
+`$ conda create -n chatenv python=[the python 3.6+ version you have]` <br>
+`$ conda activate chatenv` <br>
 
 ### Install and run the server
 #### Please use Python 3.6+.
