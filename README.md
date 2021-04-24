@@ -112,8 +112,8 @@ Define all the variables for app, login-manager, socket and data storage.
 4. interface.html: user home and chat interface page
 
 ##### static/
-1. client.js: client side of our application. Send AJAX requests, handle AJAX responses and handle TCP events. 
-2. model.js: HTML element generator 
+1. client.js: client side of our application. Send AJAX requests, handle AJAX responses and handle TCP events.
+2. model.js: HTML element generator
 3. utils.js: utility functions
 4. interface.css: styling script for interface.html
 5. images/: a folder which stores the emojis
@@ -125,4 +125,3 @@ Configuration and specify the packages to be pip installed.
 
 
 ## Thank you!
-
