@@ -71,7 +71,7 @@ On room creation, the room can be set as private (only the users chosen can see 
 Rooms in the chat app has a size limit. A room can have at most 5 users. If a room is full, it will not be visible to the users in the `User Home`.<br>
 A user will automatically join a chat room and switch to that chat room if someone else created a room with him/her.
 
-<b>`Chat room version`:</b> A list of action buttons, a message display box and a message sending box.<br>
+<b>`Chat Interface version`:</b> A list of action buttons, a message display box and a message sending box.<br>
 1. Private rooms have a "*" after the room name.<br>
 2. `"search" button`: go to the `User Home Version`.<br>
 3. `"chat history" button`: View chat histories that were sent before the user started chatting in the room.<br>

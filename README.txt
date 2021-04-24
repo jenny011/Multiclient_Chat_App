@@ -49,7 +49,7 @@ Our app saves the following chat status as long as the server is up and running:
     Rooms in the chat app has a size limit. A room can have at most 5 users. If a room is full, it will not be visible to the users in the `User Home`.
     A user will automatically join a chat room and switch to that chat room if someone else created a room with him/her.
 
-`Chat room version`: A list of action buttons, a message display box and a message sending box.
+`Chat Interface version`: A list of action buttons, a message display box and a message sending box.
   1. Private rooms have a "*" after the room name.
   2. `"search" button`: go to the `User Home Version`.
   3. `"chat history" button`: View chat histories that were sent before the user started chatting in the room.
