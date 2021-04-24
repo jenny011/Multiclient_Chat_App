@@ -6,20 +6,25 @@ Presentation Video: <a></a>
 
 ## Please Note that
 1. Python 3.6+ is required for the server to behave properly.<br>
-2. All the data are stored at the server. Once the server is stopped, everything happened in the app is erased.<br>
-3. Safari and Firefox periodically drop inactive TCP connections after timeout. If you find the chat interface not working (eg. messages not being sent), please simply refresh the page.<br>
+2. Please logout of all the users when you halt the server.
+All the data are stored at the server.
+Once the server is stopped, the logged-in users remain logged-in.
+Everything else happened in the app is erased.<br>
+3. Safari and Firefox periodically drop inactive TCP connections after timeout.
+If you find the chat interface not working (eg. messages not being sent), please simply refresh the page.<br>
 4. For a better user experience, please give the browser windows a reasonable size.<br>
 
 
 ## How to Install and Run our Multiclient Chat App
 
-### Install and run the server
-#### Please use Python 3.6+. <br>
-0. Create a Python virtual environment (Optional, but recommend).
+### (Optional, but recommended) Virtual Environment Setup
 If you have Anaconda: <a href="https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html">Anaconda Python virtural environment</a></br>
-In the terminal, run <br>
+In the terminal, run: <br>
 `$ conda create -n myenv python=3` <br>
 `$ conda activate myenv` <br>
+
+### Install and run the server
+#### Please use Python 3.6+.
 1. Download this github repository as a folder `Multiclient_Chat_App`.</br>
 2. In the terminal, go into the folder `Multiclient_Chat_App`.</br>
 3. Run the commands: <br>
@@ -31,15 +36,14 @@ In the terminal, run <br>
 `$ pip install` these packages: 'Flask', 'Flask-SocketIO', 'flask-login', 'flask-cors', 'numpy', 'Werkzeug' <br>
 `$ python run.py` in folder `Multiclient_Chat_App` <br>
 
-
-### Run the server after installation
+#### Run the server after installation
 Run the commands in the folder `Multiclient_Chat_App`: <br>
 `$ export FLASK_APP=chat_room` <br>
 `$ flask run` <br>
 
 
 ### Run the clients
-1. Open ONE browser per client.<br>
+1. Open <b>ONE</b> browser per client (user).<br>
 We recommend using Chrome, Chrome Incognito, Safari, Safari Incognito, Firefox and Firefox Incognito. <br>
 Safari might not work when you run the app for the first time. In that case, you can restart the server.<br>
 2. In each browser, go to `http://localhost:5000`. <br>
@@ -51,7 +55,7 @@ You can login with pre-registered users, username 1 to 10. Password is the same 
 You can also register your own user.<br>
 
 
-### Chat Interface Funtionalities
+### Chat Interface Functionalities
 #### Left panel
 1. `"logout" button`: <br>
 Click the button to logout of the app.
