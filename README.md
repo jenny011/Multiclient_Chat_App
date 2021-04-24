@@ -6,10 +6,7 @@ Presentation Video: <a></a>
 
 ## Please Note that
 1. Python 3+ is required for the server to behave properly.<br>
-2. Please logout of all the users when you halt the server.
-All the data are stored at the server.
-Once the server is stopped, the logged-in users remain logged-in.
-Everything else happened in the app is erased.<br>
+2. All the data are stored at the server. Once the server halts, everything happened in the app is erased.<br>
 3. Safari and Firefox periodically drop inactive TCP connections after timeout.
 If you find the chat interface not working (eg. messages not being sent, images not being displayed), please simply refresh the page.<br>
 4. For a better user experience, please give the browser windows a reasonable size.<br>
@@ -17,10 +14,9 @@ If you find the chat interface not working (eg. messages not being sent, images 
 
 ## How to Install and Run our Multiclient Chat App
 
-### (Optional) Setup Python Virtual Environment
-
 ### Install and run the server
 #### Please use Python 3+.
+0. (Optional) Setup Python Virtual Environment
 1. Download this github repository as a folder `Multiclient_Chat_App`.</br>
 2. In the terminal, go into the folder `Multiclient_Chat_App`.</br>
 3. Run the commands: <br>
@@ -48,7 +44,7 @@ Safari might not work when you run the app for the first time. In that case, you
 ## Operating instructions —— How to Use the App
 Our app requires users to register and then login.<br>
 Our app periodically retrieves a list of available chat rooms and active users. It can detect out-of-date information in user requests and handle the requests gracefully.<br>
-Our app saves the following chat status:<br>
+Our app saves the following chat status as long as the server is up and running:<br>
 1. the chat rooms which each user has joined
 2. the chat history of all the chat rooms
 
@@ -79,6 +75,7 @@ A user will automatically join a chat room and switch to that chat room if someo
 1. Private rooms have a "*" after the room name.<br>
 2. `"search" button`: go to the `User Home Version`.<br>
 3. `"chat history" button`: View chat histories that were sent before the user started chatting in the room.<br>
+Ten history messages are displayed at a time.<br>
 4. `"leave this room" button`: Remove the user him/herself from the chat room.<br>
 5. `message display box`: where the messages are displayed. The messages with borders are private messages, otherwise, they are public messages of the chat room.<br>
 6. `users dropdown menu`: The user can send public messages to everyone in the chat room by selecting "send to everyone" from the dropdown menu.<br>
@@ -89,34 +86,34 @@ The user can also send private messages to an active user in the chat room selec
 
 
 ## A List of Files —— The Structure of the `MultiClient_Chat_App` Folder
-### Multiclient_Chat_App/
-#### chat_room/
-##### __init__.py
+### - Multiclient_Chat_App/
+#### -- chat_room/
+##### --- \__init__.py
 Define all the variables for app, login-manager, socket and data storage.
-##### model/
+##### --- model/
 1. room.py: the chat room object
 2. user.py: the user object
 
-##### route/
+##### --- route/
 1. http_reqs.py: handle AJAX requests such as register and login.
 2. tcp_events.py: handle TCP events such as joining chat rooms and sending messages.
 
-##### templates/
+##### --- templates/
 1. index.html: entrance page
 2. register.html: register page
 3. login.html: login page
 4. interface.html: user home and chat interface page
 
-##### static/
+##### --- static/
 1. client.js: client side of our application. Send AJAX requests, handle AJAX responses and handle TCP events.
 2. model.js: HTML element generator
 3. utils.js: utility functions
 4. interface.css: styling script for interface.html
 5. images/: a folder which stores the emojis
 
-#### run.py
+#### -- run.py
 Run the app.
-#### setup.py
+#### -- setup.py
 Configuration and specify the packages to be pip installed.
 
 

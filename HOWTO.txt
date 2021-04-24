@@ -10,10 +10,7 @@ YouTube presentation:
  | Please Note that |
 ----------------------
 1. Please use Python 3+.
-2. Please logout of all the users when you halt the server.
-  All the data are stored at the server.
-  Once the server is stopped, the logged-in users remain logged-in.
-  Everything else happened in the app is erased.
+2. All the data are stored at the server. Once the server halts, everything happened in the app is erased.
 3. Safari and Firefox periodically drop inactive TCP connections after timeout.
   If you find the chat interface not working (eg. messages not being sent, images not being displayed), please simply refresh the page.
 4. For a better user experience, please give the browser windows a reasonable size.
@@ -22,9 +19,8 @@ YouTube presentation:
 ==============================================================================================
 # How to install and run our Multiclient Chat App #
 
-## (Optional) Setup Python Virtual Environment ##
-
 ## Install and run the server ##
+0. (Optional) Setup Python Virtual Environment
 1. Unzip "Multiclient_Chat_App.zip".
 2. In the terminal, go into the folder "Multiclient_Chat_App".
 3. Run the commands:
