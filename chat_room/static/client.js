@@ -375,7 +375,7 @@ function updateMyRooms(data) {
   console.log("update left");
   $("#chats").empty();
   for (let i=0; i<data.length; i++) {
-    if (data[i].current) {
+    if (current_room && data[i].current) {
       $("#chats").append(active_chatbox(data[i].id, data[i].name));
     } else {
       let unread_number = 0;

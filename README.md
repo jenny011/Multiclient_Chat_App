@@ -67,7 +67,8 @@ Click the button to logout of the app.<br>
 The user is not removed from any chat room on logout.<br>
 2. `My chat rooms`: <br>
 A list of the chat room which the user is in.<br>
-The user can click on a room to switch the active chat room.<br>
+The active room button has a white background and does not do anything when clicked.<br>
+The user can click on a room to switch to the active chat room.<br>
 Notifications are displayed for the rooms which he/she is not currently chatting in.<br>
 
 #### Right panel
@@ -79,14 +80,15 @@ Rooms in the chat app has a size limit. A room can have at most 5 users. If a ro
 A user will automatically join a chat room and switch to that chat room if someone else created a room with him/her.
 
 <b>`Chat room version`:</b> A list of action buttons, a message display box and a message sending box.<br>
-1. `"search" button`: go to the `User Home Version`.<br>
-2. `"chat history" button`: View chat histories that were sent before the user started chatting in the room.<br>
-3. `"leave this room" button`: Remove the user him/herself from the chat room.<br>
-4. `message display box`: where the messages are displayed. The messages with borders are private messages, otherwise, they are public messages of the chat room.<br>
-5. `users dropdown menu`: The user can send public messages to everyone in the chat room by selecting "send to everyone" from the dropdown menu.<br>
+1. Private rooms have a "*" after the room name.<br>
+2. `"search" button`: go to the `User Home Version`.<br>
+3. `"chat history" button`: View chat histories that were sent before the user started chatting in the room.<br>
+4. `"leave this room" button`: Remove the user him/herself from the chat room.<br>
+5. `message display box`: where the messages are displayed. The messages with borders are private messages, otherwise, they are public messages of the chat room.<br>
+6. `users dropdown menu`: The user can send public messages to everyone in the chat room by selecting "send to everyone" from the dropdown menu.<br>
 The user can also send private messages to an active user in the chat room selected from the dropdown menu.<br>
-6. `message text box`: The user can type in a message to be sent.<br>
-7. `"send" button`: The user can send messages by clicking this button or tapping "enter" on the keyboard.<br>
-8. `"emoji" button`: A modal of eight emojis is displayed after the button is clicked. The user can click on an emoji to end to the chat room publicly or privately (users dropdown menu also works here).<br>
+7. `message text box`: The user can type in a message to be sent.<br>
+8. `"send" button`: The user can send messages by clicking this button or tapping "enter" on the keyboard.<br>
+9. `"emoji" button`: A modal of eight emojis is displayed after the button is clicked. The user can click on an emoji to end to the chat room publicly or privately (users dropdown menu also works here).<br>
 
 ## Thank you!
