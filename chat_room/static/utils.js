@@ -1,4 +1,4 @@
-var emoji_strs = ["[/smile]", "[/laugh]", "[/sad]", "[/cry]", "[/angry]", "[/scared]", "[/cat]", "[/dog]"];
+var emoji_strs = ["[/laugh]", "[/surprised]", "[/cry]", "[/hug]", "[/sun]", "[/rabbit]", "[/good]", "[/peace]"];
 
 function goToPage(route, delay) {
   setTimeout("window.location.replace('http://localhost:5000/" + route + "')", delay);
@@ -29,8 +29,7 @@ function escapeHtml(msg) {
   if (emoji_strs.includes(msg)) {
     let emoji_name = msg.slice(2,msg.length-1);
     return '<img src="/static/images/' + emoji_name + '.png" alt="' + emoji_name + '" height="60">';
-  }  else {
-    console.log(msg);
+  } else {
     return msg
          .replace(/&/g, "&amp;")
          .replace(/</g, "&lt;")
