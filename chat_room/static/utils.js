@@ -1,3 +1,5 @@
+var emoji_strs = ["[/smile]", "[/laugh]", "[/sad]", "[/cry]", "[/angry]", "[/scared]", "[/cat]", "[/dog]"];
+
 function goToPage(route, delay) {
   setTimeout("window.location.replace('http://localhost:5000/" + route + "')", delay);
 }
@@ -24,10 +26,16 @@ function sendRequest(route, type, data, successHandler){
 }
 
 function escapeHtml(msg) {
+  if (emoji_strs.includes(msg)) {
+    let emoji_name = msg.slice(2,msg.length-1);
+    return '<img src="/static/images/' + emoji_name + '.png" alt="' + emoji_name + '" height="60">';
+  }  else {
+    console.log(msg);
     return msg
          .replace(/&/g, "&amp;")
          .replace(/</g, "&lt;")
          .replace(/>/g, "&gt;")
          .replace(/"/g, "&quot;")
          .replace(/'/g, "&#039;");
+  };
  }

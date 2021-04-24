@@ -51,7 +51,7 @@ def on_invite(msg):
 			return
 	if not room_id:
 		#f'{username}, {user_id}'
-		room_id = create_room(roomname, [username], len(user_ids) + 1, private_chat)
+		room_id = create_room(roomname, username, [username], len(user_ids) + 1, private_chat)
 		if not room_id:
 			send(f'You can only create a room with {room_member_limit} users')
 			return
@@ -153,7 +153,6 @@ def on_dismiss_room(room_id):
 #---------------messaging------------------------
 @socket.on('message')
 def handleMessage(msg):
-	# print(msg)
 	msg_decoded = json.loads(msg)
 	username = msg_decoded["username"]
 	room_id = current_user.current_room_id

@@ -66,7 +66,7 @@ def get_my_last_ten_msgs(username, room_id, msg_history_len):
 
 
 #---------create, add---------
-def create_room(room_name, users, user_number, private_chat):
+def create_room(room_name, username, users, user_number, private_chat):
     if user_number > room_member_limit:
         return ""
     if available_room_ids:
@@ -74,7 +74,7 @@ def create_room(room_name, users, user_number, private_chat):
     else:
         room_id = str(chat_room.next_room_id)
         chat_room.next_room_id += 1
-    new_room = Room(room_name, room_id, users, private_chat)
+    new_room = Room(room_name, room_id, username, users, private_chat)
     all_rooms[room_id] = new_room
     return room_id
 

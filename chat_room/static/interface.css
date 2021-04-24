@@ -206,6 +206,15 @@ span.num {
   padding: 5px 10px 5px 10px;
 }
 
+li.page-item {
+    cursor: pointer;
+}
+
 li.page-item.disabled {
-      pointer-events: none;
-  }
+    pointer-events: none;
+}
+
+.emoji {
+  margin: 10px 20px 10px 20px;
+  cursor: pointer;
+}

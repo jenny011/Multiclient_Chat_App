@@ -5,6 +5,7 @@ import chat_room
 from .utils import *
 from ..model.user import *
 from ..model.room import *
+import re
 
 
 ###---------------------HTTP routes---------------------###
@@ -35,6 +36,9 @@ def register():
 		return redirect(url_for("chat"))
 	else:
 		username = request.form['username']
+		username_check = re.compile(r"^[^<>/{}[\]~`'\"]*$");
+		if not username_check.match(username):
+			return render_template('register.html', err="""Please remove invalid characters: [, ], <, >, {, }, /, \, ~, `, &, ^, ", '""")
 		password = request.form['password']
 		if username in all_users:
 			return render_template('register.html', err='Username already exists!')

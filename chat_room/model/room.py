@@ -7,11 +7,12 @@ from .user import *
 room_member_limit = 5
 
 class Room:
-    def __init__(self, name, id, users, private_chat, limit=room_member_limit):
+    def __init__(self, name, id, owner, members, private_chat, limit=room_member_limit):
         self.name = name
         self.id = id
-        self.members = users
-        self.number = len(users)
+        self.owner = owner
+        self.members = members
+        self.number = len(members)
         self.status = True
         self.private = private_chat
         self.limit = limit

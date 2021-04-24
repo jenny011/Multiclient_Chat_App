@@ -123,12 +123,14 @@ $(document).ready(function() {
         if (buffered_msgs.length < last_ten_msgs.length){
           for (let i=0; i<last_ten_msgs.length; i++) {
             let one_msg = JSON.parse(last_ten_msgs[i]);
-            displayMessage(one_msg.username, one_msg.target, one_msg.msg, one_msg.target != "", i==last_ten_msgs.length-1);
+            let this_target = escapeHtml(one_msg.target);
+            displayMessage(one_msg.username, this_target, escapeHtml(one_msg.msg), this_target != "", i==last_ten_msgs.length-1);
           };
         } else {
           for (let i=0; i<buffered_msgs.length; i++) {
             let one_msg = JSON.parse(buffered_msgs[i]);
-            displayMessage(one_msg.username, one_msg.target, one_msg.msg, one_msg.private, i==buffered_msgs.length-1);
+            let this_target = escapeHtml(one_msg.target);
+            displayMessage(one_msg.username, this_target, escapeHtml(one_msg.msg), one_msg.private, i==buffered_msgs.length-1);
           }
         }
         msg_buffer.set(room, []);
@@ -137,7 +139,8 @@ $(document).ready(function() {
         for (let i=0; i<last_ten_msgs.length; i++) {
           //display 10 history msgs
           let one_msg = JSON.parse(last_ten_msgs[i]);
-          displayMessage(one_msg.username, one_msg.target, one_msg.msg, one_msg.target != "", i==one_msg.length-1);
+          let this_target = escapeHtml(one_msg.target);
+          displayMessage(one_msg.username, this_target, escapeHtml(one_msg.msg), this_target != "", i==last_ten_msgs.length-1);
         };
       };
     };
@@ -158,7 +161,8 @@ $(document).ready(function() {
       msg_decoded.msg = escapeHtml(msg_decoded.msg);
       msg_decoded.target = escapeHtml(msg_decoded.target);
     } catch (err) {
-      alert(msg);
+      console.log(err);
+      alert("An error occurred, try again.");
       return;
     };
     let room = msg_decoded.room;
@@ -207,7 +211,7 @@ $(document).ready(function() {
     for (let i=0; i<history_msgs.length; i++) {
       //display 10 history msgs
       let one_msg = JSON.parse(history_msgs[i]);
-      displayHistoryMessage(one_msg.username, one_msg.target, one_msg.msg, one_msg.target != "");
+      displayHistoryMessage(one_msg.username, escapeHtml(one_msg.target), escapeHtml(one_msg.msg), one_msg.target != "");
     };
   });
 
@@ -216,6 +220,7 @@ $(document).ready(function() {
   $(".room-item").on("submit", joinRoom);
   $("#active-users-list").submit(inviteUser);
 
+  //----send msg----
   $("#msgform").on("submit", function(event){
     event.preventDefault();
     let data = $(this).serializeArray();
@@ -232,6 +237,20 @@ $(document).ready(function() {
       $('#myMsg').val('');
     };
   });
+
+  //----send emoji----
+  $(".emoji").on("click", function(){
+    event.preventDefault();
+    let target = $("#msgform #private").children("option:selected").val();
+    let emoji = "[/" + $(this).attr("id") + "]";
+    if (target) {
+      let msg = {"username": username, "msg": emoji, "target": target};
+      socket.send(JSON.stringify(msg));
+    } else {
+      let msg = {"username": username, "msg": emoji, "target": target};
+      socket.send(JSON.stringify(msg));
+    };
+  })
 
   //-----leave-----
   $("#leave_room").on("click", function(){
@@ -269,6 +288,7 @@ $(document).ready(function() {
       fetchHistory("next");
     }
   });
+
 });
 
 
@@ -281,7 +301,6 @@ function freezeOrUpdate() {
 
 //-----Toggle Interface-----
 function toggleInterface(chatOn){
-  console.log(chatOn);
   if (chatOn) {
     clearInterval(refreshEntrance);
     sendRequest("updateMyRooms", "GET", null, updateMyRooms);
