@@ -112,6 +112,10 @@ Define all the variables for app, login-manager, socket and data storage.
 Run the app.
 #### -- setup.py
 Configuration and specify the packages to be pip installed.
+#### -- run.sh
+bash script to setup and run the app.
+#### -- Makefile 
+Calls run.sh.
 
 
 ## Thank you!

@@ -88,6 +88,8 @@ Our app saves the following chat status as long as the server is up and running:
       5. images/: a folder which stores the emojis
   -- run.py: Run the app.
   -- setup.py: Configuration and specify the packages to be pip installed.
+  -- run.sh: bash script to setup and run the app.
+  -- Makefile: calls run.sh.
 
 
 ----------------
