@@ -1,6 +1,7 @@
 # Multiclient Chat App
 <b>Spring 2021 Computer Networking Course Project</b><br>
 <b>Jingyi Zhu, Yannan Fei</b><br>
+This version has an easier installation method than the one submitted on NYU Classes <br>
 Github repository: <a href="https://github.com/jenny011/Multiclient_Chat_App">https://github.com/jenny011/Multiclient_Chat_App</a><br>
 
 ## Please Note that
