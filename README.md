@@ -19,10 +19,10 @@ If you find the chat interface not working (eg. messages not being sent, images 
 0. (Optional) Setup Python Virtual Environment
 1. Download this github repository as a folder `Multiclient_Chat_App`.</br>
 2. In the terminal, go into the folder `Multiclient_Chat_App`.</br>
-3. Run the command: <br>
+3. Run the command: (Does not work for the NYU Classes version) <br>
 `$ make`
 
-#### Or you can run these commands:<br>
+#### Or you can run these commands: (works for the NYU Classes version) <br>
 `$ export FLASK_APP=chat_room` <br>
 `$ pip install -e .` <br>
 `$ flask run` <br>
