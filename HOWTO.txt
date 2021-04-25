@@ -22,7 +22,10 @@ It contains contents of both HOWTO.txt and README.txt.
 0. (Optional) Setup Python Virtual Environment
 1. Unzip "Multiclient_Chat_App.zip".
 2. In the terminal, go into the folder "Multiclient_Chat_App".
-3. Run the commands:
+3. Run the command:
+  `$ make`
+
+* Or you can run these commands *
   `$ export FLASK_APP=chat_room`
   `$ pip install -e .`
   `$ flask run`
@@ -32,10 +35,6 @@ Please do the following:
   `$ pip install` these packages: 'Flask', 'Flask-SocketIO', 'Flask-Login', 'Flask-Cors', 'Werkzeug'
   `$ python run.py` in the folder "Multiclient_Chat_App".
 
-* Run the Server after installation *
-Run the commands in the folder "Multiclient_Chat_App":
-  `$ export FLASK_APP=chat_room`
-  `$ flask run`
 
 ## Run the Clients ##
 1. Open ONE browser per client (user).

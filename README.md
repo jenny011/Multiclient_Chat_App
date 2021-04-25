@@ -18,7 +18,10 @@ If you find the chat interface not working (eg. messages not being sent, images 
 0. (Optional) Setup Python Virtual Environment
 1. Download this github repository as a folder `Multiclient_Chat_App`.</br>
 2. In the terminal, go into the folder `Multiclient_Chat_App`.</br>
-3. Run the commands: <br>
+3. Run the command: <br>
+`$ make`
+
+#### Or you can run these commands:<br>
 `$ export FLASK_APP=chat_room` <br>
 `$ pip install -e .` <br>
 `$ flask run` <br>
@@ -26,11 +29,6 @@ If you find the chat interface not working (eg. messages not being sent, images 
 #### If the above installation does not work
 `$ pip install` these packages: 'Flask', 'Flask-SocketIO', 'flask-login', 'flask-cors', 'numpy', 'Werkzeug' <br>
 `$ python run.py` in folder `Multiclient_Chat_App` <br>
-
-#### Run the server after installation
-Run the commands in the folder `Multiclient_Chat_App`: <br>
-`$ export FLASK_APP=chat_room` <br>
-`$ flask run` <br>
 
 
 ### Run the clients
