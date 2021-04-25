@@ -22,10 +22,10 @@ It contains contents of both HOWTO.txt and README.txt.
 0. (Optional) Setup Python Virtual Environment
 1. Unzip "Multiclient_Chat_App.zip".
 2. In the terminal, go into the folder "Multiclient_Chat_App".
-3. Run the command:
+3. Run the command: (Does not work for the NYU Classes version)
   `$ make`
 
-* Or you can run these commands *
+* Or you can run these commands (works for the NYU Classes version) *
   `$ export FLASK_APP=chat_room`
   `$ pip install -e .`
   `$ flask run`
