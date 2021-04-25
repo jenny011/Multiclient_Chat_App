@@ -4,7 +4,6 @@
 We have prepared a more readble README.md on our Github page.
 Github page: https://github.com/jenny011/Multiclient_Chat_App
 It contains contents of both HOWTO.txt and README.txt.
-YouTube presentation:
 
 ----------------------
  | Please Note that |

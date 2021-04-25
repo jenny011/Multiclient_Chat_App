@@ -2,7 +2,6 @@
 <b>Spring 2021 Computer Networking Course Project</b><br>
 <b>Jingyi Zhu, Yannan Fei</b><br>
 Github repository: <a href="https://github.com/jenny011/Multiclient_Chat_App">https://github.com/jenny011/Multiclient_Chat_App</a><br>
-Presentation Video: <a></a>
 
 ## Please Note that
 1. Python 3+ is required for the server to behave properly.<br>
